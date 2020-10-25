@@ -1,0 +1,48 @@
+A.A. 2019/2020
+
+ Introduzione al corso. libri di testo e modalità di esame. Definizione ed introduzione ai concetti di sistemi di guida e sistemi di navigazione. Panoramica sul corso. Cenni storici a sistemi di guida e di navigazione. Navigazione. Concetti di navigazione e panoramica storica. Il concetto di Dead reckoning ed esempi. Introduzione alla navigazione inerziale. Concetti di base, sistemi di riferimento.
+
+Esempio di meccanizzazione 3 DOF in terna inerziale e terna ruotante: il transport rate. Schemi base di navigazione inerziale: stabilized platform e strapdown, confronto tra le due.
+La misura dell'accelerazione: esempi di accelerometri. principio fisico ed equazioni dell'accelerometro meccanico. L'accelerometro a pendolo vincolato, a quarzo, a fibra ottica. 
+
+Gli accelerometri MEMS: Accelerometri termici. Il giroscopio: cenni alle origini sul nome. La conservazione del momento angolare ed il fenomeno di precessione, esempi: dinamica di una ruota sospesa e di una trottola. Fenomeno di nutazione.
+
+Esempi di dispositivi giroscopici. La stabilizzazione giroscopica: control moment gyro. Equazioni del giroscopio meccanico 2 DOF e risposta nel tempo. Il Rate Gyro meccanico e quello a controllo Elettronico. 
+
+L'effetto Sagnac. Il Fiber Optic Gyro. Il Ring Laser Gyro. 
+
+Il principio dei vibrating element gyroscopes. Quartz and tuning fork gyroscopes. Principles of electrostatic actuation and sensing: the driving comb and capacitive pick-off. Giroscopi MEMS basati su forza di Coriolis. 
+
+Sistemi di riferimento per la navigazione inerziale. Convenzioni per angoli di Roll, Pitch e Yaw. Rate delle matrici di rotazione. Sistemi di riferimento per la navigazione attorno alla terra: ECI, ECEF, NED, ENU, NWU, BODY, Wander Azimuth. Trasformazioni di coordinate tra sistemi di riferimento. 
+
+Modello della terra: forma. Geometria e matematica dell'ellissoide. Ellissoide di riferimento: WGS-84. Raggi di curvatura dell'ellissoide. Modello della terra: gravità. Modello WGS-84 e compensazione per la quota.
+
+Modello della terra: gravita'. Il Geoide: definizione, compensazione della undulation e della deflection. Modello della terra: campo magnetico. Modello e caratteristiche del campo magnetico terrestre. sensori per campi magnetici. 
+
+Meccanizzazione inerziale: derivazione analitica delle equazioni di meccanizzazione per velocità. Derivazione analitica delle equazioni di meccanizzazione per posizione e assetto. 
+
+Esempio di calcolo del transport rate per il frame NED. Sistemi e principi di navigazione NON inerziale: misura velocità ad effetto doppler. Misura posizione con VOR, DME e TACAN; introduzione ai concetti di dilution of precision. Navigazione iperbolica: il LORAN. Introduzione al sistema GPS.
+
+Il sistema GPS: funzionamento, stima del clock bias, e sorgenti di errore. Cenni a DGPS, RTK-GPS, spoofing a jamming.
+
+La dinamica dell'errore nella navigazione inerziale strapdown: modelli di errore, calcolo della dinamica dell'errore di assetto, velocità e posizione. Esempi. Modello generale di errore per un sensore triassiale: rumore, bias, misalignemt, cross-axis sensitivity e scale factor. Un modello semplificato short-time, short-range per la propagazione dell'errore di navigazione inerziale. Validazione del modello ed esempi di calcolo di formule per l'approssimazione della propagazione dell'errore. 
+
+La navigazione inerziale integrata con filtraggio alla Kalman diretto e indiretto (error state): concetti generali, correzione in feed forward o in feed back. Presentazione di un test case: sistema integrato di navigazione per ROV.
+
+Il problema della guida. Classificazione dei sistemi di guida in base a : fasi di volo, processo e metodologia. Esempi. Guide command, homing e beam rider. Guida pursuit, constant bearing e proportional navigation guidance (PNG). La matematica del triangolo di intercettazione. 
+
+Equazioni di uno scenario 2D di intercettazione. La guida PNG. Soluzione analitica di un problema di intercettazione con la guida PNG. Discussione sui valori del navigation ratio. 
+
+Linearizzazione della dinamica di intercettazione. L'homing loop linearizzato. Il concetto di Zero Effort Miss (ZEM). Soluzioni in forma chiusa nel caso linearizzato. La guida PNG come soluzione di un gioco differenziale. Effetti della dinamica di attuazione sulla miss distance: curve di errore e manovre evasive. Cenno al metodo degli aggiunti. Simulazioni al calcolatore. 
+
+La Augmented PNG. La Optimal Guidance Law. La PN Command Guidance. Simulazioni al calcolatore. La trasmissione del rumore nella PNG e nella PN Command Guidance. La Beam Rider Guidance. 
+
+La Command to LOS Guidance. Cenni alle varie tipologie di seeker. Missili filoguidati e la CLOS. Missili a guida GPS.
+
+Il filtraggio del rumore nei problemi di guida: Fading Filter (FF)del primo e secondo ordine. Esempio: calcolo del LOS rate con FF del secondo ordine. Fading filter del terzo ordine; filtraggio di LOS angle e stima di LOS rate ed accelerazione del target. Filtraggio ottimo basato su filtro di Kalman. 
+
+Guida per waypoint: concetti generali. Differenza tra path following a path tracking. Interpolazione di traiettoria con curve polinomiali. Esempio di guida per Path following. 
+
+Guide avanzate: la guida fuzzy. Cenni ai sistemi fuzzy, guida con specifica dell'angolo di arrivo.
+
+Lezione conclusiva: domande e risposte, modalità d'esame, presentazione di possibile tematiche per il progetto del corso. 
