@@ -1,0 +1,4 @@
+<launch>
+	<!-- <include file="$(find charlie_launch)/launch/start_serial.launch"/> -->
+	<node pkg="pozyx_ros" type="save_uwb2map_TF.py" name="save_uwb2map_TF"  output="screen"> </node>
+</launch>

@@ -1,0 +1,8 @@
+prefix=/home/robot/catkin_ws/devel
+
+Name: voxel_grid
+Description: Description of voxel_grid
+Version: 1.16.2
+Cflags: -I/home/robot/catkin_ws/src/navigation/voxel_grid/include
+Libs: -L/home/robot/catkin_ws/devel/lib -lvoxel_grid
+Requires: roscpp

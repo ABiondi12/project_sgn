@@ -1,0 +1,59 @@
+%implements "sfun_show_arduino" "C"
+
+%% Function: BlockTypeSetup ================================
+
+%function BlockTypeSetup(block, system) void
+    %%================================
+    %%.h Custom Includes
+    %%================================
+    %openfile buffer
+        #include "rtwtypes.h"
+    %closefile buffer
+    %<LibCacheIncludes(buffer)>
+    %%================================
+
+    %%=============================================
+    %%.c Wrap Includes
+    %%=============================================
+    %<LibAddToModelSources("wrap_show_arduino")>
+    %%=============================================
+
+
+    %%==============================================
+    %%Wrap Function Declarations
+    %%==============================================
+    %openfile buffer
+        extern void wrap_show_arduino_start_fcn(void);
+        extern void wrap_show_arduino_output_fcn(uint32_T*, int32_T*, int32_T*, int8_t*, int8_t*, uint8_t*);
+    %closefile buffer
+    %<LibCacheFunctionPrototype(buffer)>
+    %%==============================================
+        
+    %%==============================
+    %%Global variables
+    %%==============================
+    %openfile buffer
+    %closefile buffer
+    %<LibCacheGlobalPrmData(buffer)>
+    %%==============================
+%endfunction
+
+
+%% Function: Start =======================================
+
+%function Start(block, system) Output
+    wrap_show_arduino_start_fcn();
+%endfunction
+
+
+%% Function: Outputs =======================================
+
+%function Outputs(block, system) Output
+    %assign input_id = LibBlockInputSignalAddr(0,"","",0)
+    %assign input_x = LibBlockInputSignalAddr(1,"","",0)
+    %assign input_y = LibBlockInputSignalAddr(2,"","",0)
+    %assign input_dx = LibBlockInputSignalAddr(3,"","",0)
+    %assign input_dy = LibBlockInputSignalAddr(4,"","",0)
+    %assign input_squal = LibBlockInputSignalAddr(5,"","",0)
+    wrap_show_arduino_output_fcn(%<input_id>, %<input_x>, %<input_y>, %<input_dx>, %<input_dy>, %<input_squal>);
+%endfunction

@@ -1,0 +1,15 @@
+icaroiii_old configuration\croutine.o: ..\Middlewares\Third_Party\FreeRTOS\Source\croutine.c
+icaroiii_old configuration\croutine.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\FreeRTOS.h
+icaroiii_old configuration\croutine.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+icaroiii_old configuration\croutine.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+icaroiii_old configuration\croutine.o: ..\Inc\FreeRTOSConfig.h
+icaroiii_old configuration\croutine.o: ..\Inc\mxconstants.h
+icaroiii_old configuration\croutine.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\projdefs.h
+icaroiii_old configuration\croutine.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\portable.h
+icaroiii_old configuration\croutine.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\deprecated_definitions.h
+icaroiii_old configuration\croutine.o: ..\Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM4F\portmacro.h
+icaroiii_old configuration\croutine.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\mpu_wrappers.h
+icaroiii_old configuration\croutine.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\task.h
+icaroiii_old configuration\croutine.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\list.h
+icaroiii_old configuration\croutine.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\croutine.h
+icaroiii_old configuration\croutine.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\list.h

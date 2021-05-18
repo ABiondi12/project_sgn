@@ -1,0 +1,57 @@
+%implements "sfun_PWM_capture" "C"
+
+%% Function: BlockTypeSetup ================================
+
+%function BlockTypeSetup(block, system) void
+    %%================================
+    %%.h Custom Includes
+    %%================================
+    %openfile buffer
+        #include "rtwtypes.h"
+    %closefile buffer
+    %<LibCacheIncludes(buffer)>
+    %%================================
+
+    %%=============================================
+    %%.c Wrap Includes
+    %%=============================================
+    %<LibAddToModelSources("wrap_PWM_capture")>
+    %%=============================================
+
+
+    %%==============================================
+    %%Wrap Function Declarations
+    %%==============================================
+    %openfile buffer
+        extern void wrap_PWM_start_fcn(void);
+        extern void wrap_PWM_output_fcn(uint16_T*,uint16_T*,uint16_T*,uint8_T*);
+    %closefile buffer
+    %<LibCacheFunctionPrototype(buffer)>
+    %%==============================================
+        
+    %%==============================
+    %%Global variables
+    %%==============================
+    %openfile buffer
+    %closefile buffer
+    %<LibCacheGlobalPrmData(buffer)>
+    %%==============================
+%endfunction
+
+
+%% Function: Start =======================================
+
+%function Start(block, system) Output
+    wrap_PWM_start_fcn();
+%endfunction
+
+
+%% Function: Outputs =======================================
+
+%function Outputs(block, system) Output
+    %assign pwmDuty = LibBlockOutputSignalAddr(0,"","",0)
+    %assign pwmTOn = LibBlockOutputSignalAddr(1,"","",0)    
+    %assign pwmFreq = LibBlockOutputSignalAddr(2,"","",0)    
+    %assign ErrCnt = LibBlockOutputSignalAddr(3,"","",0)
+    wrap_PWM_output_fcn(%<pwmDuty>,%<pwmTOn>,%<pwmFreq>,%<ErrCnt>);
+%endfunction

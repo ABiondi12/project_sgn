@@ -1,0 +1,39 @@
+\babel@toc {italian}{}
+\babel@toc {italian}{}
+\contentsline {section}{\numberline {1}Obiettivi del lavoro}{3}{section.0.1}
+\contentsline {section}{\numberline {2}Introduzione al sistema POZYX}{3}{section.0.2}
+\contentsline {subsection}{\numberline {2.1}Utilizzo}{4}{subsection.0.2.1}
+\contentsline {subsection}{\numberline {2.2}Come posizionare le ancore}{4}{subsection.0.2.2}
+\contentsline {subsection}{\numberline {2.3}Come funziona l'Ultra-wideband}{5}{subsection.0.2.3}
+\contentsline {subsection}{\numberline {2.4}Come funziona il \textit {positioning}$^{{\cite {cit5}}}$}{6}{subsection.0.2.4}
+\contentsline {subsection}{\numberline {2.5}Sistema di Riferimento (SdR)}{7}{subsection.0.2.5}
+\contentsline {subsection}{\numberline {2.6}Parametri}{7}{subsection.0.2.6}
+\contentsline {section}{\numberline {3}Strumenti}{9}{section.0.3}
+\contentsline {subsection}{\numberline {3.1}Arduino e collegamenti circuitali}{9}{subsection.0.3.1}
+\contentsline {subsection}{\numberline {3.2}Processing 3}{10}{subsection.0.3.2}
+\contentsline {subsection}{\numberline {3.3}Matlab e Simulink}{12}{subsection.0.3.3}
+\contentsline {section}{\numberline {4}Comunicazione}{13}{section.0.4}
+\contentsline {subsection}{\numberline {4.1}I$^{2}$C}{13}{subsection.0.4.1}
+\contentsline {subsection}{\numberline {4.2}Seriale}{14}{subsection.0.4.2}
+\contentsline {subsubsection}{Libreria Seriale di Arduino}{14}{section*.8}
+\contentsline {subsubsection}{Libreria SerialPort}{15}{section*.9}
+\contentsline {section}{\numberline {5}Introduzione alla libreria, modifiche effettuate e codice}{16}{section.0.5}
+\contentsline {subsection}{\numberline {5.1}Libreria POZYX}{16}{subsection.0.5.1}
+\contentsline {subsection}{\numberline {5.2}Modifiche alla libreria per la gestione di due tag}{17}{subsection.0.5.2}
+\contentsline {subsection}{\numberline {5.3}Codice Arduino}{18}{subsection.0.5.3}
+\contentsline {section}{\numberline {6}Esperimenti indoor}{20}{section.0.6}
+\contentsline {subsection}{\numberline {6.1}Studio della frequenza di lavoro}{20}{subsection.0.6.1}
+\contentsline {subsubsection}{Variazione Clock di sincronizzazione del bus I$^2$C}{20}{section*.10}
+\contentsline {subsubsection}{Update rate delle istruzioni d'interesse}{23}{section*.15}
+\contentsline {subsubsection}{SerialPort}{24}{section*.17}
+\contentsline {subsubsection}{Scelta configurazione ottimale parametri UWB}{27}{section*.21}
+\contentsline {subsubsection}{Gain}{31}{section*.29}
+\contentsline {subsection}{\numberline {6.2}Verifica Precisione ed Accuratezza delle misure}{32}{subsection.0.6.2}
+\contentsline {subsubsection}{Gain}{36}{section*.36}
+\contentsline {subsection}{\numberline {6.3}Conclusioni sugli esperimenti indoor}{37}{subsection.0.6.3}
+\contentsline {section}{\numberline {7}Esperimenti outdoor}{38}{section.0.7}
+\contentsline {subsection}{\numberline {7.1}Esperimento Ranging}{38}{subsection.0.7.1}
+\contentsline {subsection}{\numberline {7.2}Esperimento Positioning}{43}{subsection.0.7.2}
+\contentsline {subsection}{\numberline {7.3}Conclusioni sugli esperimenti outdoor}{57}{subsection.0.7.3}
+\contentsline {section}{\numberline {8}Affidabilit\IeC {\`a} del sistema POZYX}{58}{section.0.8}
+\contentsline {section}{\numberline {9}Come condurre un esperimento}{62}{section.0.9}

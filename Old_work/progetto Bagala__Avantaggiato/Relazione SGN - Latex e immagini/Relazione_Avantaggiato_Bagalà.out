@@ -1,0 +1,37 @@
+\BOOKMARK [1][-]{section.0.1}{Obiettivi del lavoro}{}% 1
+\BOOKMARK [1][-]{section.0.2}{Introduzione al sistema POZYX}{}% 2
+\BOOKMARK [2][-]{subsection.0.2.1}{Utilizzo}{section.0.2}% 3
+\BOOKMARK [2][-]{subsection.0.2.2}{Come posizionare le ancore}{section.0.2}% 4
+\BOOKMARK [2][-]{subsection.0.2.3}{Come funziona l'Ultra-wideband}{section.0.2}% 5
+\BOOKMARK [2][-]{subsection.0.2.4}{Come funziona il positioningcit5}{section.0.2}% 6
+\BOOKMARK [2][-]{subsection.0.2.5}{Sistema di Riferimento \(SdR\)}{section.0.2}% 7
+\BOOKMARK [2][-]{subsection.0.2.6}{Parametri}{section.0.2}% 8
+\BOOKMARK [1][-]{section.0.3}{Strumenti}{}% 9
+\BOOKMARK [2][-]{subsection.0.3.1}{Arduino e collegamenti circuitali}{section.0.3}% 10
+\BOOKMARK [2][-]{subsection.0.3.2}{Processing 3}{section.0.3}% 11
+\BOOKMARK [2][-]{subsection.0.3.3}{Matlab e Simulink}{section.0.3}% 12
+\BOOKMARK [1][-]{section.0.4}{Comunicazione}{}% 13
+\BOOKMARK [2][-]{subsection.0.4.1}{I2C}{section.0.4}% 14
+\BOOKMARK [2][-]{subsection.0.4.2}{Seriale}{section.0.4}% 15
+\BOOKMARK [3][-]{section*.8}{Libreria Seriale di Arduino}{subsection.0.4.2}% 16
+\BOOKMARK [3][-]{section*.9}{Libreria SerialPort}{subsection.0.4.2}% 17
+\BOOKMARK [1][-]{section.0.5}{Introduzione alla libreria, modifiche effettuate e codice}{}% 18
+\BOOKMARK [2][-]{subsection.0.5.1}{Libreria POZYX}{section.0.5}% 19
+\BOOKMARK [2][-]{subsection.0.5.2}{Modifiche alla libreria per la gestione di due tag}{section.0.5}% 20
+\BOOKMARK [2][-]{subsection.0.5.3}{Codice Arduino}{section.0.5}% 21
+\BOOKMARK [1][-]{section.0.6}{Esperimenti indoor}{}% 22
+\BOOKMARK [2][-]{subsection.0.6.1}{Studio della frequenza di lavoro}{section.0.6}% 23
+\BOOKMARK [3][-]{section*.10}{Variazione Clock di sincronizzazione del bus I2C}{subsection.0.6.1}% 24
+\BOOKMARK [3][-]{section*.15}{Update rate delle istruzioni d'interesse}{subsection.0.6.1}% 25
+\BOOKMARK [3][-]{section*.17}{SerialPort}{subsection.0.6.1}% 26
+\BOOKMARK [3][-]{section*.21}{Scelta configurazione ottimale parametri UWB}{subsection.0.6.1}% 27
+\BOOKMARK [3][-]{section*.29}{Gain}{subsection.0.6.1}% 28
+\BOOKMARK [2][-]{subsection.0.6.2}{Verifica Precisione ed Accuratezza delle misure}{section.0.6}% 29
+\BOOKMARK [3][-]{section*.36}{Gain}{subsection.0.6.2}% 30
+\BOOKMARK [2][-]{subsection.0.6.3}{Conclusioni sugli esperimenti indoor}{section.0.6}% 31
+\BOOKMARK [1][-]{section.0.7}{Esperimenti outdoor}{}% 32
+\BOOKMARK [2][-]{subsection.0.7.1}{Esperimento Ranging}{section.0.7}% 33
+\BOOKMARK [2][-]{subsection.0.7.2}{Esperimento Positioning}{section.0.7}% 34
+\BOOKMARK [2][-]{subsection.0.7.3}{Conclusioni sugli esperimenti outdoor}{section.0.7}% 35
+\BOOKMARK [1][-]{section.0.8}{Affidabilit\340 del sistema POZYX}{}% 36
+\BOOKMARK [1][-]{section.0.9}{Come condurre un esperimento}{}% 37

@@ -1,0 +1,3 @@
+config load E:\STM32\ICARO_III_v2\ICAROIII_HAL_v1_fromVM\IOC\ICAROIII_BFT\ICAROIII_BFT.ioc
+project generate ui
+exit wait

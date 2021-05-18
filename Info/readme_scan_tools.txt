@@ -6,7 +6,6 @@ Questo readme spiega come far costruire a catkin il pacchetto Scan tools.
 Prima di compilare servono i seguenti pacchetti:
 	geometry2
 		https://wiki.ros.org/geometry2?distro=melodic
-		eliminare tf2_bullet, non serve
 	perception-pcl
 		https://wiki.ros.org/pcl_ros?distro=melodic
 	pcl_msgs

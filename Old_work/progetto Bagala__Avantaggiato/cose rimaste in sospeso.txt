@@ -1,0 +1,4 @@
+COSE RIMASTE IN SOSPESO
+- Calibrazione delle ancore con python non si avvia
+- percentuale di fallimenti elevata
+	

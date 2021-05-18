@@ -1,0 +1,157 @@
+Affinchè sia possibile condurre un esperimento è necessario effettuare dei semplici
+passaggi. Sbagliare alcuni di essi, però, potrebbe compromettere o quanto meno
+peggiorare l’esito dello stesso.
+Viene sinteticamente riportato un elenco dei passi da compiere.
+
+1.La prima operazione da compiere è quella di scaricare le librerie necessarie.
+Buona norma è controllare che le librerie standar di Arduino siano tutte aggiornate.
+Oltre a queste, però, come già descritto, sarà necessario includere
+altre due librerie per il funzionamento del sistema: la libreria "Pozyx-Arduinolibrary-master"
+nella versione modificata per due tag; la libreria "SerialPort".
+Da notare che della libreria Pozyx esistono tre versioni: l’originale (utilizzabile
+solo con un tag), quella modicata per due tag e quella modificata per due tag
+con l’utilizzo della libreria "SerialPort". Andrà inclusa quest’ultima oppure
+modicare gli sketch per l’utilizzo della seriale standard.
+
+2. Entrambe le librerie dovranno essere incluse tra quelle di Arduino. Per
+far ciò si può o copiare direttamente le cartelle nella posizione 
+C:\...\Arduino\libraries, oppure selezionarle dall’IDE Arduino (Sketch > #includi
+libreria > Aggiungi libreria da file.ZIP...). Bisogna anche ricordarsi di fare
+comunque l’include delle librerie all’inizio dello sketch. Oltre queste due
+andrà inclusa anche la libreria Wire per la comunicazione I2C.
+
+3.Bisogna prestare attenzione al posizionamento delle ancore. Le principali
+regole sono che non devono essere tutte posizionate su una linea e che, qualora
+si volesse effettuare una trilaterazione 3D, un’ancora andrà piazzata su
+un piano differente dalle altre tre. Nel posizionamento bisogna
+prestare attenzione all’ordine con cui, a livello software, esse sono state ordinate.
+Dalla loro successione scaturisce, infatti, la definizione del SdR secondo
+la convenzione POZYX (origine definita dall’ancora 0; y: definita dall’ancora
+1; z: verso l’alto).
+
+4.Una volta posizionate le ancore, sarà il momento di calibrarle. La calibrazione
+consiste in un processo ripetuto di ranging tra le ancore; dopo di che esse
+si autolocalizzano e descrivono le loro posizioni tramite coordinate nel SdR
+che si viene a creare. Questo processo è implementato su un codice python
+("autocalibration_ransac.py"). Tramite tale codice, bisognerà dapprima impostare
+i parametri UWB desiderati, e poi scegliendo tra autocalibrazione o
+calibrazione manuale, lanciare il codice. Quest’ultima opzione presuppone una
+conoscenza delle distanze tra le ancore, le quali andranno inserite manualmente.
+Una volta che la calibrazione sarà andata a buon fine, verrà richiesto se
+si desidera salvare il risultato nelle ancore. Bisognerà selezionare si ("y") in
+modo che tali misure siano successivamente disponibili per l’esperimento.
+L’esecuzione del codice richiede un tag connesso tramite porta seriale al computer,
+il cui Id (unico) andrà inserito nella variabile serial_id (riga 507 del codice);
+nella riga successiva, andranno inseriti gli Id delle ancore (anchors_id)
+- si ricorda nuovamente che la successione con cui vengono inserite deve seguire
+la convenzione Pozyx.
+
+5. A questo punto si può passa alla parte dell’esperimento che coinvolge Arduino.
+Bisognerà prendere un Arduino Uno Rev3 e due tag. I tag da scegliere sono
+quelli con i pin già saldati, i quali (volendo) possono essere utilizzati come
+shield di Arduino. Inoltre, bisognerà scegliere due tag che abbiano indirizzi I2C 
+differenti, in modo da decidere con quale dei due comunicare. Tale differenza
+è dovuta a livello hardware, dalla saldatura di due pin sul retro della scheda,
+denominati ( I2C LSB). Le connessioni da effettuare non sono tutte, ma basta
+collegare 6 pin:
+ - SDA E SCL o i pin analogici A4 e A5 (per la comunicazione I2C);
+ - i pin (digitali) 2 e 3 (per le interruzioni);
+ - 5V e GND (per l’alimentazione).
+
+6. A questo punto è necessario controllare, o cambiare a piacimento, i parametri
+UWB salvati nella memoria dei singoli device. Bisogna prestare attenzione
+al fatto che, per poter comunicare, i device devono avere gli stessi
+settaggi! Inoltre, ogni combinazione ha potenzialmente degli effetti sull’esito
+dell’esperimento. Questa operazione andrà eseguita tramite lo sketch Arduino
+pozyx_UWB_configurator. Esso permette, una volta ricercati i device nelle
+vicinanze, di cambiarne i parametri manualmente. Da notare come, possa capitare
+che un device non venga trovato. Questo errore ha tendenzialmente tre
+cause: l’antenna non è alimentata; l’antenna è andata in stand-by; un errore
+nella comunicazione.
+Dai test condotti i parametri ottimali riscontrati sono i seguenti:
+ channel = 5;
+ bitrate = 6810kbit=s;
+ plen = 64symbols;
+ prf = 64MHz
+
+7. Solo una volta espletata l’operazione precedente di setting dei parametri potrà
+essere settato anche il gain. Questo perchè i dispositivi sono progettati
+in maniera tale per cui il cambiamento di uno qualsiasi dei parametri, porta
+il valore del guadagno ad essere impostato a quello di default. L’assegnamento
+del valore di gain viene effettuato attraverso l’utilizzo dello sketch
+pozyx_gain_configurator_2tag. Il parametro ottimo in termini di distanza
+è gain = 33.0; non essendoci apparenti differenze sulla precisione, si consiglia
+il settaggio di questo valore.
+
+8.La scelta dello sketch da utilizzare è strettamente connesso all’esperimento
+da condurre. Vengono forniti tre sketch. Essi permettono di effettuare le
+principali operazioni legate al posizionamento dei tag nello spazio. Sono di
+seguito brevemente elencati:
+      - sketch_completo: permette, se lo si desidera (bool calibrazione = true),
+	di chiedere le coordinate dalle ancore post calibrazione (da effettuare
+	con python), oppure, qualora si fosse a conoscenza delle stesse, ma non
+	fossero salvate nei device, è possibile inserirle manualmente nei vettori
+	anchors_x, anchors_y, heigth.I dati sono inviati su seriale sia in
+	formato binario (bool binario = true) che in formato decimale. Questo
+	sketch lancia la funzione di trilaterazione implementata dalla Pozyx
+	(doP ositioning) e richiede successivamente anche le distanze dalle ancore.
+	Tali operazioni sono implementate per l’utilizzo di due tag.
+	Nota: attualmente il codice pone a zero le coordinate qualora il potioning
+	fallissa, ma non le distanze. È, però, già implementata una funzione
+	(zeroDist) che volendo effettua questa operazione.
+
+      - sketch_case: svolge le stesse operazione dello sketch precedente, ma i
+	dati vengono inviati solo in formato decimale. Questo codice è utile qualora
+	si vogliano testare più casi di configurazione nelle stesse situazioni
+	ambientali in un unico test. Infatti il codice effettua in successione uno
+	switch tra 4 casi:
+	      a)richiesta di informazioni (positioning e ranging) solo al tag con indirizzo
+		I2C 0x4A;
+              b)richiesta di informazioni (positioning e ranging) solo al tag con indirizzo
+		I2C 0x4B;
+              c)richiesta di informazioni (positioning e ranging)ad entrambi con la
+		successione 0x4A - 0x4B;
+	      d)richiesto di informazioni (positioning e ranging)ad entrambi con la
+		successione 0x4B - 0x4A.
+	Le operazioni sono ripetute 250 volte per ogni caso.
+
+      - sketch_ranging: questo sketch serve nel caso in cui si volesse effettuare
+	un esperimento esclusivamente sul ranging tra un’ancora e i due tag in
+	parallelo.
+
+9. Una volta lanciato lo sketch Arduino opportuno, per il salvataggio dei dati ci
+sono diverse possibili vie. Innanzitutto, bisogna distinguere i casi di scrittura
+su seriale in formato binario o decimale.
+Nel primo caso, sarà necessario caricare ed eseguire il file simulink
+ICARO_III_debug_telemetry_online_receiver_POXY Z_v1slx, il quale
+salva tutti i dati ricevuti una volta terminato l’esperimento. In tal caso
+bisogna controllare il numero di bytes inviati e inserire preventivamente tale
+valore nel file stesso. Nel caso in cui, invece, la scrittura sia in formato decimale
+è possibile accedere direttamente al Serial Monitor di Arduino e una volta
+finito, copiare da tale schermata i dati e salvarli in un file .txt. In alternativa
+viene fornito uno sketch, scritto tramite l’utilizzo del programma Processing 3,
+denominato "salva_simula". Questo permette sia un plotting in tempo reale
+dei dati che un salvataggio delli stessi. Prima di lanciare questo codice bisognerà,
+però, trascrivere le coordinate delle ancore ed i nomi da dare al file .txt
+ed all’immagine che verranno poi salvati. Ci sono anche una serie di parametri
+grafici modificabili, come il valore di offset delle ancore che le sposterà nella
+schermata, o la scala utilizzata.
+
+10.Infine, una volta ottenuti i dati, sarà possiibile analizzarli. Un’alternativa
+proposta è quella di utilizzare il codice matlab fornito. Per la sua fruizione è
+necessario seguire il seguente formato:
+
+ -------------tag1------------||-------------tag2------------||--status-||-errore-||tempo||---caso--||
+ x y z dist0 dist1 dist2 dist3||x y z dist0 dist1 dist2 dist3||{0,1,2,3}||{0,1,2,3}||[ms]||{0,1,2,3}||
+ -----------------------------||-----------------------------||---------||---------||----||---------|| 
+
+Qualora, alcuni dei dati qui riportati non venissero utilizzati e/o salvati durante
+l’esperimento, sarà necessario porre a zero la variabile corrispondente nel
+codice matlab. Il file principale, nonchè quello da lanciare per tutta l’analisi,
+è "AnalizzaEsperimento:m", dove si trovano anche le variabili appena citate
+ed alcuni altri parametri modificabili. Lo script e le funzioni restituiscono
+dei plot per l’anailisi grafica (plottaggio di un set di distanze tramite medie
+e deviazioni, confronto distanze calcolare e reali, confronto della distanza dall’ancora
+zero calcolata tramite ranging e positioning, confronto delle distanze
+rispetto allo status e all’errore), nonchè una tabella riassuntiva con tutti i dati
+di interesse, compresi fallimenti e frequenza del loop Arduino.

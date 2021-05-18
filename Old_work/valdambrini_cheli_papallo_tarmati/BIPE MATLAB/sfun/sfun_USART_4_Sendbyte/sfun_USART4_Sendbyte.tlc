@@ -1,0 +1,54 @@
+%implements "sfun_USART4_Sendbyte" "C"
+
+%% Function: BlockTypeSetup ================================
+
+%function BlockTypeSetup(block, system) void
+    %%================================
+    %%.h Custom Includes
+    %%================================
+    %openfile buffer
+        #include "rtwtypes.h"
+    %closefile buffer
+    %<LibCacheIncludes(buffer)>
+    %%================================
+
+    %%=============================================
+    %%.c Wrap Includes
+    %%=============================================
+    %<LibAddToModelSources("wrap_USART4_Sendbyte")>
+    %%=============================================
+
+
+    %%==============================================
+    %%Wrap Function Declarations
+    %%==============================================
+    %openfile buffer
+        extern void wrap_USART4_Sendbyte_start_fcn(void);
+        extern void wrap_USART4_Sendbyte_output_fcn(uint8_t*);
+    %closefile buffer
+    %<LibCacheFunctionPrototype(buffer)>
+    %%==============================================
+        
+    %%==============================
+    %%Global variables
+    %%==============================
+    %openfile buffer
+    %closefile buffer
+    %<LibCacheGlobalPrmData(buffer)>
+    %%==============================
+%endfunction
+
+
+%% Function: Start =======================================
+
+%function Start(block, system) Output
+    wrap_USART4_Sendbyte_start_fcn();
+%endfunction
+
+%% Function: Outputs =======================================
+
+%function Outputs(block, system) Output
+    %assign byte_to_send = LibBlockInputSignalAddr(0,"","",0)
+    wrap_USART4_Sendbyte_output_fcn(%<byte_to_send>);
+%endfunction
+

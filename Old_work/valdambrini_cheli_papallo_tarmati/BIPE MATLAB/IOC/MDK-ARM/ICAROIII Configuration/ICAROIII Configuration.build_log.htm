@@ -1,0 +1,160 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: µVision V5.12.0.0
+Copyright (C) 2014 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: Irene Valdambrini, pisa, LIC=Y2B2Z-JBB6G-LVQ1I-T0565-0NQ0K-YEABV
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Professional  Version: 5.12.0.0
+Toolchain Path:  C:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.05 (build 41)
+Assembler:       Armasm.exe V5.05 (build 41)
+Linker/Locator:  ArmLink.exe V5.05 (build 41)
+Library Manager: ArmAr.exe V5.05 (build 41)
+Hex Converter:   FromElf.exe V5.05 (build 41)
+CPU DLL:         SARMCM3.DLL V5.12.0.0
+Dialog DLL:      DCM.DLL V1.13.0.0
+    Target DLL: STLink\ST-LINKIII-KEIL_SWO.dll
+Dialog DLL:      TCM.DLL V1.14.2.0
+ 
+<h2>Project:</h2>
+C:\Users\ivald\Desktop\LAVORI_BARBARA\FREERtos_Tools\ICARO_III_RTOS\IOC\MDK-ARM\ICAROIII.uvprojx
+Project File Date:  01/23/2020
+
+<h2>Output:</h2>
+Build target 'ICAROIII Configuration'
+compiling tasks.c...
+compiling port.c...
+compiling list.c...
+compiling heap_4.c...
+compiling cmsis_os.c...
+compiling queue.c...
+compiling event_groups.c...
+compiling croutine.c...
+compiling timers.c...
+compiling main.c...
+..\cmsis_rtos_freertos\include\mw_thread.h(29): warning:  #1-D: last line of file ends without a newline
+  #endif /* __MW_THREAD__H__ */
+..\cmsis_rtos_freertos\include\mw_semaphore.h(24): warning:  #1-D: last line of file ends without a newline
+  #endif /* __MW_SEMAPHORE__H__ */
+..\cmsis_rtos_freertos\include\mw_timer.h(22): warning:  #1-D: last line of file ends without a newline
+  #endif /* __MW_TIMER__H__ */
+..\Src\main.c: 3 warnings, 0 errors
+compiling stm32f4xx_it.c...
+compiling freertos.c...
+compiling stm32f4xx_hal_msp.c...
+compiling cmsis_rtos_init.c...
+..\cmsis_rtos_freertos\include\mw_thread.h(29): warning:  #1-D: last line of file ends without a newline
+  #endif /* __MW_THREAD__H__ */
+..\cmsis_rtos_freertos\include\mw_semaphore.h(24): warning:  #1-D: last line of file ends without a newline
+  #endif /* __MW_SEMAPHORE__H__ */
+..\cmsis_rtos_freertos\include\mw_timer.h(22): warning:  #1-D: last line of file ends without a newline
+  #endif /* __MW_TIMER__H__ */
+..\cmsis_rtos_freertos\src\cmsis_rtos_init.c(156): warning:  #188-D: enumerated type mixed with another type
+                taskPriority = defaultPriority - (i+1);
+..\cmsis_rtos_freertos\src\cmsis_rtos_init.c: 4 warnings, 0 errors
+compiling mw_semaphore.c...
+..\cmsis_rtos_freertos\include\mw_thread.h(29): warning:  #1-D: last line of file ends without a newline
+  #endif /* __MW_THREAD__H__ */
+..\cmsis_rtos_freertos\include\mw_semaphore.h(24): warning:  #1-D: last line of file ends without a newline
+  #endif /* __MW_SEMAPHORE__H__ */
+..\cmsis_rtos_freertos\include\mw_timer.h(22): warning:  #1-D: last line of file ends without a newline
+  #endif /* __MW_TIMER__H__ */
+..\cmsis_rtos_freertos\src\mw_semaphore.c(48): warning:  #1-D: last line of file ends without a newline
+  }
+..\cmsis_rtos_freertos\src\mw_semaphore.c: 4 warnings, 0 errors
+compiling mw_thread.c...
+..\cmsis_rtos_freertos\include\mw_thread.h(29): warning:  #1-D: last line of file ends without a newline
+  #endif /* __MW_THREAD__H__ */
+..\cmsis_rtos_freertos\include\mw_semaphore.h(24): warning:  #1-D: last line of file ends without a newline
+  #endif /* __MW_SEMAPHORE__H__ */
+..\cmsis_rtos_freertos\include\mw_timer.h(22): warning:  #1-D: last line of file ends without a newline
+  #endif /* __MW_TIMER__H__ */
+..\cmsis_rtos_freertos\src\mw_thread.c(18): warning:  #188-D: enumerated type mixed with another type
+        (thread_def->threadDef).tpriority = priority;
+..\cmsis_rtos_freertos\src\mw_thread.c(90): warning:  #1-D: last line of file ends without a newline
+  }
+..\cmsis_rtos_freertos\src\mw_thread.c: 5 warnings, 0 errors
+compiling mw_timer.c...
+..\cmsis_rtos_freertos\include\mw_thread.h(29): warning:  #1-D: last line of file ends without a newline
+  #endif /* __MW_THREAD__H__ */
+..\cmsis_rtos_freertos\include\mw_semaphore.h(24): warning:  #1-D: last line of file ends without a newline
+  #endif /* __MW_SEMAPHORE__H__ */
+..\cmsis_rtos_freertos\include\mw_timer.h(22): warning:  #1-D: last line of file ends without a newline
+  #endif /* __MW_TIMER__H__ */
+..\cmsis_rtos_freertos\src\mw_timer.c(42): warning:  #1-D: last line of file ends without a newline
+  }
+..\cmsis_rtos_freertos\src\mw_timer.c: 4 warnings, 0 errors
+compiling wrap_USART4_Init.c...
+compiling wrap_UPboard_downlink.c...
+..\ICARO3_Onda_bipe_controllonostro_mix_2201\Src\wrap_UPboard_downlink.c(47): warning:  #177-D: variable "data" was declared but never referenced
+        int32_t data;
+..\ICARO3_Onda_bipe_controllonostro_mix_2201\Src\wrap_UPboard_downlink.c: 1 warning, 0 errors
+compiling ICARO3_Onda_bipe_controllonostro_mix_2201_data.c...
+..\ICARO3_Onda_bipe_controllonostro_mix_2201\Inc\ICARO3_Onda_bipe_controllonostro_mix_2201_private.h(59): warning:  #1295-D: Deprecated declaration wrap_UPboard_downlink_start_fcn - give arg types
+  extern void wrap_UPboard_downlink_start_fcn();
+..\ICARO3_Onda_bipe_controllonostro_mix_2201\Inc\ICARO3_Onda_bipe_controllonostro_mix_2201_private.h(61): warning:  #1295-D: Deprecated declaration wrap_UPboard_start_fcn - give arg types
+  extern void wrap_UPboard_start_fcn();
+..\ICARO3_Onda_bipe_controllonostro_mix_2201\Inc\ICARO3_Onda_bipe_controllonostro_mix_2201_private.h(63): warning:  #1295-D: Deprecated declaration wrap_raw_float_downlink_start_fcn - give arg types
+  extern void wrap_raw_float_downlink_start_fcn();
+..\ICARO3_Onda_bipe_controllonostro_mix_2201\Inc\ICARO3_Onda_bipe_controllonostro_mix_2201_private.h(69): warning:  #1295-D: Deprecated declaration wrap_gpsparser_UBLOX_start_fcn - give arg types
+  extern void wrap_gpsparser_UBLOX_start_fcn();
+..\ICARO3_Onda_bipe_controllonostro_mix_2201\Src\ICARO3_Onda_bipe_controllonostro_mix_2201_data.c: 4 warnings, 0 errors
+compiling wrap_ADC_Receive.c...
+compiling wrap_PWM_servomotor.c...
+..\ICARO3_Onda_bipe_controllonostro_mix_2201\Src\wrap_PWM_servomotor.c(93): warning:  #223-D: function "Error_Handler" declared implicitly
+                Error_Handler();
+..\ICARO3_Onda_bipe_controllonostro_mix_2201\Src\wrap_PWM_servomotor.c: 1 warning, 0 errors
+compiling ICARO3_Onda_bipe_controllonostro_mix_2201.c...
+..\ICARO3_Onda_bipe_controllonostro_mix_2201\Inc\ICARO3_Onda_bipe_controllonostro_mix_2201_private.h(59): warning:  #1295-D: Deprecated declaration wrap_UPboard_downlink_start_fcn - give arg types
+  extern void wrap_UPboard_downlink_start_fcn();
+..\ICARO3_Onda_bipe_controllonostro_mix_2201\Inc\ICARO3_Onda_bipe_controllonostro_mix_2201_private.h(61): warning:  #1295-D: Deprecated declaration wrap_UPboard_start_fcn - give arg types
+  extern void wrap_UPboard_start_fcn();
+..\ICARO3_Onda_bipe_controllonostro_mix_2201\Inc\ICARO3_Onda_bipe_controllonostro_mix_2201_private.h(63): warning:  #1295-D: Deprecated declaration wrap_raw_float_downlink_start_fcn - give arg types
+  extern void wrap_raw_float_downlink_start_fcn();
+..\ICARO3_Onda_bipe_controllonostro_mix_2201\Inc\ICARO3_Onda_bipe_controllonostro_mix_2201_private.h(69): warning:  #1295-D: Deprecated declaration wrap_gpsparser_UBLOX_start_fcn - give arg types
+  extern void wrap_gpsparser_UBLOX_start_fcn();
+..\ICARO3_Onda_bipe_controllonostro_mix_2201\Src\ICARO3_Onda_bipe_controllonostro_mix_2201.c(413): warning:  #39-D: division by zero
+      t = absxk / 1.17549435E-38F;
+..\ICARO3_Onda_bipe_controllonostro_mix_2201\Src\ICARO3_Onda_bipe_controllonostro_mix_2201.c(640): warning:  #188-D: enumerated type mixed with another type
+                      ICARO3_Onda_bipe_controllonostro_mix_2201_B.PulseGenerator1);
+..\ICARO3_Onda_bipe_controllonostro_mix_2201\Src\ICARO3_Onda_bipe_controllonostro_mix_2201.c(1413): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+      if (ICARO3_Onda_bipe_controllonostro_mix_2201_norm
+..\ICARO3_Onda_bipe_controllonostro_mix_2201\Src\ICARO3_Onda_bipe_controllonostro_mix_2201.c(1422): warning:  #1035-D: single-precision operand implicitly converted to double-precision
+      if (ICARO3_Onda_bipe_controllonostro_mix_2201_norm
+..\ICARO3_Onda_bipe_controllonostro_mix_2201\Src\ICARO3_Onda_bipe_controllonostro_mix_2201.c: 8 warnings, 0 errors
+compiling wrap_USART3_Init.c...
+compiling rtGetNaN.c...
+compiling rt_nonfinite.c...
+compiling wrap_I2C1_sensors_loop.c...
+compiling wrap_CAN_Transmit.c...
+compiling wrap_USART5_Init.c...
+compiling wrap_USART2_Init.c...
+compiling wrap_raw_float_downlink.c...
+..\ICARO3_Onda_bipe_controllonostro_mix_2201\Src\wrap_raw_float_downlink.c(17): warning:  #177-D: variable "temp_prova_prescaler" was declared but never referenced
+      static unsigned int temp_prova_prescaler = 100;
+..\ICARO3_Onda_bipe_controllonostro_mix_2201\Src\wrap_raw_float_downlink.c: 1 warning, 0 errors
+compiling rtGetInf.c...
+compiling wrap_CAN_Receive.c...
+..\ICARO3_Onda_bipe_controllonostro_mix_2201\Src\wrap_CAN_Receive.c(108): warning:  #177-D: variable "i" was declared but never referenced
+     int i=0;
+..\ICARO3_Onda_bipe_controllonostro_mix_2201\Src\wrap_CAN_Receive.c: 1 warning, 0 errors
+linking...
+Program Size: Code=55178 RO-data=1190 RW-data=1880 ZI-data=88992  
+"ICAROIII Configuration\ICAROIII Configuration.axf" - 0 Error(s), 36 Warning(s).
+
+<h2>Collection of Component include folders:</h2>
+  C:\Users\ivald\Desktop\LAVORI_BARBARA\FREERtos_Tools\ICARO_III_RTOS\IOC\MDK-ARM\RTE
+  C:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.2.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
+
+<h2>Collection of Component Files used:</h2>
+Load "ICAROIII Configuration\\ICAROIII Configuration.axf" 
+Erase Done.
+Programming Done.
+Verify OK.
+</pre>
+</body>
+</html>

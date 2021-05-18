@@ -1,0 +1,263 @@
+<html>
+<body>
+<pre>
+<h1>µVision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: µVision V5.12.0.0
+Copyright (C) 2014 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: Federico Celi, UNIPI, LIC=V8545-GRFX9-PFVIX-HQNXJ-YRS79-6JXG9
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Professional  Version: 5.12.0.0
+Toolchain Path:  C:\Keil_v5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.05 (build 41)
+Assembler:       Armasm.exe V5.05 (build 41)
+Linker/Locator:  ArmLink.exe V5.05 (build 41)
+Library Manager: ArmAr.exe V5.05 (build 41)
+Hex Converter:   FromElf.exe V5.05 (build 41)
+CPU DLL:         SARMCM3.DLL V5.12.0.0
+Dialog DLL:      DCM.DLL V1.13.0.0
+    Target DLL: STLink\ST-LINKIII-KEIL_SWO.dll
+Dialog DLL:      TCM.DLL V1.14.2.0
+ 
+<h2>Project:</h2>
+C:\Users\fedce\Desktop\FREERtos_Tools\ICARO_III_RTOS\IOC\MDK-ARM\ICAROIII.uvprojx
+Project File Date:  11/27/2017
+
+<h2>Output:</h2>
+Build target 'ICAROIII Configuration'
+compiling wrap_arduinoparser.c...
+..\ICARO3_M1_v1\Src\wrap_arduinoparser.c(38): warning:  #177-D: variable "send" was declared but never referenced
+        unsigned char send;
+..\ICARO3_M1_v1\Src\wrap_arduinoparser.c: 1 warning, 0 errors
+linking...
+Program Size: Code=59226 RO-data=1134 RW-data=1784 ZI-data=89256  
+"ICAROIII Configuration\ICAROIII Configuration.axf" - 0 Error(s), 1 Warning(s).
+
+<h2>Collection of Component include folders:</h2>
+  C:\Users\fedce\Desktop\FREERtos_Tools\ICARO_III_RTOS\IOC\MDK-ARM\RTE
+  C:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.2.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
+
+<h2>Collection of Component Files used:</h2>
+Load "ICAROIII Configuration\\ICAROIII Configuration.axf" 
+Erase Done.
+Programming Done.
+Verify OK.
+x\Include
+
+<h2>Collection of Component Files used:</h2>
+Target not created.
+OIII Configuration\\ICAROIII Configuration.axf" 
+Erase Done.
+Programming Done.
+Verify OK.
+_pwr.c...
+compiling stm32f4xx_hal_rcc_ex.c...
+compiling stm32f4xx_hal_flash.c...
+compiling stm32f4xx_hal_flash_ex.c...
+compiling stm32f4xx_hal_dma.c...
+compiling stm32f4xx_hal_pwr_ex.c...
+compiling stm32f4xx_hal_flash_ramfunc.c...
+compiling stm32f4xx_hal_rcc.c...
+compiling stm32f4xx_hal_gpio.c...
+compiling system_stm32f4xx.c...
+compiling cmsis_rtos_init.c...
+..\cmsis_rtos_freertos\include\mw_thread.h(29): warning:  #1-D: last line of file ends without a newline
+  #endif /* __MW_THREAD__H__ */
+..\cmsis_rtos_freertos\include\mw_semaphore.h(24): warning:  #1-D: last line of file ends without a newline
+  #endif /* __MW_SEMAPHORE__H__ */
+..\cmsis_rtos_freertos\include\mw_timer.h(22): warning:  #1-D: last line of file ends without a newline
+  #endif /* __MW_TIMER__H__ */
+..\cmsis_rtos_freertos\src\cmsis_rtos_init.c(156): warning:  #188-D: enumerated type mixed with another type
+                taskPriority = defaultPriority - (i+1);
+..\cmsis_rtos_freertos\src\cmsis_rtos_init.c: 4 warnings, 0 errors
+compiling mw_semaphore.c...
+..\cmsis_rtos_freertos\include\mw_thread.h(29): warning:  #1-D: last line of file ends without a newline
+  #endif /* __MW_THREAD__H__ */
+..\cmsis_rtos_freertos\include\mw_semaphore.h(24): warning:  #1-D: last line of file ends without a newline
+  #endif /* __MW_SEMAPHORE__H__ */
+..\cmsis_rtos_freertos\include\mw_timer.h(22): warning:  #1-D: last line of file ends without a newline
+  #endif /* __MW_TIMER__H__ */
+..\cmsis_rtos_freertos\src\mw_semaphore.c(48): warning:  #1-D: last line of file ends without a newline
+  }
+..\cmsis_rtos_freertos\src\mw_semaphore.c: 4 warnings, 0 errors
+compiling mw_thread.c...
+..\cmsis_rtos_freertos\include\mw_thread.h(29): warning:  #1-D: last line of file ends without a newline
+  #endif /* __MW_THREAD__H__ */
+..\cmsis_rtos_freertos\include\mw_semaphore.h(24): warning:  #1-D: last line of file ends without a newline
+  #endif /* __MW_SEMAPHORE__H__ */
+..\cmsis_rtos_freertos\include\mw_timer.h(22): warning:  #1-D: last line of file ends without a newline
+  #endif /* __MW_TIMER__H__ */
+..\cmsis_rtos_freertos\src\mw_thread.c(18): warning:  #188-D: enumerated type mixed with another type
+        (thread_def->threadDef).tpriority = priority;
+..\cmsis_rtos_freertos\src\mw_thread.c(90): warning:  #1-D: last line of file ends without a newline
+  }
+..\cmsis_rtos_freertos\src\mw_thread.c: 5 warnings, 0 errors
+compiling mw_timer.c...
+..\cmsis_rtos_freertos\include\mw_thread.h(29): warning:  #1-D: last line of file ends without a newline
+  #endif /* __MW_THREAD__H__ */
+..\cmsis_rtos_freertos\include\mw_semaphore.h(24): warning:  #1-D: last line of file ends without a newline
+  #endif /* __MW_SEMAPHORE__H__ */
+..\cmsis_rtos_freertos\include\mw_timer.h(22): warning:  #1-D: last line of file ends without a newline
+  #endif /* __MW_TIMER__H__ */
+..\cmsis_rtos_freertos\src\mw_timer.c(42): warning:  #1-D: last line of file ends without a newline
+  }
+..\cmsis_rtos_freertos\src\mw_timer.c: 4 warnings, 0 errors
+compiling simple_trace.c...
+..\cmsis_rtos_freertos\include\simple_trace.h(2): warning:  #1295-D: Deprecated declaration start_TIM2 - give arg types
+  extern void start_TIM2();
+..\cmsis_rtos_freertos\src\simple_trace.c: 1 warning, 0 errors
+compiling packet_gps_time.c...
+compiling stm32f4_I2C1_sensors.c...
+compiling stm32f4_I2C1_peripheral.c...
+..\ICARO3_M1_v1\Src\stm32f4_I2C1_peripheral.c(243): warning:  #550-D: variable "I2C1_ErrorFlag" was set but never used
+  static uint8_t I2C1_ErrorFlag;
+..\ICARO3_M1_v1\Src\stm32f4_I2C1_peripheral.c: 1 warning, 0 errors
+compiling packet_waypoint.c...
+compiling circular_buffer.c...
+compiling packet_command.c...
+compiling packet_telemetry_type.c...
+compiling stm32f4xx_hal_tim.c...
+compiling wrap_I2C1_sensors_loop.c...
+compiling wrap_USART3_Init.c...
+compiling wrap_recv_from_bs.c...
+..\..\sfun\packet_manager_macchinine\packet_manager_c2k_car.h(7): warning:  #1295-D: Deprecated declaration pm_read_packet_car - give arg types
+  void pm_read_packet_car();
+..\ICARO3_M1_v1\Src\wrap_recv_from_bs.c: 1 warning, 0 errors
+compiling wrap_ADC_Receive.c...
+compiling wrap_USART4_Init.c...
+compiling stm32f4xx_hal_uart.c...
+compiling wrap_pm_init_car.c...
+..\..\sfun\packet_manager_macchinine\packet_manager_c2k_car.h(7): warning:  #1295-D: Deprecated declaration pm_read_packet_car - give arg types
+  void pm_read_packet_car();
+..\ICARO3_M1_v1\Src\wrap_pm_init_car.c: 1 warning, 0 errors
+compiling packet_pc_to_car.c...
+compiling packet_telemetry.c...
+compiling wrap_PWM_servomotor.c...
+..\ICARO3_M1_v1\Src\wrap_PWM_servomotor.c(93): warning:  #223-D: function "Error_Handler" declared implicitly
+                Error_Handler();
+..\ICARO3_M1_v1\Src\wrap_PWM_servomotor.c: 1 warning, 0 errors
+compiling stm32f4xx_hal_adc_ex.c...
+compiling packet_statistics_telemetry.c...
+compiling packet_pc_to_bs.c...
+compiling rtGetNaN.c...
+compiling packet_manager.c...
+compiling packet_status.c...
+compiling packet_manager_c2k_car.c...
+..\..\sfun\packet_manager_macchinine\packet_manager_c2k_car.h(7): warning:  #1295-D: Deprecated declaration pm_read_packet_car - give arg types
+  void pm_read_packet_car();
+..\ICARO3_M1_v1\Src\packet_manager_c2k_car.c(36): warning:  #1-D: last line of file ends without a newline
+  }
+..\ICARO3_M1_v1\Src\packet_manager_c2k_car.c: 2 warnings, 0 errors
+compiling packet_command_tel.c...
+compiling packet_statistics_i2c_telemetry.c...
+compiling ICARO3_M1_v1.c...
+..\ICARO3_M1_v1\Inc\ICARO3_M1_v1_private.h(55): warning:  #1295-D: Deprecated declaration wrap_send_to_bs_start_fcn - give arg types
+  extern void wrap_send_to_bs_start_fcn();
+..\ICARO3_M1_v1\Inc\ICARO3_M1_v1_private.h(68): warning:  #1295-D: Deprecated declaration wrap_gpsparser_UBLOX_start_fcn - give arg types
+  extern void wrap_gpsparser_UBLOX_start_fcn();
+..\ICARO3_M1_v1\Inc\ICARO3_M1_v1_private.h(81): warning:  #1295-D: Deprecated declaration wrap_pm_init_car_start_fcn - give arg types
+  extern void wrap_pm_init_car_start_fcn();
+..\ICARO3_M1_v1\Inc\ICARO3_M1_v1_private.h(82): warning:  #1295-D: Deprecated declaration wrap_pm_init_car_output_fcn - give arg types
+  extern void wrap_pm_init_car_output_fcn();
+..\ICARO3_M1_v1\Src\ICARO3_M1_v1.c(643): warning:  #188-D: enumerated type mixed with another type
+    HAL_GPIO_WritePin(GPIOD, GPIO_PIN_14, ICARO3_M1_v1_B.TogglePD14ifPPSARRIVEs);
+..\ICARO3_M1_v1\Src\ICARO3_M1_v1.c(720): warning:  #188-D: enumerated type mixed with another type
+    HAL_GPIO_WritePin(GPIOD, GPIO_PIN_12, ICARO3_M1_v1_B.PulseGenerator1);
+..\ICARO3_M1_v1\Src\ICARO3_M1_v1.c(2080): warning:  #223-D: function "wrap_save_to_datalogger_output_fcn" declared implicitly
+    wrap_save_to_datalogger_output_fcn(&ICARO3_M1_v1_B.RateTransition12,
+..\ICARO3_M1_v1\Src\ICARO3_M1_v1.c(2092): warning:  #167-D: argument of type "int8_T *" is incompatible with parameter of type "char *"
+      &ICARO3_M1_v1_B.SFunction2_o2[0],&ICARO3_M1_v1_B.SFunction2_o3[0],
+..\ICARO3_M1_v1\Src\ICARO3_M1_v1.c(3424): warning:  #167-D: argument of type "int8_T *" is incompatible with parameter of type "char *"
+        &ICARO3_M1_v1_B.SFunction2_o2[0],&ICARO3_M1_v1_B.SFunction2_o3[0],
+..\ICARO3_M1_v1\Src\ICARO3_M1_v1.c: 9 warnings, 0 errors
+compiling packet_bs_telemetry.c...
+compiling packet_bs_to_car.c...
+compiling stm32f4xx_hal_can.c...
+compiling packet_telemetry_LF.c...
+compiling packet_car_telemetry.c...
+compiling packet_startstop_seeker.c...
+compiling packet_debug_6_floats.c...
+compiling packet_gps.c...
+compiling rt_nonfinite.c...
+compiling rtGetInf.c...
+compiling wrap_CAN_Receive.c...
+..\ICARO3_M1_v1\Src\wrap_CAN_Receive.c(108): warning:  #177-D: variable "i" was declared but never referenced
+     int i=0;
+..\ICARO3_M1_v1\Src\wrap_CAN_Receive.c: 1 warning, 0 errors
+compiling stm32f4_custom_USART.c...
+compiling stm32f4xx_hal_tim_ex.c...
+compiling packet_fuzzyguidance.c...
+..\ICARO3_M1_v1\Src\packet_fuzzyguidance.c(161): warning:  #1-D: last line of file ends without a newline
+  }
+..\ICARO3_M1_v1\Src\packet_fuzzyguidance.c: 1 warning, 0 errors
+compiling wrap_gpsparser_UBLOX.c...
+..\ICARO3_M1_v1\Src\wrap_gpsparser_UBLOX.c(153): warning:  #188-D: enumerated type mixed with another type
+        wating_state wait = IWork[0];
+..\ICARO3_M1_v1\Src\wrap_gpsparser_UBLOX.c(130): warning:  #177-D: variable "i" was declared but never referenced
+      char i;
+..\ICARO3_M1_v1\Src\wrap_gpsparser_UBLOX.c(133): warning:  #177-D: variable "state" was declared but never referenced
+        static unsigned char state = 0;
+..\ICARO3_M1_v1\Src\wrap_gpsparser_UBLOX.c(134): warning:  #177-D: variable "payload_length" was declared but never referenced
+        static unsigned char payload_length = 0;
+..\ICARO3_M1_v1\Src\wrap_gpsparser_UBLOX.c(135): warning:  #177-D: variable "payload_read" was declared but never referenced
+        static unsigned char payload_read = 0;
+..\ICARO3_M1_v1\Src\wrap_gpsparser_UBLOX.c(136): warning:  #177-D: variable "checksum" was declared but never referenced
+        static unsigned char checksum = 0;
+..\ICARO3_M1_v1\Src\wrap_gpsparser_UBLOX.c(137): warning:  #177-D: variable "calculated_checksum" was declared but never referenced
+        unsigned char calculated_checksum = 0;
+..\ICARO3_M1_v1\Src\wrap_gpsparser_UBLOX.c(140): warning:  #177-D: variable "latitude" was declared but never referenced
+      i_int32 latitude = 0;
+..\ICARO3_M1_v1\Src\wrap_gpsparser_UBLOX.c(141): warning:  #177-D: variable "longitude" was declared but never referenced
+      i_int32 longitude = 0;
+..\ICARO3_M1_v1\Src\wrap_gpsparser_UBLOX.c(142): warning:  #177-D: variable "altitude_msl" was declared but never referenced
+      i_int32 altitude_msl = 0;
+..\ICARO3_M1_v1\Src\wrap_gpsparser_UBLOX.c(143): warning:  #177-D: variable "fix_mode" was declared but never referenced
+      i_uint16 fix_mode = 0;
+..\ICARO3_M1_v1\Src\wrap_gpsparser_UBLOX.c(144): warning:  #177-D: variable "hdop" was declared but never referenced
+      i_uint16 hdop = 0;
+..\ICARO3_M1_v1\Src\wrap_gpsparser_UBLOX.c: 12 warnings, 0 errors
+compiling stm32f4xx_hal_i2c.c...
+compiling wrap_send_to_bs.c...
+..\..\sfun\packet_manager_macchinine\packet_manager_c2k_car.h(7): warning:  #1295-D: Deprecated declaration pm_read_packet_car - give arg types
+  void pm_read_packet_car();
+..\ICARO3_M1_v1\Src\wrap_send_to_bs.c: 1 warning, 0 errors
+compiling wrap_USART2_Init.c...
+compiling packet_attitude.c...
+compiling wrap_USART5_Init.c...
+compiling ICARO3_M1_v1_data.c...
+..\ICARO3_M1_v1\Inc\ICARO3_M1_v1_private.h(55): warning:  #1295-D: Deprecated declaration wrap_send_to_bs_start_fcn - give arg types
+  extern void wrap_send_to_bs_start_fcn();
+..\ICARO3_M1_v1\Inc\ICARO3_M1_v1_private.h(68): warning:  #1295-D: Deprecated declaration wrap_gpsparser_UBLOX_start_fcn - give arg types
+  extern void wrap_gpsparser_UBLOX_start_fcn();
+..\ICARO3_M1_v1\Inc\ICARO3_M1_v1_private.h(81): warning:  #1295-D: Deprecated declaration wrap_pm_init_car_start_fcn - give arg types
+  extern void wrap_pm_init_car_start_fcn();
+..\ICARO3_M1_v1\Inc\ICARO3_M1_v1_private.h(82): warning:  #1295-D: Deprecated declaration wrap_pm_init_car_output_fcn - give arg types
+  extern void wrap_pm_init_car_output_fcn();
+..\ICARO3_M1_v1\Src\ICARO3_M1_v1_data.c: 4 warnings, 0 errors
+compiling wrap_CAN_Transmit.c...
+compiling stm32f4_LED_debug.c...
+..\ICARO3_M1_v1\Src\stm32f4_LED_debug.c(13): warning:  #1-D: last line of file ends without a newline
+        
+..\ICARO3_M1_v1\Src\stm32f4_LED_debug.c: 1 warning, 0 errors
+compiling packet_startstop_seeker_init.c...
+compiling stm32f4xx_hal_adc.c...
+compiling wrap_PWM_capture.c...
+compiling wrap_arduinoparser.c...
+..\ICARO3_M1_v1\Src\wrap_arduinoparser.c(38): warning:  #177-D: variable "send" was declared but never referenced
+        unsigned char send;
+..\ICARO3_M1_v1\Src\wrap_arduinoparser.c: 1 warning, 0 errors
+compiling wrap_save_to_datalogger.c...
+linking...
+Program Size: Code=59238 RO-data=1130 RW-data=1784 ZI-data=89256  
+"ICAROIII Configuration\ICAROIII Configuration.axf" - 0 Error(s), 57 Warning(s).
+
+<h2>Collection of Component include folders:</h2>
+  C:\Users\fedce\Desktop\FREERtos_Tools\ICARO_III_RTOS\IOC\MDK-ARM\RTE
+  C:\Keil_v5\ARM\PACK\Keil\STM32F4xx_DFP\2.2.0\Drivers\CMSIS\Device\ST\STM32F4xx\Include
+
+<h2>Collection of Component Files used:</h2>
+Load "ICAROIII Configuration\\ICAROIII Configuration.axf" 
+Erase Done.
+Programming Done.
+Verify OK.

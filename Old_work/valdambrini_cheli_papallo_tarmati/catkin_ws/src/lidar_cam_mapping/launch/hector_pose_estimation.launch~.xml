@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<launch>
+  <remap from="raw_imu" to="mti/sensor/imu" />
+  <node pkg="hector_pose_estimation" type="pose_estimation" name="hector_pose_estimation" >
+
+  </node>
+
+</launch>

@@ -1,0 +1,54 @@
+%implements "sfun_show_ACC_STICK" "C"
+
+%% Function: BlockTypeSetup ================================
+
+%function BlockTypeSetup(block, system) void
+    %%================================
+    %%.h Custom Includes
+    %%================================
+    %openfile buffer
+        #include "rtwtypes.h"
+    %closefile buffer
+    %<LibCacheIncludes(buffer)>
+    %%================================
+
+    %%=============================================
+    %%.c Wrap Includes
+    %%=============================================
+    %<LibAddToModelSources("wrap_show_ACC_STICK")>
+    %%=============================================
+
+
+    %%==============================================
+    %%Wrap Function Declarations
+    %%==============================================
+    %openfile buffer
+        extern void wrap_show_ACC_STICK_start_fcn(void);
+        extern void wrap_show_ACC_STICK_output_fcn(real_T*);
+    %closefile buffer
+    %<LibCacheFunctionPrototype(buffer)>
+    %%==============================================
+        
+    %%==============================
+    %%Global variables
+    %%==============================
+    %openfile buffer
+    %closefile buffer
+    %<LibCacheGlobalPrmData(buffer)>
+    %%==============================
+%endfunction
+
+
+%% Function: Start =======================================
+
+%function Start(block, system) Output
+    wrap_show_ACC_STICK_start_fcn();
+%endfunction
+
+
+%% Function: Outputs =======================================
+
+%function Outputs(block, system) Output
+    %assign input_ptr = LibBlockInputSignalAddr(0,"","",0)
+    wrap_show_ACC_STICK_output_fcn(%<input_ptr>);
+%endfunction

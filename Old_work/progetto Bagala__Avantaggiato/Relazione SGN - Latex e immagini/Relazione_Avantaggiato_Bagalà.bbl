@@ -1,0 +1,60 @@
+\begin{thebibliography}{1}
+
+\bibitem{cit1}
+\url{https://github.com/pozyxLabs/Pozyx-Arduino-library}
+
+\bibitem{cit2}
+\url{https://www.arduino.cc/en/Main/Software}
+
+\bibitem{cit3}
+\url{https://www.pozyx.io/Documentation/where_to_place_the_anchors}
+
+\bibitem{cit4}
+\url{https://www.pozyx.io/Documentation/how_does_uwb_work}
+
+\bibitem{cit5}
+\url{https://www.pozyx.io/Documentation/how_does_positioning_work }
+
+\bibitem{cit6}
+\url{https://www.pozyx.io/Documentation/Datasheet/pinOut}
+
+\bibitem{cit7}
+\url{https://it.wikipedia.org/wiki/Arduino_(hardware)}
+
+\bibitem{cit8}
+\url{https://store.arduino.cc/arduino-uno-rev3 - TECH SPECS}
+
+\bibitem{cit9}
+\url{http://processing.org}
+
+\bibitem{cit10}
+\url{https://www.pozyx.io/Documentation/Datasheet/Interfaces}
+
+\bibitem{cit11}
+\url{http://www.nxp.com}
+
+\bibitem{cit12}
+\url{http://www.crivellaro.net/wp-content/uploads/2017/03/Protocollo-di-comunicazione-I2C.pdf}
+
+\bibitem{cit13}
+\url{https://github.com/sparkfun/OpenLog/tree/master/Libraries/SerialPort}
+
+\bibitem{cit14}
+\url{https://www.pozyx.io/Documentation/Datasheet/arduino}
+
+\bibitem{cit15}
+\url{https://www.pozyx.io/Documentation/Datasheet/SystemPerformance}
+
+\bibitem{cit16}
+\url{https://www.pozyx.io/Documentation/Datasheet/Interfaces#i2c}
+
+\bibitem{cit17}
+\url{https://github.com/greiman/SerialPort/tree/master/SerialPort} 
+
+%\bibitem{cit1}
+%A.~Caiti, V.~Calabr{\`o}, S.~Grammatico, A.~Munaf{\`o}, and M.~Stifani.
+%\newblock Lagrangian modeling of the underwater wave glider.
+%\newblock In {\em OCEANS 2011 IEEE - Spain}, pages 1--6, June 2011.
+
+
+\end{thebibliography}

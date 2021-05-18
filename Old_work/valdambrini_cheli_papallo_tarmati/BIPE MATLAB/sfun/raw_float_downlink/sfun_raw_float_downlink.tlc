@@ -1,0 +1,65 @@
+%implements "sfun_raw_float_downlink" "C"
+
+%% Function: BlockTypeSetup ================================
+%%
+%function BlockTypeSetup(block, system) void
+    %% %if !SLibCodeGenForSim()
+        %%================================
+        %%.h Custom Includes
+        %%================================
+        %openfile buffer
+
+        %closefile buffer
+        %<LibCacheIncludes(buffer)>
+        %%================================
+
+
+        %%=============================================
+        %%.c Wrap Includes
+        %%=============================================
+        %<LibAddToModelSources("wrap_raw_float_downlink")>
+        %%=============================================
+
+
+        %%=========================================================================================================================================================================================================================================================================================================================================================
+        %%Wrap Function Declarations
+        %%=========================================================================================================================================================================================================================================================================================================================================================
+        %openfile buffer
+                extern void wrap_raw_float_downlink_start_fcn();
+                extern void wrap_raw_float_downlink_output_width_fcn(float*, uint8_T);
+        %closefile buffer
+        %<LibCacheFunctionPrototype(buffer)>
+        %%=========================================================================================================================================================================================================================================================================================================================================================
+
+
+        %%==============================
+        %%Global variables
+        %%==============================
+        %openfile buffer
+            
+        %closefile buffer
+        %<LibCacheGlobalPrmData(buffer)>
+        %%==============================
+    %% %endif
+%endfunction
+
+
+%% Function: Start =======================================
+%%
+%function Start(block, system) Output
+    %% %if !SLibCodeGenForSim() 
+    %% %assign output_ptr = LibBlockOutputSignalAddr(0,"","",0)
+       wrap_raw_float_downlink_start_fcn();
+    %% %endif
+%endfunction
+
+
+%% Function: Outputs =======================================
+%%
+%function Outputs(block, system) Output
+    %% %if !SLibCodeGenForSim()
+        %assign input_ptr  = LibBlockInputSignalAddr(0,"","",0)
+        %% %assign output_ptr = LibBlockOutputSignalAddr(0,"","",0)
+        wrap_raw_float_downlink_output_width_fcn(%<input_ptr>, %<LibBlockInputSignalWidth(0)>);
+    %% %endif
+%endfunction

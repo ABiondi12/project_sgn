@@ -1,0 +1,62 @@
+%implements "sfun_PWM_servomotor" "C"
+
+%% Function: BlockTypeSetup ================================
+
+%function BlockTypeSetup(block, system) void
+    %%================================
+    %%.h Custom Includes
+    %%================================
+    %openfile buffer
+        #include "rtwtypes.h"
+    %closefile buffer
+    %<LibCacheIncludes(buffer)>
+    %%================================
+
+    %%=============================================
+    %%.c Wrap Includes
+    %%=============================================
+    %<LibAddToModelSources("wrap_PWM_servomotor")>
+    %%=============================================
+
+
+    %%==============================================
+    %%Wrap Function Declarations
+    %%==============================================
+    %openfile buffer
+        extern void wrap_PWM_servomotor_start_fcn(double,double,double,double);
+        extern void wrap_PWM_servomotor_output_fcn(real_T*,double,double,double,double);
+    %closefile buffer
+    %<LibCacheFunctionPrototype(buffer)>
+    %%==============================================
+        
+    %%==============================
+    %%Global variables
+    %%==============================
+    %openfile buffer
+    %closefile buffer
+    %<LibCacheGlobalPrmData(buffer)>
+    %%==============================
+%endfunction
+
+
+%% Function: Start =======================================
+
+%function Start(block, system) Output
+    %assign ch1       = SFcnParamSettings.CH1
+    %assign ch2       = SFcnParamSettings.CH2
+    %assign ch3       = SFcnParamSettings.CH3
+    %assign ch4       = SFcnParamSettings.CH4
+    wrap_PWM_servomotor_start_fcn(%<ch1>,%<ch2>,%<ch3>,%<ch4>);
+%endfunction
+
+
+%% Function: Outputs =======================================
+
+%function Outputs(block, system) Output
+    %assign time      = LibBlockInputSignalAddr(0,"","",0)
+    %assign ch1       = SFcnParamSettings.CH1
+    %assign ch2       = SFcnParamSettings.CH2
+    %assign ch3       = SFcnParamSettings.CH3
+    %assign ch4       = SFcnParamSettings.CH4
+    wrap_PWM_servomotor_output_fcn(%<time>,%<ch1>,%<ch2>,%<ch3>,%<ch4>);
+%endfunction

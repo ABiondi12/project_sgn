@@ -1,0 +1,6 @@
+<launch>
+    <node name="get_uwb_info" pkg="icaro_uwb" type="get_uwb_info.py" args="0 1" output="screen">
+    </node>
+    
+</launch>
+            

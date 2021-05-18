@@ -1,0 +1,609 @@
+ ICARO_III_debug_tel_tag_sfun
+
+ Timestamp is 5df0b89c (Wed Dec 11 10:36:28 2019)
+
+ Preferred load address is 0000000180000000
+
+ Start         Length     Name                   Class
+ 0001:00000000 00021c14H .text                   CODE
+ 0001:00021c20 00000092H .text$x                 CODE
+ 0002:00000000 00000478H .idata$5                DATA
+ 0002:00000478 00000008H .CRT$XCA                DATA
+ 0002:00000480 00000008H .CRT$XCZ                DATA
+ 0002:00000488 00000008H .CRT$XIA                DATA
+ 0002:00000490 00000008H .CRT$XIAA               DATA
+ 0002:00000498 00000008H .CRT$XIZ                DATA
+ 0002:000004a0 000006e4H .rdata                  DATA
+ 0002:00000b88 00000008H .rtc$IAA                DATA
+ 0002:00000b90 00000008H .rtc$IZZ                DATA
+ 0002:00000b98 00000008H .rtc$TAA                DATA
+ 0002:00000ba0 00000008H .rtc$TZZ                DATA
+ 0002:00000ba8 000007a8H .xdata                  DATA
+ 0002:00001350 0000008cH .idata$2                DATA
+ 0002:000013dc 00000014H .idata$3                DATA
+ 0002:000013f0 00000478H .idata$4                DATA
+ 0002:00001868 00000c50H .idata$6                DATA
+ 0002:000024c0 00000062H .edata                  DATA
+ 0003:00000000 00008998H .data                   DATA
+ 0003:000089a0 000006b8H .bss                    DATA
+ 0004:00000000 000008f4H .pdata                  DATA
+
+  Address         Publics by Value              Rva+Base               Lib:Object
+
+ 0000:00000000       ___safe_se_handler_table   0000000000000000     <absolute>
+ 0000:00000000       ___safe_se_handler_count   0000000000000000     <absolute>
+ 0000:00000000       __ImageBase                0000000180000000     <linker-defined>
+ 0001:00000000       ICARO_III_debug_tel_tag_initializer 0000000180001000 f   ICARO_III_debug_tel_tag_sfun.obj
+ 0001:00000010       ICARO_III_debug_tel_tag_terminator 0000000180001010 f   ICARO_III_debug_tel_tag_sfun.obj
+ 0001:00000020       sf_ICARO_III_debug_tel_tag_method_dispatcher 0000000180001020 f   ICARO_III_debug_tel_tag_sfun.obj
+ 0001:00000070       sf_ICARO_III_debug_tel_tag_process_check_sum_call 0000000180001070 f   ICARO_III_debug_tel_tag_sfun.obj
+ 0001:00000480       sf_ICARO_III_debug_tel_tag_autoinheritance_info 0000000180001480 f   ICARO_III_debug_tel_tag_sfun.obj
+ 0001:000005f0       sf_ICARO_III_debug_tel_tag_get_eml_resolved_functions_info 00000001800015f0 f   ICARO_III_debug_tel_tag_sfun.obj
+ 0001:00000720       sf_ICARO_III_debug_tel_tag_third_party_uses_info 0000000180001720 f   ICARO_III_debug_tel_tag_sfun.obj
+ 0001:00000870       sf_ICARO_III_debug_tel_tag_updateBuildInfo_args_info 0000000180001870 f   ICARO_III_debug_tel_tag_sfun.obj
+ 0001:000009c0       ICARO_III_debug_tel_tag_debug_initialize 00000001800019c0 f   ICARO_III_debug_tel_tag_sfun.obj
+ 0001:00000a40       ICARO_III_debug_tel_tag_register_exported_symbols 0000000180001a40 f   ICARO_III_debug_tel_tag_sfun.obj
+ 0001:00000a50       load_ICARO_III_debug_tel_tag_optimization_info 0000000180001a50 f   ICARO_III_debug_tel_tag_sfun.obj
+ 0001:00000aa0       unload_ICARO_III_debug_tel_tag_optimization_info 0000000180001aa0 f   ICARO_III_debug_tel_tag_sfun.obj
+ 0001:00000ad0       sf_c71_ICARO_III_debug_tel_tag_get_eml_resolved_functions_info 0000000180001ad0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0000b990       sf_c71_ICARO_III_debug_tel_tag_get_check_sum 000000018000c990 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0000ba10       sf_c71_ICARO_III_debug_tel_tag_get_autoinheritance_info 000000018000ca10 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0000d080       sf_c71_ICARO_III_debug_tel_tag_third_party_uses_info 000000018000e080 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0000d0b0       sf_c71_ICARO_III_debug_tel_tag_updateBuildInfo_args_info 000000018000e0b0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0000d0e0       sf_internal_get_sim_state_c71_ICARO_III_debug_tel_tag 000000018000e0e0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0000db40       sf_internal_set_sim_state_c71_ICARO_III_debug_tel_tag 000000018000eb40 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0000e690       c71_ICARO_III_debug_tel_tag_method_dispatcher 000000018000f690 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0001aad0       sf_process_check_sum_call  000000018001bad0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001ab20       sf_process_autoinheritance_call 000000018001bb20 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001acc0       sf_process_get_third_party_uses_info_call 000000018001bcc0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001ae60       sf_process_get_updateBuildInfo_args_info_call 000000018001be60 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001b000       sf_process_get_eml_resolved_functions_info_call 000000018001c000 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001b180       sf_mex_unlock_call         000000018001c180 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001b230       sf_machine_global_initializer_called 000000018001c230 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001b260       sf_machine_global_method_dispatcher 000000018001c260 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001b2c0       sf_machine_global_terminator 000000018001c2c0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001b310       sf_register_machine_exported_symbols 000000018001c310 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001b330       callCustomFcn              000000018001c330 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001b340       sf_machine_global_initializer 000000018001c340 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001b3c0       mdlGetSimState             000000018001c3c0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001b440       mdlSetSimState             000000018001c440 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001b480       _ssSetStateAbsTol          000000018001c480 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001b560       _ssGetAbsTol               000000018001c560 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001b5d0       _ssSetInputPortMatrixDimensions 000000018001c5d0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001b6e0       _ssSetOutputPortMatrixDimensions 000000018001c6e0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001b7f0       _ssSetInputPortVectorDimension 000000018001c7f0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001b8c0       _ssSetOutputPortVectorDimension 000000018001c8c0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001b990       ssIsRunTimeParamTunable    000000018001c990 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001ba00       ssGetSFuncBlockHandle      000000018001ca00 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001ba70       _ssGetCurrentInputPortWidth 000000018001ca70 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001bb90       _ssGetCurrentOutputPortWidth 000000018001cb90 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001bcb0       _ssGetCallSystemNumFcnCallDestinations 000000018001ccb0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001bd20       ssWarning                  000000018001cd20 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001be30       ssGetIsZeroCrossControlDisabled 000000018001ce30 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001bea0       ssSetIsInputPortUsedForContZcSignal 000000018001cea0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001bf10       ssSetZcSignalIsZcElementDisc 000000018001cf10 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001bfc0       ssSetZcSignalName          000000018001cfc0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001c030       ssSetZcSignalWidth         000000018001d030 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001c0a0       ssSetZcSignalZcEventType   000000018001d0a0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001c110       ssSetZcSignalType          000000018001d110 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001c180       ssSetZcSignalZcTol         000000018001d180 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001c1f0       ssSetZcSignalNeedsEventNotification 000000018001d1f0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001c260       ssCreateAndAddZcSignalInfo 000000018001d260 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001c2d0       ssCloneAndAddZcSignalInfo  000000018001d2d0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001c340       ssGetNumZcSignals          000000018001d340 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001c3b0       ssGetZcSignalVector        000000018001d3b0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001c420       ssGetZcSignalZcEvents      000000018001d420 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001c490       ssGetZcSignalName          000000018001d490 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001c500       ssGetZcSignalWidth         000000018001d500 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001c570       ssGetZcSignalZcEventType   000000018001d570 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001c5e0       ssGetZcSignalType          000000018001d5e0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001c650       ssGetZcSignalZcTol         000000018001d650 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001c6d0       ssGetZcSignalNeedsEventNotification 000000018001d6d0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001c740       ssGetZcSignalIsZcElementDisc 000000018001d740 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001c7e0       ssGetIsInputPortElementContinuous 000000018001d7e0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001c880       _ssGetInputPortSignalPtrsFcn 000000018001d880 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001cb40       _ssGetInputPortSignalFcn   000000018001db40 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001cd60       _ssSetInputPortDirectFeedThroughFcn 000000018001dd60 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001cec0       _ssSetInputPortReusableFcn 000000018001dec0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001cfb0       _ssSetOutputPortReusableFcn 000000018001dfb0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001d090       ssGetDTypeIdFromMxArray    000000018001e090 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001d1b0       ssWriteRTWStr              000000018001e1b0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001d210       ssWriteRTWMxVectParam      000000018001e210 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001d270       ssWriteRTWMx2dMatParam     000000018001e270 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001d2f0       ssWriteRTWNameValuePair    000000018001e2f0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001d7e0       ssWriteRTWParameters       000000018001e7e0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001dde0       ssWriteRTWParamSettings    000000018001ede0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001e4b0       ssWriteRTWWorkVect         000000018001f4b0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001e9b0       mexFunction                000000018001f9b0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:00020e30       ProcessMexSfunctionEveryCall 0000000180021e30 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:00020fb2       sf_debug_set_machine_data_thresholds 0000000180021fb2 f   sf_runtime:sf_runtime.dll
+ 0001:00020fb8       sf_debug_set_machine_event_thresholds 0000000180021fb8 f   sf_runtime:sf_runtime.dll
+ 0001:00020fbe       sf_debug_initialize_machine 0000000180021fbe f   sf_runtime:sf_runtime.dll
+ 0001:00020fc4       sf_load_rtw_optimization_info 0000000180021fc4 f   sf_runtime:sf_runtime.dll
+ 0001:00020fca       sf_mex_emlrtNameCapturePostProcessR2012a 0000000180021fca f   sf_runtime:sf_runtime.dll
+ 0001:00020fd0       sf_mex_assign              0000000180021fd0 f   sf_runtime:sf_runtime.dll
+ 0001:00020fd6       sf_mex_createstruct        0000000180021fd6 f   sf_runtime:sf_runtime.dll
+ 0001:00020fdc       sf_mex_destroy             0000000180021fdc f   sf_runtime:sf_runtime.dll
+ 0001:00020fe2       sf_mex_duplicatearraysafe  0000000180021fe2 f   sf_runtime:sf_runtime.dll
+ 0001:00020fe8       sf_mex_createcellmatrix    0000000180021fe8 f   sf_runtime:sf_runtime.dll
+ 0001:00020fee       sf_mex_addfield            0000000180021fee f   sf_runtime:sf_runtime.dll
+ 0001:00020ff4       sf_mex_create              0000000180021ff4 f   sf_runtime:sf_runtime.dll
+ 0001:00020ffa       sf_mex_error_message       0000000180021ffa f   sf_runtime:sf_runtime.dll
+ 0001:00021000       sf_mex_call_matlab         0000000180022000 f   sf_runtime:sf_runtime.dll
+ 0001:00021006       sf_mex_setcell             0000000180022006 f   sf_runtime:sf_runtime.dll
+ 0001:0002100c       sf_mex_decode_encoded_mx_struct_array 000000018002200c f   sf_runtime:sf_runtime.dll
+ 0001:00021012       sf_mex_getcell             0000000180022012 f   sf_runtime:sf_runtime.dll
+ 0001:00021018       sf_mex_dup                 0000000180022018 f   sf_runtime:sf_runtime.dll
+ 0001:0002101e       sf_mex_import              000000018002201e f   sf_runtime:sf_runtime.dll
+ 0001:00021024       sf_mex_import_named        0000000180022024 f   sf_runtime:sf_runtime.dll
+ 0001:0002102a       sf_mex_get_sfun_param      000000018002202a f   sf_runtime:sf_runtime.dll
+ 0001:00021030       sf_set_rtw_dwork_info      0000000180022030 f   sf_runtime:sf_runtime.dll
+ 0001:00021036       sf_mark_chart_reusable_outputs 0000000180022036 f   sf_runtime:sf_runtime.dll
+ 0001:0002103c       sf_mark_chart_expressionable_inputs 000000018002203c f   sf_runtime:sf_runtime.dll
+ 0001:00021042       sf_update_buildInfo        0000000180022042 f   sf_runtime:sf_runtime.dll
+ 0001:00021048       sf_rtw_info_uint_prop      0000000180022048 f   sf_runtime:sf_runtime.dll
+ 0001:0002104e       sf_is_chart_inlinable      000000018002204e f   sf_runtime:sf_runtime.dll
+ 0001:00021054       sim_mode_is_external       0000000180022054 f   sf_runtime:sf_runtime.dll
+ 0001:0002105a       sim_mode_is_rtw_gen        000000018002205a f   sf_runtime:sf_runtime.dll
+ 0001:00021060       sf_debug_reset_current_state_configuration 0000000180022060 f   sf_runtime:sf_runtime.dll
+ 0001:00021066       sf_debug_set_instance_data_value_ptr 0000000180022066 f   sf_runtime:sf_runtime.dll
+ 0001:0002106c       sf_debug_set_chart_data_compiled_props 000000018002206c f   sf_runtime:sf_runtime.dll
+ 0001:00021072       cv_eml_init_if             0000000180022072 f   sf_runtime:sf_runtime.dll
+ 0001:00021078       cv_eml_init_fcn            0000000180022078 f   sf_runtime:sf_runtime.dll
+ 0001:0002107e       cv_eml_init_script         000000018002207e f   sf_runtime:sf_runtime.dll
+ 0001:00021084       sf_debug_cv_init_trans     0000000180022084 f   sf_runtime:sf_runtime.dll
+ 0001:0002108a       sf_debug_cv_init_state     000000018002208a f   sf_runtime:sf_runtime.dll
+ 0001:00021090       sf_debug_cv_init_chart     0000000180022090 f   sf_runtime:sf_runtime.dll
+ 0001:00021096       sf_debug_set_chart_decomposition 0000000180022096 f   sf_runtime:sf_runtime.dll
+ 0001:0002109c       sf_debug_set_chart_substate_count 000000018002209c f   sf_runtime:sf_runtime.dll
+ 0001:000210a2       sf_debug_set_chart_state_info 00000001800220a2 f   sf_runtime:sf_runtime.dll
+ 0001:000210a8       sf_debug_set_chart_data_props 00000001800220a8 f   sf_runtime:sf_runtime.dll
+ 0001:000210ae       sf_debug_set_chart_event_thresholds 00000001800220ae f   sf_runtime:sf_runtime.dll
+ 0001:000210b4       sf_debug_set_chart_disable_implicit_casting 00000001800220b4 f   sf_runtime:sf_runtime.dll
+ 0001:000210ba       sf_debug_initialize_chart  00000001800220ba f   sf_runtime:sf_runtime.dll
+ 0001:000210c0       sf_get_time                00000001800220c0 f   sf_runtime:sf_runtime.dll
+ 0001:000210c6       sf_debug_data_range_wrapper 00000001800220c6 f   sf_runtime:sf_runtime.dll
+ 0001:000210cc       sf_debug_check_for_state_inconsistency 00000001800220cc f   sf_runtime:sf_runtime.dll
+ 0001:000210d2       sf_debug_symbol_scope_pop  00000001800220d2 f   sf_runtime:sf_runtime.dll
+ 0001:000210d8       sf_debug_call              00000001800220d8 f   sf_runtime:sf_runtime.dll
+ 0001:000210de       sf_debug_symbol_scope_push 00000001800220de f   sf_runtime:sf_runtime.dll
+ 0001:000210e4       eml_debug_line_call        00000001800220e4 f   sf_runtime:sf_runtime.dll
+ 0001:000210ea       cv_eml_eval                00000001800220ea f   sf_runtime:sf_runtime.dll
+ 0001:000210f0       sf_debug_symbol_scope_add_eml_importable 00000001800220f0 f   sf_runtime:sf_runtime.dll
+ 0001:000210f6       sf_debug_symbol_scope_add_eml 00000001800220f6 f   sf_runtime:sf_runtime.dll
+ 0001:000210fc       sf_debug_symbol_scope_push_eml 00000001800220fc f   sf_runtime:sf_runtime.dll
+ 0001:00021102       sf_debug_eml_data_array_bounds_error_check 0000000180022102 f   sf_runtime:sf_runtime.dll
+ 0001:00021108       sf_debug_integer_check     0000000180022108 f   sf_runtime:sf_runtime.dll
+ 0001:0002110e       sf_mex_call_debug          000000018002210e f   sf_runtime:sf_runtime.dll
+ 0001:00021114       sf_clear_rtw_identifier    0000000180022114 f   sf_runtime:sf_runtime.dll
+ 0001:0002111a       sf_debug_terminate         000000018002211a f   sf_runtime:sf_runtime.dll
+ 0001:00021120       sf_debug_create_debug_instance_struct 0000000180022120 f   sf_runtime:sf_runtime.dll
+ 0001:00021126       sf_debug_api               0000000180022126 f   sf_runtime:sf_runtime.dll
+ 0001:0002112c       callMdlMethodAndReportError 000000018002212c f   sf_runtime:sf_runtime.dll
+ 0001:00021132       call_sf_machine_global_method_dispatcher 0000000180022132 f   sf_runtime:sf_runtime.dll
+ 0001:00021138       sf_clear_error_manager_info 0000000180022138 f   sf_runtime:sf_runtime.dll
+ 0001:0002113e       sf_mex_error_direct_call   000000018002213e f   sf_runtime:sf_runtime.dll
+ 0001:00021144       mxGetScalar                0000000180022144 f   libmx:libmx.dll
+ 0001:0002114a       mxGetPr                    000000018002214a f   libmx:libmx.dll
+ 0001:00021150       mxCreateDoubleMatrix_730   0000000180022150 f   libmx:libmx.dll
+ 0001:00021156       mxGetString_730            0000000180022156 f   libmx:libmx.dll
+ 0001:0002115c       mxIsChar                   000000018002215c f   libmx:libmx.dll
+ 0001:00021162       mxDestroyArray             0000000180022162 f   libmx:libmx.dll
+ 0001:00021168       mxDuplicateArray           0000000180022168 f   libmx:libmx.dll
+ 0001:0002116e       mxCreateDoubleScalar       000000018002216e f   libmx:libmx.dll
+ 0001:00021174       mxSetField_730             0000000180022174 f   libmx:libmx.dll
+ 0001:0002117a       mxCreateString             000000018002217a f   libmx:libmx.dll
+ 0001:00021180       mxCreateStructMatrix_730   0000000180022180 f   libmx:libmx.dll
+ 0001:00021186       mxCreateCellMatrix_730     0000000180022186 f   libmx:libmx.dll
+ 0001:0002118c       mxIsEmpty                  000000018002218c f   libmx:libmx.dll
+ 0001:00021192       mxGetClassID               0000000180022192 f   libmx:libmx.dll
+ 0001:00021198       mxIsNumeric                0000000180022198 f   libmx:libmx.dll
+ 0001:0002119e       mxIsComplex                000000018002219e f   libmx:libmx.dll
+ 0001:000211a4       mxGetN                     00000001800221a4 f   libmx:libmx.dll
+ 0001:000211aa       mxGetM                     00000001800221aa f   libmx:libmx.dll
+ 0001:000211b0       mxCalloc                   00000001800221b0 f   libmx:libmx.dll
+ 0001:000211b6       mexMakeArrayPersistent     00000001800221b6 f   libmex:libmex.dll
+ 0001:000211bc       mexUnlock                  00000001800221bc f   libmex:libmex.dll
+ 0001:000211c2       mexIsLocked                00000001800221c2 f   libmex:libmex.dll
+ 0001:000211c8       mexWarnMsgTxt              00000001800221c8 f   libmex:libmex.dll
+ 0001:000211ce       mexCallMATLAB              00000001800221ce f   libmex:libmex.dll
+ 0001:000211d4       mexErrMsgTxt               00000001800221d4 f   libmex:libmex.dll
+ 0001:000211da       mexLock                    00000001800221da f   libmex:libmex.dll
+ 0001:000211e0       utMalloc                   00000001800221e0 f   libut:libut.dll
+ 0001:000211e6       utFree                     00000001800221e6 f   libut:libut.dll
+ 0001:000211ec       muSingleScalarSqrt         00000001800221ec f   libmwmathutil:libmwmathutil.dll
+ 0001:000211f2       muSingleScalarAbs          00000001800221f2 f   libmwmathutil:libmwmathutil.dll
+ 0001:000211f8       muSingleScalarAtan2        00000001800221f8 f   libmwmathutil:libmwmathutil.dll
+ 0001:00021200       __GSHandlerCheckCommon     0000000180022200 f   MSVCRT:gshandler.obj
+ 0001:00021264       __GSHandlerCheck           0000000180022264 f   MSVCRT:gshandler.obj
+ 0001:00021282       strcmp                     0000000180022282 f   MSVCRT:MSVCR100.dll
+ 0001:000212a0       __security_check_cookie    00000001800222a0 f   MSVCRT:amdsecgs.obj
+ 0001:000212c0       strlen                     00000001800222c0 f   MSVCRT:MSVCR100.dll
+ 0001:000212c6       memset                     00000001800222c6 f   MSVCRT:MSVCR100.dll
+ 0001:000212cc       free                       00000001800222cc f   MSVCRT:MSVCR100.dll
+ 0001:000212d2       sprintf                    00000001800222d2 f   MSVCRT:MSVCR100.dll
+ 0001:000212d8       malloc                     00000001800222d8 f   MSVCRT:MSVCR100.dll
+ 0001:000212de       strcat                     00000001800222de f   MSVCRT:MSVCR100.dll
+ 0001:000212e4       memcpy                     00000001800222e4 f   MSVCRT:MSVCR100.dll
+ 0001:000212ec       NtCurrentTeb               00000001800222ec f i MSVCRT:crtdll.obj
+ 0001:00021358       _CRT_INIT                  0000000180022358 f   MSVCRT:crtdll.obj
+ 0001:000216f0       _DllMainCRTStartup         00000001800226f0 f   MSVCRT:crtdll.obj
+ 0001:00021730       __report_gsfailure         0000000180022730 f   MSVCRT:gs_report.obj
+ 0001:0002187c       __clean_type_info_names    000000018002287c f   MSVCRT:tncleanup.obj
+ 0001:00021888       _onexit                    0000000180022888 f   MSVCRT:atonexit.obj
+ 0001:00021938       atexit                     0000000180022938 f   MSVCRT:atonexit.obj
+ 0001:00021950       _RTC_Initialize            0000000180022950 f   MSVCRT:_initsect_.obj
+ 0001:00021988       _RTC_Terminate             0000000180022988 f   MSVCRT:_initsect_.obj
+ 0001:000219c0       _malloc_crt                00000001800229c0 f   MSVCRT:MSVCR100.dll
+ 0001:000219d0       _ValidateImageBase         00000001800229d0 f   MSVCRT:pesect.obj
+ 0001:00021a00       _FindPESection             0000000180022a00 f   MSVCRT:pesect.obj
+ 0001:00021a50       _IsNonwritableInCurrentImage 0000000180022a50 f   MSVCRT:pesect.obj
+ 0001:00021a92       _initterm                  0000000180022a92 f   MSVCRT:MSVCR100.dll
+ 0001:00021a98       _initterm_e                0000000180022a98 f   MSVCRT:MSVCR100.dll
+ 0001:00021a9e       _encoded_null              0000000180022a9e f   MSVCRT:MSVCR100.dll
+ 0001:00021aa4       _amsg_exit                 0000000180022aa4 f   MSVCRT:MSVCR100.dll
+ 0001:00021aaa       __C_specific_handler       0000000180022aaa f   MSVCRT:MSVCR100.dll
+ 0001:00021ab0       __CppXcptFilter            0000000180022ab0 f   MSVCRT:MSVCR100.dll
+ 0001:00021ab8       DllMain                    0000000180022ab8 f   MSVCRT:dllmain.obj
+ 0001:00021adc       __security_init_cookie     0000000180022adc f   MSVCRT:gs_support.obj
+ 0001:00021b90       __crt_debugger_hook        0000000180022b90 f   MSVCRT:MSVCR100.dll
+ 0001:00021b96       __clean_type_info_names_internal 0000000180022b96 f   MSVCRT:MSVCR100.dll
+ 0001:00021b9c       _unlock                    0000000180022b9c f   MSVCRT:MSVCR100.dll
+ 0001:00021ba2       __dllonexit                0000000180022ba2 f   MSVCRT:MSVCR100.dll
+ 0001:00021ba8       _lock                      0000000180022ba8 f   MSVCRT:MSVCR100.dll
+ 0001:00021bae       EncodePointer              0000000180022bae f   kernel32:KERNEL32.dll
+ 0001:00021bb4       DecodePointer              0000000180022bb4 f   kernel32:KERNEL32.dll
+ 0001:00021bba       Sleep                      0000000180022bba f   kernel32:KERNEL32.dll
+ 0001:00021bc0       TerminateProcess           0000000180022bc0 f   kernel32:KERNEL32.dll
+ 0001:00021bc6       GetCurrentProcess          0000000180022bc6 f   kernel32:KERNEL32.dll
+ 0001:00021bcc       UnhandledExceptionFilter   0000000180022bcc f   kernel32:KERNEL32.dll
+ 0001:00021bd2       SetUnhandledExceptionFilter 0000000180022bd2 f   kernel32:KERNEL32.dll
+ 0001:00021bd8       IsDebuggerPresent          0000000180022bd8 f   kernel32:KERNEL32.dll
+ 0001:00021bde       RtlVirtualUnwind           0000000180022bde f   kernel32:KERNEL32.dll
+ 0001:00021be4       RtlLookupFunctionEntry     0000000180022be4 f   kernel32:KERNEL32.dll
+ 0001:00021bea       RtlCaptureContext          0000000180022bea f   kernel32:KERNEL32.dll
+ 0001:00021bf0       DisableThreadLibraryCalls  0000000180022bf0 f   kernel32:KERNEL32.dll
+ 0001:00021bf6       QueryPerformanceCounter    0000000180022bf6 f   kernel32:KERNEL32.dll
+ 0001:00021bfc       GetTickCount               0000000180022bfc f   kernel32:KERNEL32.dll
+ 0001:00021c02       GetCurrentThreadId         0000000180022c02 f   kernel32:KERNEL32.dll
+ 0001:00021c08       GetCurrentProcessId        0000000180022c08 f   kernel32:KERNEL32.dll
+ 0001:00021c0e       GetSystemTimeAsFileTime    0000000180022c0e f   kernel32:KERNEL32.dll
+ 0002:00000000       __imp_GetSystemTimeAsFileTime 0000000180023000     kernel32:KERNEL32.dll
+ 0002:00000008       __imp_GetCurrentProcessId  0000000180023008     kernel32:KERNEL32.dll
+ 0002:00000010       __imp_GetCurrentThreadId   0000000180023010     kernel32:KERNEL32.dll
+ 0002:00000018       __imp_GetTickCount         0000000180023018     kernel32:KERNEL32.dll
+ 0002:00000020       __imp_QueryPerformanceCounter 0000000180023020     kernel32:KERNEL32.dll
+ 0002:00000028       __imp_DisableThreadLibraryCalls 0000000180023028     kernel32:KERNEL32.dll
+ 0002:00000030       __imp_RtlCaptureContext    0000000180023030     kernel32:KERNEL32.dll
+ 0002:00000038       __imp_RtlLookupFunctionEntry 0000000180023038     kernel32:KERNEL32.dll
+ 0002:00000040       __imp_RtlVirtualUnwind     0000000180023040     kernel32:KERNEL32.dll
+ 0002:00000048       __imp_IsDebuggerPresent    0000000180023048     kernel32:KERNEL32.dll
+ 0002:00000050       __imp_SetUnhandledExceptionFilter 0000000180023050     kernel32:KERNEL32.dll
+ 0002:00000058       __imp_UnhandledExceptionFilter 0000000180023058     kernel32:KERNEL32.dll
+ 0002:00000060       __imp_GetCurrentProcess    0000000180023060     kernel32:KERNEL32.dll
+ 0002:00000068       __imp_TerminateProcess     0000000180023068     kernel32:KERNEL32.dll
+ 0002:00000070       __imp_Sleep                0000000180023070     kernel32:KERNEL32.dll
+ 0002:00000078       __imp_DecodePointer        0000000180023078     kernel32:KERNEL32.dll
+ 0002:00000080       __imp_EncodePointer        0000000180023080     kernel32:KERNEL32.dll
+ 0002:00000088       \177KERNEL32_NULL_THUNK_DATA 0000000180023088     kernel32:KERNEL32.dll
+ 0002:00000090       __imp__onexit              0000000180023090     MSVCRT:MSVCR100.dll
+ 0002:00000098       __imp__lock                0000000180023098     MSVCRT:MSVCR100.dll
+ 0002:000000a0       __imp___dllonexit          00000001800230a0     MSVCRT:MSVCR100.dll
+ 0002:000000a8       __imp__unlock              00000001800230a8     MSVCRT:MSVCR100.dll
+ 0002:000000b0       __imp___clean_type_info_names_internal 00000001800230b0     MSVCRT:MSVCR100.dll
+ 0002:000000b8       __imp___crt_debugger_hook  00000001800230b8     MSVCRT:MSVCR100.dll
+ 0002:000000c0       __imp___CppXcptFilter      00000001800230c0     MSVCRT:MSVCR100.dll
+ 0002:000000c8       __imp___C_specific_handler 00000001800230c8     MSVCRT:MSVCR100.dll
+ 0002:000000d0       __imp__amsg_exit           00000001800230d0     MSVCRT:MSVCR100.dll
+ 0002:000000d8       __imp__encoded_null        00000001800230d8     MSVCRT:MSVCR100.dll
+ 0002:000000e0       __imp__initterm_e          00000001800230e0     MSVCRT:MSVCR100.dll
+ 0002:000000e8       __imp__initterm            00000001800230e8     MSVCRT:MSVCR100.dll
+ 0002:000000f0       __imp__malloc_crt          00000001800230f0     MSVCRT:MSVCR100.dll
+ 0002:000000f8       __imp_memcpy               00000001800230f8     MSVCRT:MSVCR100.dll
+ 0002:00000100       __imp_strcat               0000000180023100     MSVCRT:MSVCR100.dll
+ 0002:00000108       __imp_malloc               0000000180023108     MSVCRT:MSVCR100.dll
+ 0002:00000110       __imp_sprintf              0000000180023110     MSVCRT:MSVCR100.dll
+ 0002:00000118       __imp_free                 0000000180023118     MSVCRT:MSVCR100.dll
+ 0002:00000120       __imp_memset               0000000180023120     MSVCRT:MSVCR100.dll
+ 0002:00000128       __imp_strlen               0000000180023128     MSVCRT:MSVCR100.dll
+ 0002:00000130       __imp_strcmp               0000000180023130     MSVCRT:MSVCR100.dll
+ 0002:00000138       \177MSVCR100_NULL_THUNK_DATA 0000000180023138     MSVCRT:MSVCR100.dll
+ 0002:00000140       __imp_mexErrMsgTxt         0000000180023140     libmex:libmex.dll
+ 0002:00000148       __imp_mexUnlock            0000000180023148     libmex:libmex.dll
+ 0002:00000150       __imp_mexIsLocked          0000000180023150     libmex:libmex.dll
+ 0002:00000158       __imp_mexWarnMsgTxt        0000000180023158     libmex:libmex.dll
+ 0002:00000160       __imp_mexLock              0000000180023160     libmex:libmex.dll
+ 0002:00000168       __imp_mexMakeArrayPersistent 0000000180023168     libmex:libmex.dll
+ 0002:00000170       __imp_mexCallMATLAB        0000000180023170     libmex:libmex.dll
+ 0002:00000178       \177libmex_NULL_THUNK_DATA 0000000180023178     libmex:libmex.dll
+ 0002:00000180       __imp_muSingleScalarAbs    0000000180023180     libmwmathutil:libmwmathutil.dll
+ 0002:00000188       __imp_muSingleScalarAtan2  0000000180023188     libmwmathutil:libmwmathutil.dll
+ 0002:00000190       __imp_muSingleScalarSqrt   0000000180023190     libmwmathutil:libmwmathutil.dll
+ 0002:00000198       \177libmwmathutil_NULL_THUNK_DATA 0000000180023198     libmwmathutil:libmwmathutil.dll
+ 0002:000001a0       __imp_mxCalloc             00000001800231a0     libmx:libmx.dll
+ 0002:000001a8       __imp_mxGetM               00000001800231a8     libmx:libmx.dll
+ 0002:000001b0       __imp_mxGetN               00000001800231b0     libmx:libmx.dll
+ 0002:000001b8       __imp_mxIsComplex          00000001800231b8     libmx:libmx.dll
+ 0002:000001c0       __imp_mxIsNumeric          00000001800231c0     libmx:libmx.dll
+ 0002:000001c8       __imp_mxGetClassID         00000001800231c8     libmx:libmx.dll
+ 0002:000001d0       __imp_mxIsEmpty            00000001800231d0     libmx:libmx.dll
+ 0002:000001d8       __imp_mxCreateCellMatrix_730 00000001800231d8     libmx:libmx.dll
+ 0002:000001e0       __imp_mxCreateStructMatrix_730 00000001800231e0     libmx:libmx.dll
+ 0002:000001e8       __imp_mxCreateString       00000001800231e8     libmx:libmx.dll
+ 0002:000001f0       __imp_mxSetField_730       00000001800231f0     libmx:libmx.dll
+ 0002:000001f8       __imp_mxCreateDoubleScalar 00000001800231f8     libmx:libmx.dll
+ 0002:00000200       __imp_mxDuplicateArray     0000000180023200     libmx:libmx.dll
+ 0002:00000208       __imp_mxDestroyArray       0000000180023208     libmx:libmx.dll
+ 0002:00000210       __imp_mxIsChar             0000000180023210     libmx:libmx.dll
+ 0002:00000218       __imp_mxGetScalar          0000000180023218     libmx:libmx.dll
+ 0002:00000220       __imp_mxGetPr              0000000180023220     libmx:libmx.dll
+ 0002:00000228       __imp_mxCreateDoubleMatrix_730 0000000180023228     libmx:libmx.dll
+ 0002:00000230       __imp_mxGetString_730      0000000180023230     libmx:libmx.dll
+ 0002:00000238       \177libmx_NULL_THUNK_DATA  0000000180023238     libmx:libmx.dll
+ 0002:00000240       __imp_utMalloc             0000000180023240     libut:libut.dll
+ 0002:00000248       __imp_utFree               0000000180023248     libut:libut.dll
+ 0002:00000250       \177libut_NULL_THUNK_DATA  0000000180023250     libut:libut.dll
+ 0002:00000258       __imp_call_sf_machine_global_method_dispatcher 0000000180023258     sf_runtime:sf_runtime.dll
+ 0002:00000260       __imp_callMdlMethodAndReportError 0000000180023260     sf_runtime:sf_runtime.dll
+ 0002:00000268       __imp_sf_debug_api         0000000180023268     sf_runtime:sf_runtime.dll
+ 0002:00000270       __imp_sf_debug_create_debug_instance_struct 0000000180023270     sf_runtime:sf_runtime.dll
+ 0002:00000278       __imp_sf_debug_terminate   0000000180023278     sf_runtime:sf_runtime.dll
+ 0002:00000280       __imp_sf_clear_rtw_identifier 0000000180023280     sf_runtime:sf_runtime.dll
+ 0002:00000288       __imp_sf_mex_call_debug    0000000180023288     sf_runtime:sf_runtime.dll
+ 0002:00000290       __imp_sf_debug_integer_check 0000000180023290     sf_runtime:sf_runtime.dll
+ 0002:00000298       __imp_sf_debug_eml_data_array_bounds_error_check 0000000180023298     sf_runtime:sf_runtime.dll
+ 0002:000002a0       __imp_sf_debug_symbol_scope_push_eml 00000001800232a0     sf_runtime:sf_runtime.dll
+ 0002:000002a8       __imp_sf_clear_error_manager_info 00000001800232a8     sf_runtime:sf_runtime.dll
+ 0002:000002b0       __imp_sf_debug_symbol_scope_add_eml_importable 00000001800232b0     sf_runtime:sf_runtime.dll
+ 0002:000002b8       __imp_cv_eml_eval          00000001800232b8     sf_runtime:sf_runtime.dll
+ 0002:000002c0       __imp_eml_debug_line_call  00000001800232c0     sf_runtime:sf_runtime.dll
+ 0002:000002c8       __imp_sf_debug_symbol_scope_push 00000001800232c8     sf_runtime:sf_runtime.dll
+ 0002:000002d0       __imp_sf_debug_call        00000001800232d0     sf_runtime:sf_runtime.dll
+ 0002:000002d8       __imp_sf_debug_symbol_scope_pop 00000001800232d8     sf_runtime:sf_runtime.dll
+ 0002:000002e0       __imp_sf_debug_check_for_state_inconsistency 00000001800232e0     sf_runtime:sf_runtime.dll
+ 0002:000002e8       __imp_sf_debug_data_range_wrapper 00000001800232e8     sf_runtime:sf_runtime.dll
+ 0002:000002f0       __imp_sf_get_time          00000001800232f0     sf_runtime:sf_runtime.dll
+ 0002:000002f8       __imp_sf_debug_initialize_chart 00000001800232f8     sf_runtime:sf_runtime.dll
+ 0002:00000300       __imp_sf_mex_error_direct_call 0000000180023300     sf_runtime:sf_runtime.dll
+ 0002:00000308       __imp_sf_debug_symbol_scope_add_eml 0000000180023308     sf_runtime:sf_runtime.dll
+ 0002:00000310       __imp_sf_debug_set_chart_disable_implicit_casting 0000000180023310     sf_runtime:sf_runtime.dll
+ 0002:00000318       __imp_sf_debug_set_chart_event_thresholds 0000000180023318     sf_runtime:sf_runtime.dll
+ 0002:00000320       __imp_sf_debug_set_chart_data_props 0000000180023320     sf_runtime:sf_runtime.dll
+ 0002:00000328       __imp_sf_debug_set_chart_state_info 0000000180023328     sf_runtime:sf_runtime.dll
+ 0002:00000330       __imp_sf_debug_set_chart_substate_count 0000000180023330     sf_runtime:sf_runtime.dll
+ 0002:00000338       __imp_sf_debug_set_chart_decomposition 0000000180023338     sf_runtime:sf_runtime.dll
+ 0002:00000340       __imp_sf_debug_cv_init_chart 0000000180023340     sf_runtime:sf_runtime.dll
+ 0002:00000348       __imp_sf_debug_cv_init_state 0000000180023348     sf_runtime:sf_runtime.dll
+ 0002:00000350       __imp_sf_debug_cv_init_trans 0000000180023350     sf_runtime:sf_runtime.dll
+ 0002:00000358       __imp_cv_eml_init_script   0000000180023358     sf_runtime:sf_runtime.dll
+ 0002:00000360       __imp_cv_eml_init_fcn      0000000180023360     sf_runtime:sf_runtime.dll
+ 0002:00000368       __imp_cv_eml_init_if       0000000180023368     sf_runtime:sf_runtime.dll
+ 0002:00000370       __imp_sf_debug_set_chart_data_compiled_props 0000000180023370     sf_runtime:sf_runtime.dll
+ 0002:00000378       __imp_sf_debug_set_instance_data_value_ptr 0000000180023378     sf_runtime:sf_runtime.dll
+ 0002:00000380       __imp_sf_debug_reset_current_state_configuration 0000000180023380     sf_runtime:sf_runtime.dll
+ 0002:00000388       __imp_sim_mode_is_rtw_gen  0000000180023388     sf_runtime:sf_runtime.dll
+ 0002:00000390       __imp_sim_mode_is_external 0000000180023390     sf_runtime:sf_runtime.dll
+ 0002:00000398       __imp_sf_is_chart_inlinable 0000000180023398     sf_runtime:sf_runtime.dll
+ 0002:000003a0       __imp_sf_rtw_info_uint_prop 00000001800233a0     sf_runtime:sf_runtime.dll
+ 0002:000003a8       __imp_sf_update_buildInfo  00000001800233a8     sf_runtime:sf_runtime.dll
+ 0002:000003b0       __imp_sf_mark_chart_expressionable_inputs 00000001800233b0     sf_runtime:sf_runtime.dll
+ 0002:000003b8       __imp_sf_mark_chart_reusable_outputs 00000001800233b8     sf_runtime:sf_runtime.dll
+ 0002:000003c0       __imp_sf_set_rtw_dwork_info 00000001800233c0     sf_runtime:sf_runtime.dll
+ 0002:000003c8       __imp_sf_mex_get_sfun_param 00000001800233c8     sf_runtime:sf_runtime.dll
+ 0002:000003d0       __imp_sf_mex_import_named  00000001800233d0     sf_runtime:sf_runtime.dll
+ 0002:000003d8       __imp_sf_mex_import        00000001800233d8     sf_runtime:sf_runtime.dll
+ 0002:000003e0       __imp_sf_mex_dup           00000001800233e0     sf_runtime:sf_runtime.dll
+ 0002:000003e8       __imp_sf_mex_getcell       00000001800233e8     sf_runtime:sf_runtime.dll
+ 0002:000003f0       __imp_sf_mex_decode_encoded_mx_struct_array 00000001800233f0     sf_runtime:sf_runtime.dll
+ 0002:000003f8       __imp_sf_mex_setcell       00000001800233f8     sf_runtime:sf_runtime.dll
+ 0002:00000400       __imp_sf_mex_call_matlab   0000000180023400     sf_runtime:sf_runtime.dll
+ 0002:00000408       __imp_sf_mex_error_message 0000000180023408     sf_runtime:sf_runtime.dll
+ 0002:00000410       __imp_sf_mex_create        0000000180023410     sf_runtime:sf_runtime.dll
+ 0002:00000418       __imp_sf_mex_addfield      0000000180023418     sf_runtime:sf_runtime.dll
+ 0002:00000420       __imp_sf_mex_createcellmatrix 0000000180023420     sf_runtime:sf_runtime.dll
+ 0002:00000428       __imp_sf_mex_duplicatearraysafe 0000000180023428     sf_runtime:sf_runtime.dll
+ 0002:00000430       __imp_sf_mex_destroy       0000000180023430     sf_runtime:sf_runtime.dll
+ 0002:00000438       __imp_sf_mex_createstruct  0000000180023438     sf_runtime:sf_runtime.dll
+ 0002:00000440       __imp_sf_mex_assign        0000000180023440     sf_runtime:sf_runtime.dll
+ 0002:00000448       __imp_sf_mex_emlrtNameCapturePostProcessR2012a 0000000180023448     sf_runtime:sf_runtime.dll
+ 0002:00000450       __imp_sf_load_rtw_optimization_info 0000000180023450     sf_runtime:sf_runtime.dll
+ 0002:00000458       __imp_sf_debug_initialize_machine 0000000180023458     sf_runtime:sf_runtime.dll
+ 0002:00000460       __imp_sf_debug_set_machine_event_thresholds 0000000180023460     sf_runtime:sf_runtime.dll
+ 0002:00000468       __imp_sf_debug_set_machine_data_thresholds 0000000180023468     sf_runtime:sf_runtime.dll
+ 0002:00000470       \177sf_runtime_NULL_THUNK_DATA 0000000180023470     sf_runtime:sf_runtime.dll
+ 0002:00000478       __xc_a                     0000000180023478     MSVCRT:cinitexe.obj
+ 0002:00000480       __xc_z                     0000000180023480     MSVCRT:cinitexe.obj
+ 0002:00000488       __xi_a                     0000000180023488     MSVCRT:cinitexe.obj
+ 0002:00000498       __xi_z                     0000000180023498     MSVCRT:cinitexe.obj
+ 0002:000004a0       __real@41c67e7fbb000000    00000001800234a0     ICARO_III_debug_tel_tag_sfun.obj
+ 0002:000004a8       __real@41dfacca85400000    00000001800234a8     ICARO_III_debug_tel_tag_sfun.obj
+ 0002:000004b0       __real@41d28707cb000000    00000001800234b0     ICARO_III_debug_tel_tag_sfun.obj
+ 0002:000004b8       __real@41e6a675e4a00000    00000001800234b8     ICARO_III_debug_tel_tag_sfun.obj
+ 0002:000004c0       __real@4144c1f900000000    00000001800234c0     ICARO_III_debug_tel_tag_sfun.obj
+ 0002:000004c8       __real@41e6e42ee1200000    00000001800234c8     ICARO_III_debug_tel_tag_sfun.obj
+ 0002:000004d0       __real@41d0a3865a800000    00000001800234d0     ICARO_III_debug_tel_tag_sfun.obj
+ 0002:000004d8       __real@41e5553452400000    00000001800234d8     ICARO_III_debug_tel_tag_sfun.obj
+ 0002:000004e0       __real@41d23b86e1400000    00000001800234e0     ICARO_III_debug_tel_tag_sfun.obj
+ 0002:000004e8       __real@41d216b8ac400000    00000001800234e8     ICARO_III_debug_tel_tag_sfun.obj
+ 0002:000004f0       __real@41e154a0e2200000    00000001800234f0     ICARO_III_debug_tel_tag_sfun.obj
+ 0002:000004f8       __real@41dc368508000000    00000001800234f8     ICARO_III_debug_tel_tag_sfun.obj
+ 0002:00000500       __real@41d970f0fe800000    0000000180023500     ICARO_III_debug_tel_tag_sfun.obj
+ 0002:00000508       __real@41cf9ae612800000    0000000180023508     ICARO_III_debug_tel_tag_sfun.obj
+ 0002:00000510       __real@41daba191cc00000    0000000180023510     ICARO_III_debug_tel_tag_sfun.obj
+ 0002:00000518       __real@41e4809585800000    0000000180023518     ICARO_III_debug_tel_tag_sfun.obj
+ 0002:00000520       __real@41e6fa8031000000    0000000180023520     c71_ICARO_III_debug_tel_tag.obj
+ 0002:00000528       __real@41e20a71c8c00000    0000000180023528     c71_ICARO_III_debug_tel_tag.obj
+ 0002:00000530       __real@41e2007d23600000    0000000180023530     c71_ICARO_III_debug_tel_tag.obj
+ 0002:00000538       __real@41c1603a0c000000    0000000180023538     c71_ICARO_III_debug_tel_tag.obj
+ 0002:00000540       __real@4010000000000000    0000000180023540     c71_ICARO_III_debug_tel_tag.obj
+ 0002:00000548       __real@4022000000000000    0000000180023548     c71_ICARO_III_debug_tel_tag.obj
+ 0002:00000550       __real@3ff0000000000000    0000000180023550     c71_ICARO_III_debug_tel_tag.obj
+ 0002:00000558       __real@4008000000000000    0000000180023558     c71_ICARO_III_debug_tel_tag.obj
+ 0002:00000560       __real@c0000000            0000000180023560     c71_ICARO_III_debug_tel_tag.obj
+ 0002:00000568       __real@0000000000000000    0000000180023568     c71_ICARO_III_debug_tel_tag.obj
+ 0002:00000570       __mask@@NegFloat@          0000000180023570     c71_ICARO_III_debug_tel_tag.obj
+ 0002:00000580       __real@25800000            0000000180023580     c71_ICARO_III_debug_tel_tag.obj
+ 0002:00000584       __real@3f800000            0000000180023584     c71_ICARO_III_debug_tel_tag.obj
+ 0002:00000588       __real@40000000            0000000180023588     c71_ICARO_III_debug_tel_tag.obj
+ 0002:00000590       __real@3f1a36e2eb1c432d    0000000180023590     c71_ICARO_III_debug_tel_tag.obj
+ 0002:00000598       __real@401c000000000000    0000000180023598     c71_ICARO_III_debug_tel_tag.obj
+ 0002:000005a0       __real@00800000            00000001800235a0     c71_ICARO_III_debug_tel_tag.obj
+ 0002:000005a4       __real@3e800000            00000001800235a4     c71_ICARO_III_debug_tel_tag.obj
+ 0002:000005a8       __real@3f000000            00000001800235a8     c71_ICARO_III_debug_tel_tag.obj
+ 0002:000005b0       __real@4000000000000000    00000001800235b0     c71_ICARO_III_debug_tel_tag.obj
+ 0002:000005c0       DYNAMIC_DIMENSION_DEF      00000001800235c0     ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0002:000005e0       _ssBadLevel2InputAccessMsg 00000001800235e0     ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0002:00000770       _ssBadLevel2DirectFeedMsg  0000000180023770     ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0002:000008b0       _ssBadLevel2DirectFeedSolutionMsg 00000001800238b0     ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0002:00000920       _ssBadLevel2ZeroDirectFeedMsg 0000000180023920     ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0002:00000a60       _ssBadLevel2ZeroDirectFeedMsg2 0000000180023a60     ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0002:00000b48       __real@bff0000000000000    0000000180023b48     ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0002:00000b50       __real@41602cbca0000000    0000000180023b50     ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0002:00000b58       _pRawDllMain               0000000180023b58     MSVCRT:crtdll.obj
+ 0002:00000b58       _pDefaultRawDllMain        0000000180023b58     MSVCRT:crtdll.obj
+ 0002:00000b70       ?ProcessDetach@NativeDll@<CrtImplementationDetails>@@0IB 0000000180023b70     MSVCRT:tncleanup.obj
+ 0002:00000b74       ?ProcessAttach@NativeDll@<CrtImplementationDetails>@@0IB 0000000180023b74     MSVCRT:tncleanup.obj
+ 0002:00000b78       ?ThreadAttach@NativeDll@<CrtImplementationDetails>@@0IB 0000000180023b78     MSVCRT:tncleanup.obj
+ 0002:00000b7c       ?ThreadDetach@NativeDll@<CrtImplementationDetails>@@0IB 0000000180023b7c     MSVCRT:tncleanup.obj
+ 0002:00000b80       ?ProcessVerifier@NativeDll@<CrtImplementationDetails>@@0IB 0000000180023b80     MSVCRT:tncleanup.obj
+ 0002:00000b88       __rtc_iaa                  0000000180023b88     MSVCRT:_initsect_.obj
+ 0002:00000b90       __rtc_izz                  0000000180023b90     MSVCRT:_initsect_.obj
+ 0002:00000b98       __rtc_taa                  0000000180023b98     MSVCRT:_initsect_.obj
+ 0002:00000ba0       __rtc_tzz                  0000000180023ba0     MSVCRT:_initsect_.obj
+ 0002:00001350       __IMPORT_DESCRIPTOR_sf_runtime 0000000180024350     sf_runtime:sf_runtime.dll
+ 0002:00001364       __IMPORT_DESCRIPTOR_libmx  0000000180024364     libmx:libmx.dll
+ 0002:00001378       __IMPORT_DESCRIPTOR_libmex 0000000180024378     libmex:libmex.dll
+ 0002:0000138c       __IMPORT_DESCRIPTOR_libut  000000018002438c     libut:libut.dll
+ 0002:000013a0       __IMPORT_DESCRIPTOR_libmwmathutil 00000001800243a0     libmwmathutil:libmwmathutil.dll
+ 0002:000013b4       __IMPORT_DESCRIPTOR_MSVCR100 00000001800243b4     MSVCRT:MSVCR100.dll
+ 0002:000013c8       __IMPORT_DESCRIPTOR_KERNEL32 00000001800243c8     kernel32:KERNEL32.dll
+ 0002:000013dc       __NULL_IMPORT_DESCRIPTOR   00000001800243dc     sf_runtime:sf_runtime.dll
+ 0003:00007d78       DYNAMIC_DIMENSION          000000018002dd78     ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0003:00008978       __security_cookie          000000018002e978     MSVCRT:gs_cookie.obj
+ 0003:00008980       __security_cookie_complement 000000018002e980     MSVCRT:gs_cookie.obj
+ 0003:00008988       _fltused                   000000018002e988     MSVCRT:dllsupp.obj
+ 0003:00008990       __native_dllmain_reason    000000018002e990     MSVCRT:natstart.obj
+ 0003:00008994       __native_vcclrit_reason    000000018002e994     MSVCRT:natstart.obj
+ 0003:00008a98       sfGlobalDebugInstanceStruct 000000018002ea98     ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0003:00009020       ?__type_info_root_node@@3U__type_info_node@@A 000000018002f020     MSVCRT:tncleanup.obj
+ 0003:00009030       _ICARO_III_debug_tel_tagMachineNumber_ 000000018002f030     <common>
+ 0003:00009034       __native_startup_state     000000018002f034     <common>
+ 0003:00009038       __native_startup_lock      000000018002f038     <common>
+ 0003:00009040       __onexitend                000000018002f040     <common>
+ 0003:00009048       __onexitbegin              000000018002f048     <common>
+ 0003:00009050       __dyn_tls_init_callback    000000018002f050     <common>
+
+ entry point at        0001:000216f0
+
+ Static symbols
+
+ 0001:00000b50       c71_info_helper            0000000180001b50 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0000a7c0       c71_emlrt_marshallOut      000000018000b7c0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0000a850       c71_b_emlrt_marshallOut    000000018000b850 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0000a8c0       c71_b_info_helper          000000018000b8c0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0000d1e0       get_sim_state_c71_ICARO_III_debug_tel_tag 000000018000e1e0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0000da80       sf_get_sim_state_info_c71_ICARO_III_debug_tel_tag 000000018000ea80 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0000dc50       set_sim_state_c71_ICARO_III_debug_tel_tag 000000018000ec50 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0000e1a0       c71_update_debugger_state_c71_ICARO_III_debug_tel_tag 000000018000f1a0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0000e1b0       c71_emlrt_marshallIn       000000018000f1b0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0000e220       c71_b_emlrt_marshallIn     000000018000f220 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0000e2e0       c71_c_emlrt_marshallIn     000000018000f2e0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0000e350       c71_d_emlrt_marshallIn     000000018000f350 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0000e440       c71_e_emlrt_marshallIn     000000018000f440 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0000e4b0       c71_f_emlrt_marshallIn     000000018000f4b0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0000e5a0       c71_k_emlrt_marshallIn     000000018000f5a0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0000e600       c71_l_emlrt_marshallIn     000000018000f600 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0000e700       mdlProcessParameters_c71_ICARO_III_debug_tel_tag 000000018000f700 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0000e7e0       initialize_params_c71_ICARO_III_debug_tel_tag 000000018000f7e0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0000e950       mdlSetWorkWidths_c71_ICARO_III_debug_tel_tag 000000018000f950 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0000f180       sf_get_instance_specialization 0000000180010180 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0000f190       mdlStart_c71_ICARO_III_debug_tel_tag 0000000180010190 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0000f3c0       init_dsm_address_info      00000001800103c0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0000f3d0       chart_debug_initialization 00000001800103d0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:00011220       init_script_number_translation 0000000180012220 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:00011240       c71_b_sf_marshallOut       0000000180012240 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:00011390       c71_b_sf_marshallIn        0000000180012390 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:00011480       c71_c_sf_marshallOut       0000000180012480 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:000115d0       c71_c_sf_marshallIn        00000001800125d0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:000116c0       c71_d_sf_marshallOut       00000001800126c0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:00011780       c71_d_sf_marshallIn        0000000180012780 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:00011820       c71_g_emlrt_marshallIn     0000000180012820 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:000118b0       sf_opaque_initialize_c71_ICARO_III_debug_tel_tag 00000001800128b0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:000118f0       initialize_c71_ICARO_III_debug_tel_tag 00000001800128f0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:00011940       sf_opaque_enable_c71_ICARO_III_debug_tel_tag 0000000180012940 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:00011960       enable_c71_ICARO_III_debug_tel_tag 0000000180012960 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:00011990       sf_opaque_disable_c71_ICARO_III_debug_tel_tag 0000000180012990 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:000119b0       disable_c71_ICARO_III_debug_tel_tag 00000001800129b0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:000119e0       sf_opaque_gateway_c71_ICARO_III_debug_tel_tag 00000001800129e0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:00011a00       sf_gateway_c71_ICARO_III_debug_tel_tag 0000000180012a00 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:00012410       c71_chartstep_c71_ICARO_III_debug_tel_tag 0000000180013410 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:00017730       c71_sf_marshallOut         0000000180018730 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:00017850       c71_sf_marshallIn          0000000180018850 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:000178f0       c71_e_sf_marshallOut       00000001800188f0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:000179a0       c71_e_sf_marshallIn        00000001800189a0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:00017a40       c71_h_emlrt_marshallIn     0000000180018a40 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:00017ad0       c71_f_sf_marshallOut       0000000180018ad0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:00017cd0       c71_f_sf_marshallIn        0000000180018cd0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:00017e10       c71_i_emlrt_marshallIn     0000000180018e10 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:00017f10       c71_norm                   0000000180018f10 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:00017f90       c71_eml_xnrm2              0000000180018f90 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:00018170       c71_abs                    0000000180019170 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:000181b0       c71_qtriad                 00000001800191b0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:00019f10       c71_g_sf_marshallOut       000000018001af10 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0001a060       c71_mpower                 000000018001b060 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0001a0d0       c71_eml_scalar_eg          000000018001b0d0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0001a0e0       c71_eml_error              000000018001b0e0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0001a2d0       c71_cross                  000000018001b2d0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0001a3c0       c71_b_cross                000000018001b3c0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0001a5b0       c71_eps                    000000018001b5b0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0001a5c0       c71_b_eml_scalar_eg        000000018001b5c0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0001a5d0       c71_c_cross                000000018001b5d0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0001a7e0       c71_atan2                  000000018001b7e0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0001a830       c71_b_sqrt                 000000018001b830 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0001a880       c71_b_eml_xgemm            000000018001b880 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0001a960       sf_opaque_get_sim_state_c71_ICARO_III_debug_tel_tag 000000018001b960 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0001a980       sf_opaque_set_sim_state_c71_ICARO_III_debug_tel_tag 000000018001b980 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0001a9b0       sf_opaque_terminate_c71_ICARO_III_debug_tel_tag 000000018001b9b0 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0001aa50       finalize_c71_ICARO_III_debug_tel_tag 000000018001ba50 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0001aa60       sf_opaque_init_subchart_simstructs 000000018001ba60 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0001aa80       initSimStructsc71_ICARO_III_debug_tel_tag 000000018001ba80 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0001aa90       mdlRTW_c71_ICARO_III_debug_tel_tag 000000018001ba90 f   c71_ICARO_III_debug_tel_tag.obj
+ 0001:0001b400       getChartInfoFromSimStruct  000000018001c400 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001caa0       _ssFatalError              000000018001daa0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001fb50       ProcessMexSfunctionCmdLineCall 0000000180020b50 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001fc80       sf_debug_api_wrapper       0000000180020c80 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001fcd0       mdlStart                   0000000180020cd0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001fd00       mdl_start_processing       0000000180020d00 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001fd90       mdlTerminate               0000000180020d90 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001fdc0       mdl_terminate_processing   0000000180020dc0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001fe40       mdlInitializeSampleTimes   0000000180020e40 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001fe70       mdlZeroCrossings           0000000180020e70 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001fea0       mdl_zeroCrossings_processing 0000000180020ea0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001fee0       mdlDerivatives             0000000180020ee0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001ff10       mdl_derivatives_processing 0000000180020f10 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001ff60       mdlInitializeConditions    0000000180020f60 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001ff90       mdl_initialize_conditions_processing 0000000180020f90 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:0001ffe0       mdlEnable                  0000000180020fe0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:00020010       mdl_enable_processing      0000000180021010 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:00020050       mdlDisable                 0000000180021050 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:00020080       mdl_disable_processing     0000000180021080 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:000200c0       mdlOutputs                 00000001800210c0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:000200f0       mdl_outputs_processing     00000001800210f0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:000201d0       mdl_outputs_continuous_legacy 00000001800211d0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:000202c0       mdlGetTimeOfNextVarHit     00000001800212c0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:00020310       _ProcessMexSfunctionCmdLineCall 0000000180021310 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:00020a60       mdlSetWorkWidths           0000000180021a60 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:00020a90       mdlProcessParameters       0000000180021a90 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:00020ac0       mdlInitializeSizes         0000000180021ac0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:00020af0       mdlExtModeExec             0000000180021af0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:00020b20       mdl_ext_mode_exec_processing 0000000180021b20 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:00020b60       mdlRTW                     0000000180021b60 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:00020ba0       _CreateSimStruct           0000000180021ba0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:00020d30       _RegNumInputPortsCB        0000000180021d30 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:00020db0       _RegNumOutputPortsCB       0000000180021db0 f   ICARO_III_debug_tel_tag_sfun_registry.obj
+ 0001:000212f8       pre_c_init                 00000001800222f8 f   MSVCRT:crtdll.obj
+ 0001:000215b4       __DllMainCRTStartup        00000001800225b4 f   MSVCRT:crtdll.obj
+ 0001:00021c20       __DllMainCRTStartup$filt$0 0000000180022c20 f   MSVCRT:crtdll.obj
+ 0001:00021c50       __DllMainCRTStartup$fin$1  0000000180022c50 f   MSVCRT:crtdll.obj
+ 0001:00021c6a       _onexit$fin$0              0000000180022c6a f   MSVCRT:atonexit.obj
+ 0001:00021c90       _IsNonwritableInCurrentImage$filt$0 0000000180022c90 f   MSVCRT:pesect.obj

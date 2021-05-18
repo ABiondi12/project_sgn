@@ -1,0 +1,56 @@
+%implements "sfun_PPM_capture" "C"
+
+%% Function: BlockTypeSetup ================================
+
+%function BlockTypeSetup(block, system) void
+    %%================================
+    %%.h Custom Includes
+    %%================================
+    %openfile buffer
+        #include "rtwtypes.h"
+    %closefile buffer
+    %<LibCacheIncludes(buffer)>
+    %%================================
+
+    %%=============================================
+    %%.c Wrap Includes
+    %%=============================================
+    %<LibAddToModelSources("wrap_PPM_capture")>
+    %%=============================================
+
+
+    %%==============================================
+    %%Wrap Function Declarations
+    %%==============================================
+    %openfile buffer
+        extern void wrap_PPM_start_fcn(void);
+        extern void wrap_PPM_output_fcn(uint32_T*,uint8_T*,uint8_T*);
+    %closefile buffer
+    %<LibCacheFunctionPrototype(buffer)>
+    %%==============================================
+        
+    %%==============================
+    %%Global variables
+    %%==============================
+    %openfile buffer
+    %closefile buffer
+    %<LibCacheGlobalPrmData(buffer)>
+    %%==============================
+%endfunction
+
+
+%% Function: Start =======================================
+
+%function Start(block, system) Output
+    wrap_PPM_start_fcn();
+%endfunction
+
+
+%% Function: Outputs =======================================
+
+%function Outputs(block, system) Output
+    %assign ppmval = LibBlockOutputSignalAddr(0,"","",0)
+    %assign newmess = LibBlockOutputSignalAddr(1,"","",0)
+    %assign ErrCnt = LibBlockOutputSignalAddr(2,"","",0)
+    wrap_PPM_output_fcn(%<ppmval>,%<newmess>,%<ErrCnt>);
+%endfunction

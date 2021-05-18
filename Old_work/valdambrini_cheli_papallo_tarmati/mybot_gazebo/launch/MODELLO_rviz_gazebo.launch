@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<launch>
+
+ <param name="robot_description" command="$(find xacro)/xacro.py '$(find mybot_gazebo)/urdf/MYBOTLASER.xacro'"/>
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"/>
+
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+
+<node name="rviz" pkg="rviz" type="rviz" required="true"/>
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+
+  <arg name="world_name" value="$(find mybot_gazebo)/worlds/mybot.world"/>
+
+    <arg name="debug" value="false" />
+    <arg name="gui" value="true" />
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="verbose" value="true"/>
+  </include>
+
+
+ <!--<node pkg="tf" type="static_transform_publisher" name="baselink2chassisTF" 
+args="0 0 0 0 0 0 base_link_1 chassis 100"/>
+-->
+  <node name="spawn_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model kbot -verbose" output="screen"/>
+
+</launch>
+

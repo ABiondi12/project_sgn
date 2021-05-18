@@ -1,0 +1,37 @@
+renaming_ttyUSB*
+	*=buona norma usare il nome del dispositivo che si vuole collegare via USB, es. ttyUSBlidar
+
+Questo readme spiega come creare un link "simbolico" tra la porta usb a cui si collega un generico dispositivo (generalmente "ttyUSB0" o "ttyUSB1") e un nome associato in una udev rule, per esempio "ttyUSB*"
+
+Per prima cosa controllare a che porta si e` collegato al momento il dispositivo, scollegando gli altri dispositivi usb, poi:
+	cd /dev
+	ls -la ttyUSB*
+
+Per esempio, l'unico device che appare collegato a ttyUSB* (il dispositivo appunto) e` collegato a "ttyUSB0".
+
+Adesso
+	udevadm info --name=/dev/ttyUSB0 --attribute-walk
+
+che restituisce informazioni di tutti i device lungo il path tra "/devices/" e "ttyUSB0".
+Dalla lista di informazioni, scendere fino al primo risultato in cui appaiono i campi "ATTRS{idVendor}" e "ATTRS{idProduct}" e memorizzarne il valore, ci serviranno piu` tardi. 
+Verificare tramite il comando
+	lsusb
+che il dispositivo selezionato al passo precedente abbia gli stessi valori di id.
+
+Creare un nuovo file "/etc/udev/rules.d/98-NOMEFILE.rules" (necessari permessi di sudo) 
+
+ATT! e` importante che il numero all'inizio del nome del file abbia valore inferiore rispetto a quello dei file.rules gia` presenti in "/etc/udev/rules.d"
+
+all'interno del file, e` necessario aggiungere una riga contenente:
+	KERNEL=="ttyUSB*", ATTRS{idVendor}=="idVendor", SYMLINK+="ttyUSB*"
+per ciascun device che si vuole rinominare attraverso symlink.
+
+una volta salvato il file eseguire il comando
+	sudo udevadm control --reload-rules
+e riavviare il dispositivo. Verificare l'esito ripetendo 
+	ls -la ttyUSB*
+
+
+
+
+

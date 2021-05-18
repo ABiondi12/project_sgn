@@ -1,0 +1,78 @@
+%implements "sfun_recv_from_bs" "C"
+
+%% Function: BlockTypeSetup ================================
+%%
+%function BlockTypeSetup(block, system) void
+    %% %if !SLibCodeGenForSim()
+        %%================================
+        %%.h Custom Includes
+        %%================================
+        %openfile buffer
+
+        %closefile buffer
+        %<LibCacheIncludes(buffer)>
+        %%================================
+
+
+        %%=============================================
+        %%.c Wrap Includes
+        %%=============================================
+        %<LibAddToModelSources("wrap_recv_from_bs")>
+        %%=============================================
+
+
+        %%=========================================================================================================================================================================================================================================================================================================================================================
+        %%Wrap Function Declarations
+        %%=========================================================================================================================================================================================================================================================================================================================================================
+        %openfile buffer
+                extern void wrap_recv_from_bs_start_fcn(unsigned char*,double*, char*, unsigned char*, double*, unsigned char*,double*,double*);
+                extern void wrap_recv_from_bs_output_fcn(unsigned char*, double*, char*, unsigned char*, double*, unsigned char*, double *id_car);
+        %closefile buffer
+        %<LibCacheFunctionPrototype(buffer)>
+        %%=========================================================================================================================================================================================================================================================================================================================================================
+
+
+        %%==============================
+        %%Global variables
+        %%==============================
+        %openfile buffer
+            
+        %closefile buffer
+        %<LibCacheGlobalPrmData(buffer)>
+        %%==============================
+    %% %endif
+%endfunction
+
+
+%% Function: Start =======================================
+%%
+%function Start(block, system) Output
+    %% %if !SLibCodeGenForSim() 
+       %assign mode_ptr = LibBlockOutputSignalAddr(0,"","",0)
+       %assign ecef_ref_ptr = LibBlockOutputSignalAddr(1,"","",0)
+       %assign waypoint_ptr = LibBlockOutputSignalAddr(2,"","",0)
+       %assign cmd_ptr = LibBlockOutputSignalAddr(3,"","",0)
+       %assign gain_pid_ptr = LibBlockOutputSignalAddr(4,"","",0)
+       %assign new_packet_ptr = LibBlockOutputSignalAddr(5,"","",0)
+	   %assign position_target_ptr = LibBlockOutputSignalAddr(6,"","",0)
+	   %assign velocity_target_ptr = LibBlockOutputSignalAddr(7,"","",0)
+       wrap_recv_from_bs_start_fcn(%<mode_ptr>,%<ecef_ref_ptr>,%<waypoint_ptr>,%<cmd_ptr>,%<gain_pid_ptr>,%<new_packet_ptr>,%<position_target_ptr>,%<velocity_target_ptr>);
+    %% %endif
+%endfunction
+
+
+%% Function: Outputs =======================================
+%%
+%function Outputs(block, system) Output
+    %% %if !SLibCodeGenForSim()
+        %% %assign byte_in  = LibBlockInputSignalAddr(0,"","",0)
+       %assign mode_ptr = LibBlockOutputSignalAddr(0,"","",0)
+       %assign ecef_ref_ptr = LibBlockOutputSignalAddr(1,"","",0)
+       %assign waypoint_ptr = LibBlockOutputSignalAddr(2,"","",0)
+       %assign cmd_ptr = LibBlockOutputSignalAddr(3,"","",0)
+       %assign gain_pid_ptr = LibBlockOutputSignalAddr(4,"","",0)
+       %assign new_packet_ptr = LibBlockOutputSignalAddr(5,"","",0)
+        %assign id_car = LibBlockInputSignalAddr(0,"","",0)
+        wrap_recv_from_bs_output_fcn(%<mode_ptr>,%<ecef_ref_ptr>,%<waypoint_ptr>,%<cmd_ptr>,%<gain_pid_ptr>,%<new_packet_ptr>,%<id_car>);
+    %% %endif
+%endfunction

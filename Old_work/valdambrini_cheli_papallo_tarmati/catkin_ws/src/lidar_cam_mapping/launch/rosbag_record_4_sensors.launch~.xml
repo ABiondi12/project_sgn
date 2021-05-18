@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<launch>
+
+<!--Avvia tutti e 4 i sensori (IMU, LIDAR, R200 cam, sonar) e li registra-->
+
+<include file="$(find progetto_launch)/launch/sensori/rplidarUSB0.launch" />
+<include file="$(find progetto_launch)/launch/sensori/altimetro.launch" />
+<include file="$(find xsens_driver)/launch/sensori/xsens.launch" />
+<include file="$(find progetto_launch)/launch/realsense_r200.launch" />
+
+</launch>

@@ -1,0 +1,9 @@
+digraph G {
+"odom" -> "base_link_1"[label="Broadcaster: /tagmean_4\nAverage rate: 5.208 Hz\nMost recent transform: 1574941031.507 ( 0.131 sec old)\nBuffer length: 4.800 sec\n"];
+"odom" -> "base_link_2"[label="Broadcaster: /tagnode_BIPE3\nAverage rate: 5.208 Hz\nMost recent transform: 1574941031.520 ( 0.118 sec old)\nBuffer length: 4.800 sec\n"];
+"odom" -> "base_link_3"[label="Broadcaster: /tagnodeold\nAverage rate: 5.208 Hz\nMost recent transform: 1574941031.566 ( 0.073 sec old)\nBuffer length: 4.800 sec\n"];
+edge [style=invis];
+ subgraph cluster_legend { style=bold; color=black; label ="view_frames Result";
+"Recorded at time: 1574941031.639"[ shape=plaintext ] ;
+ }->"odom";
+}

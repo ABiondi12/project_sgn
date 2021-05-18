@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+
+<launch>
+	<!-- start UWB -->
+	<include file="$(find charlie_launch)/launch/start_uwb.launch"/>
+
+	<!-- defines anchors location -->
+	<!-- <node pkg="tf" type="static_transform_publisher" name="uwb_anchor_0x6902" args="0 		0 		0 		0 0 0 1 UWB uwb_anchor_0 100" />
+	<node pkg="tf" type="static_transform_publisher" name="uwb_anchor_0x6e7a" args="0 		3.936 	0 		0 0 0 1 UWB uwb_anchor_1 100" />
+	<node pkg="tf" type="static_transform_publisher" name="uwb_anchor_0x6e44" args="5.456 	0.2940 	0 		0 0 0 1 UWB uwb_anchor_2 100" />
+	<node pkg="tf" type="static_transform_publisher" name="uwb_anchor_0x6e6c" args="0.711 	1.507 	0.6590 	0 0	0 1 UWB uwb_anchor_3 100" /> -->
+
+	<node pkg="pozyx_ros" type="pub_anchors_tf.py" name="pub_anchors_tf" />
+	
+	<!-- start rviz -->
+	<node pkg="rviz" type="rviz" name="rviz"
+    	args="-d $(find charlie_launch)/rviz_cfg/uwb_debug_cfg.rviz"/>
+
+
+</launch>

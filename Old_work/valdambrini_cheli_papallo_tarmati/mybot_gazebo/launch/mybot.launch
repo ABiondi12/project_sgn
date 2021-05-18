@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<launch>
+
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(find mybot_gazebo)/urdf/mybot_BLU.xacro'"/>
+
+  <!-- send fake joint values -->
+<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <param name="use_gui" value="False"/>
+  </node>
+
+  <!-- Combine joint values -->
+ <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"/>
+
+  <!-- Show in Rviz   -->
+  <node name="rviz" pkg="rviz" type="rviz"/>
+  <!-- <node name="rviz" pkg="rviz" type="rviz" args="-d $(find mybot_description)/launch/bipe.rviz"/> --> 
+
+
+<node pkg="tf" type="static_transform_publisher" name="baselink2bpdyTF" 
+args="0 0 0.2 0 0 0 base_link_ff2 body 100"/>
+
+ <!--<node pkg="tf" type="static_transform_publisher" name="map2right_weelTF" 
+args="0.5 0.5 0 0 0 0 map right_weel 100"/>
+
+<node pkg="tf" type="static_transform_publisher" name="map2left_weelTF" 
+args="0.5 -0.5 0 0 0 0 map left_weel 100"/> -->
+
+
+
+</launch>

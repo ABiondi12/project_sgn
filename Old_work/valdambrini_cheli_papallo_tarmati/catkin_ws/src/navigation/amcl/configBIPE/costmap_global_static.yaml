@@ -1,0 +1,31 @@
+global_frame: map
+rolling_window: false
+track_unknown_space: true
+
+#aGGIUNTO SOTTO BIPE
+static:
+   map_topic: /map
+   subscribe_to_updates: true
+####
+
+
+
+plugins:
+  - {name: static,                  type: "costmap_2d::StaticLayer"}
+#aggiunto BIPE
+  - {name: sensor,    type: "costmap_2d::ObstacleLayer"}
+#####
+  - {name: inflation,               type: "costmap_2d::InflationLayer"}
+
+
+
+
+
+
+#AGGIUNTO BIPE SOTTO
+#obstacles_laser:
+#    observation_sources: laser
+#    laser: {sensor_frame: laser, data_type: LaserScan, clearing: true, marking: true, topic: scan}
+#####
+ 
+

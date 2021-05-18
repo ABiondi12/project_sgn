@@ -1,0 +1,65 @@
+%implements "sfun_save_to_datalogger" "C"
+
+%% Function: BlockTypeSetup ================================
+
+%function BlockTypeSetup(block, system) void
+    %%================================
+    %%.h Custom Includes
+    %%================================
+    %openfile buffer
+        #include "rtwtypes.h"
+    %closefile buffer
+    %<LibCacheIncludes(buffer)>
+    %%================================
+
+    %%=============================================
+    %%.c Wrap Includes
+    %%=============================================
+    %<LibAddToModelSources("wrap_save_to_datalogger")>
+    %%=============================================
+
+
+    %%==============================================
+    %%Wrap Function Declarations
+    %%==============================================
+    %openfile buffer
+        extern void wrap_save_to_datalogger_start_fcn(void);
+        extern void wrap_save_to_datalogger_fcn(uint32_t*, int32_t*, int32_t*, int8_t*, int8_t*, uint8_t*, real_T*, real_T*, real_T*, real_T*, real_T*, real_T*);
+    %closefile buffer
+    %<LibCacheFunctionPrototype(buffer)>
+    %%==============================================
+        
+    %%==============================
+    %%Global variables
+    %%==============================
+    %openfile buffer
+    %closefile buffer
+    %<LibCacheGlobalPrmData(buffer)>
+    %%==============================
+%endfunction
+
+
+%% Function: Start =======================================
+
+%function Start(block, system) Output
+    wrap_save_to_datalogger_start_fcn();
+%endfunction
+
+
+%% Function: Outputs =======================================
+
+%function Outputs(block, system) Output
+	%assign arduino_id = LibBlockInputSignalAddr(0,"","",0)
+	%assign arduino_x = LibBlockInputSignalAddr(1,"","",0)
+    %assign arduino_y = LibBlockInputSignalAddr(2,"","",0)
+    %assign arduino_dx = LibBlockInputSignalAddr(3,"","",0)
+    %assign arduino_dy = LibBlockInputSignalAddr(4,"","",0)
+    %assign arduino_squal = LibBlockInputSignalAddr(5,"","",0)
+	%assign acc_adxl = LibBlockInputSignalAddr(6,"","",0)
+	%assign mag_hmc = LibBlockInputSignalAddr(7,"","",0)
+	%assign gyro_itg = LibBlockInputSignalAddr(8,"","",0)
+	%assign gps_data = LibBlockInputSignalAddr(9,"","",0)
+	%assign gps_data_ecef = LibBlockInputSignalAddr(10,"","",0)	
+	%assign pwm = LibBlockInputSignalAddr(11,"","",0)	
+    wrap_save_to_datalogger_output_fcn(%<arduino_id>, %<arduino_x>, %<arduino_y>, %<arduino_dx>, %<arduino_dy>, %<arduino_squal>, %<acc_adxl>, %<mag_hmc>, %<gyro_itg>, %<gps_data>, %<gps_data_ecef>, %<pwm>);
+%endfunction

@@ -1,0 +1,33 @@
+footprint: [[-0.4, -0.25], [-0.4, 0.25], [0.4, 0.25], [0.4, -0.25]]
+footprint_padding: 0.01
+
+robot_base_frame: base_link
+update_frequency: 1.5
+publish_frequency: 1.5
+transform_tolerance: 0.5
+
+resolution: 0.05
+
+obstacle_range: 12
+raytrace_range: 12
+
+#layer definitions
+#COMMENTATO SOTTO BIPE
+#static:
+#   map_topic: /map
+#   subscribe_to_updates: true
+#####
+
+
+#COMMENTATO BIPE SOTTO
+obstacles_laser:
+   observation_sources: laser
+   laser: {data_type: LaserScan, clearing: true, marking: true, topic: scan, inf_is_valid: true}
+#####
+
+
+
+
+inflation:
+# inflation_radius 1.0
+    inflation_radius: 0.1

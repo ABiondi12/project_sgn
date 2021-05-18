@@ -3,7 +3,7 @@
 <launch>
   
   <!-- start Lidar -->
-  <include file="$(find rplidar_ros)/launch/rplidar_a3.launch"/>
+  <include file="$(find charlie_launch)/launch/rplidar_a3.launch"/>
   
   <!-- start rviz -->
   <node pkg="rviz" type="rviz" name="rviz"

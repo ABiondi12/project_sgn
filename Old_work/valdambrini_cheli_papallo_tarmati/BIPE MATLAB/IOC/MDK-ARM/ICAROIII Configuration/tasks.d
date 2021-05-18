@@ -1,0 +1,17 @@
+icaroiii configuration\tasks.o: ..\Middlewares\Third_Party\FreeRTOS\Source\tasks.c
+icaroiii configuration\tasks.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+icaroiii configuration\tasks.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+icaroiii configuration\tasks.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\FreeRTOS.h
+icaroiii configuration\tasks.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+icaroiii configuration\tasks.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+icaroiii configuration\tasks.o: ..\Inc\FreeRTOSConfig.h
+icaroiii configuration\tasks.o: ..\Inc\mxconstants.h
+icaroiii configuration\tasks.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\projdefs.h
+icaroiii configuration\tasks.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\portable.h
+icaroiii configuration\tasks.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\deprecated_definitions.h
+icaroiii configuration\tasks.o: ..\Middlewares\Third_Party\FreeRTOS\Source\portable\RVDS\ARM_CM4F\portmacro.h
+icaroiii configuration\tasks.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\mpu_wrappers.h
+icaroiii configuration\tasks.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\task.h
+icaroiii configuration\tasks.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\list.h
+icaroiii configuration\tasks.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\timers.h
+icaroiii configuration\tasks.o: ..\Middlewares\Third_Party\FreeRTOS\Source\include\StackMacros.h

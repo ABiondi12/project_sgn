@@ -1,0 +1,3 @@
+config load C:\Users\ivald\Desktop\LAVORI_BARBARA\FREERtos_Tools\ICARO_III_RTOS\IOC\ICAROIII.ioc
+project generate ui
+exit wait

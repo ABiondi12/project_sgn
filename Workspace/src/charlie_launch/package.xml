@@ -10,8 +10,8 @@
 
   <url type="website">https://github.com/ABiondi12/project_sgn</url>
 
-  <author email="9alessia5@gmail.com">Alessia Biondi</maintainer>
-  <author email="petracci.francesco@gmail.com">Francesco Petracci</maintainer>
+  <author email="9alessia5@gmail.com">Alessia Biondi</author>
+  <author email="petracci.francesco@gmail.com">Francesco Petracci</author>
 
   <buildtool_depend>catkin</buildtool_depend>
 

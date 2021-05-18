@@ -1,0 +1,56 @@
+%implements "sfun_show_PWM" "C"
+
+%% Function: BlockTypeSetup ================================
+
+%function BlockTypeSetup(block, system) void
+    %%================================
+    %%.h Custom Includes
+    %%================================
+    %openfile buffer
+        #include "rtwtypes.h"
+    %closefile buffer
+    %<LibCacheIncludes(buffer)>
+    %%================================
+
+    %%=============================================
+    %%.c Wrap Includes
+    %%=============================================
+    %<LibAddToModelSources("wrap_show_PWM")>
+    %%=============================================
+
+
+    %%==============================================
+    %%Wrap Function Declarations
+    %%==============================================
+    %openfile buffer
+        extern void wrap_show_PWM_start_fcn(void);
+        extern void wrap_show_PWM_output_fcn(uint16_T*, uint16_T*, uint16_T*);
+    %closefile buffer
+    %<LibCacheFunctionPrototype(buffer)>
+    %%==============================================
+        
+    %%==============================
+    %%Global variables
+    %%==============================
+    %openfile buffer
+    %closefile buffer
+    %<LibCacheGlobalPrmData(buffer)>
+    %%==============================
+%endfunction
+
+
+%% Function: Start =======================================
+
+%function Start(block, system) Output
+    wrap_show_PWM_start_fcn();
+%endfunction
+
+
+%% Function: Outputs =======================================
+
+%function Outputs(block, system) Output
+    %assign input_duty = LibBlockInputSignalAddr(0,"","",0)
+    %assign input_ton = LibBlockInputSignalAddr(1,"","",0)
+    %assign input_freq = LibBlockInputSignalAddr(2,"","",0)
+    wrap_show_PWM_output_fcn(%<input_duty>, %<input_ton>, %<input_freq>);
+%endfunction

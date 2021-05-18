@@ -1,0 +1,65 @@
+%implements "sfun_srf02" "C"
+
+%% Function: BlockTypeSetup ================================
+%%
+%function BlockTypeSetup(block, system) void
+    %% %if !SLibCodeGenForSim()
+        %%================================
+        %%.h Custom Includes
+        %%================================
+        %openfile buffer
+            #include "circular_buffer.h"
+        %closefile buffer
+        %<LibCacheIncludes(buffer)>
+        %%================================
+
+
+        %%=============================================
+        %%.c Wrap Includes
+        %%=============================================
+        %<LibAddToModelSources("wrap_srf02")>
+        %%=============================================
+
+
+        %%=========================================================================================================================================================================================================================================================================================================================================================
+        %%Wrap Function Declarations
+        %%=========================================================================================================================================================================================================================================================================================================================================================
+        %openfile buffer
+                extern void wrap_srf02_start_fcn();
+                extern void wrap_srf02_output_fcn(double*, double*);
+        %closefile buffer
+        %<LibCacheFunctionPrototype(buffer)>
+        %%=========================================================================================================================================================================================================================================================================================================================================================
+
+
+        %%==============================
+        %%Global variables
+        %%==============================
+        %openfile buffer
+        %closefile buffer
+        %<LibCacheGlobalPrmData(buffer)>
+        %%==============================
+    %% %endif
+%endfunction
+
+
+%% Function: Start =======================================
+%%
+%function Start(block, system) Output
+    %% %if !SLibCodeGenForSim() 
+       %% %assign output_ptr = LibBlockOutputSignalAddr(0,"","",0)
+       wrap_srf02_start_fcn();
+    %% %endif
+%endfunction
+
+
+%% Function: Outputs =======================================
+%%
+%function Outputs(block, system) Output
+    %% %if !SLibCodeGenForSim()
+        %% %assign byte_in  = LibBlockInputSignalAddr(0,"","",0)
+        %assign aroutput = LibBlockOutputSignalAddr(0,"","",0)
+        %assign newpacket = LibBlockOutputSignalAddr(1,"","",0)
+        wrap_srf02_output_fcn(%<aroutput>, %<newpacket>);
+    %% %endif
+%endfunction
