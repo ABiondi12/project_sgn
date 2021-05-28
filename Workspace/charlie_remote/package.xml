@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>charlie_remote</name>
+  <version>0.0.0</version>
+  <description>charlie_remote contiene i file di lancio utili da remoto (ovvero su una macchina collegata 
+  come slave alla raspberry master)</description>
+  
+  <maintainer email="charlie.robot.dii@gmail.com">Charlie Robot</maintainer>
+
+  <license>TODO</license>
+
+  <url type="website">https://github.com/ABiondi12/project_sgn</url>
+
+  <author email="9alessia5@gmail.com">Alessia Biondi</author>
+  <author email="petracci.francesco@gmail.com">Francesco Petracci</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+    <!-- Other tools can request additional information be placed here -->
+
+  </export>
+</package>

@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<!-- Scegliere quale configurazione usare commentando/scommentando le righe giuste  -->
+<launch>	
+
+	<!-- start rviz -->
+	<node pkg="rviz" type="rviz" name="rviz"
+		args="-d $(find charlie_remote)/rviz_cfg/test_frames_map.rviz"/>
+
+	
+</launch>
