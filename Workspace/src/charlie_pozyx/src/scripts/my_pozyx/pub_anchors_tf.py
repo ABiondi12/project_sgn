@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import pypozyx as pp
-# import numpy as np
 import tf
 import rospy
 

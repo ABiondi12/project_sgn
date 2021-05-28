@@ -1,14 +1,10 @@
 #!/usr/bin/env python
 # coding=utf-8
-"""
-ROS node that publishes the pose (position + quaternion) of the Pozyx
-
-This is an example of how to combine sensor data and positioning into a single
-channel output.
-
-Quite overkill using _Pose, as this consists of 7 float64s, while the source
-data comes from integers. Suggestions to replace this are quite welcomed.
-"""
+'''
+	Questo file si occupa di lanciare un nodo ros che salva in un file.txt la posa del centro della mappa 
+	(coincidente con il centro del veicolo fermo prima di avviare l'acquisizione della mappa) rispetto al
+	frame UWB. Una volta terminato il salvataggio, interrompe anche il nodo
+'''
 
 import pypozyx
 import rospy
@@ -19,9 +15,11 @@ from scipy import stats
 import matplotlib.pyplot as plt
 import numpy as np
 import time
-# my definitions 
-from defs import*
 
+from defs import* # my definitions 
+
+
+# INIT variabili callbacks ------------------------------------------------------------
 orientation = Point()
 
 # init 'pose' as a pose stamped msg (all zeros)
@@ -39,16 +37,14 @@ rcvd_msgs_1 = 0
 
 # number of samples to collect for both tag 0 and 1 
 n_samples = 100
-z_limit = 3
 
 remote_id = None
 
-# TF_filename = "/home/robot/charlie_ws/src/pozyx_ros/src/scripts/my_pozyx/UWB2map_TF.txt" # VECCHIO FILEPATH
+# percorso al file in cui vogliamo salvare la trasformazione
 TF_filename = "/home/pi/charlie_ws/src/charlie_pozyx/src/scripts/my_pozyx/UWB2map_TF.txt"
-
 status = 'collecting_data'
 
-##################################################
+# Callbacks ---------------------------------------------------------------------------
 def store_msg_callback_0(data):
 	global pose_rec_0
 	global rcvd_msgs_0
@@ -57,7 +53,6 @@ def store_msg_callback_0(data):
 		pose_rec_0.append(data)		
 		rcvd_msgs_0 += 1
 
-##################################################
 def store_msg_callback_1(data):
 	global pose_rec_1
 	global rcvd_msgs_1
@@ -66,14 +61,14 @@ def store_msg_callback_1(data):
 		pose_rec_1.append(data)		
 		rcvd_msgs_1 += 1
 			
-##################################################
 def orientation_callback(data):
-	global orientation
+	global orient_stm
 	
-	orientation = data
-		
-##################################################
+	orient_stm = data
+
+# eval_frame --------------------------------------------------------------------------s
 def eval_frame():
+	# init of global variables
 	global pose_0
 	global pose_rec_0
 	global rcvd_msgs_0
@@ -81,21 +76,26 @@ def eval_frame():
 	global pose_1
 	global pose_rec_1
 	global rcvd_msgs_1
+
 	global tag_center
-	
+
+	z_limit = 3  # z score limite accettabile
+
+	# check lunghezze	
 	if len(pose_rec_0) != n_samples or len(pose_rec_1) != n_samples:
-		print('error in collecting messages, wrong number')
+		rospy.loginfo('Error in collecting messages, wrong number.')
 		return
 	
-	#########################
-	rospy.loginfo('Filtro gli outliers nei dati raccolti')
+	#-----------------------------------------------------------------------
+	# let's begin proper stuff!!
+	rospy.loginfo('Filter outliers in collected data...')
 	
+	## tag 0
 	data=[]
 	# calcola la norma due al quadrato di ogni dato
-	for i in range (len(pose_rec_0)):
+	for i in range(len(pose_rec_0)):
 		data.append( pose_rec_0[i].pose.position.x**2 + pose_rec_0[i].pose.position.y**2 + pose_rec_0[i].pose.position.z**2 )
 
-	
 	# identifica gli outlier basandoti sulla norma due al quadrato e salva il loro indice
 	df= pd.DataFrame({'data':data})
 	df['z_score']=stats.zscore(df['data'])
@@ -116,8 +116,9 @@ def eval_frame():
 	plt.plot(data)
 	plt.show()
 	
-	rospy.loginfo('outliers eliminati in tag0: %d', rcvd_msgs_0-len(pose_rec_0))
+	rospy.loginfo('In tag0 measurements, %d samples has been removed!', rcvd_msgs_0-len(pose_rec_0))
 	
+	## tag 1
 	data=[]
 	# calcola la norma due al quadrato di ogni dato
 	for i in range (len(pose_rec_1)):
@@ -140,13 +141,12 @@ def eval_frame():
 	plt.plot(data)
 	plt.show()
 	
-	
-	rospy.loginfo('outliers eliminati in tag1: %d', rcvd_msgs_1-len(pose_rec_1) )
+	rospy.loginfo('In tag1 measurements, %d samples has been removed!', rcvd_msgs_1-len(pose_rec_1) )
 
 	
-	#########################
-	
-	# sum all vectors
+	#------------------------------------------------------------------------	
+	# Calcolo media delle pose dei due tag
+	# sum all vectors di tag0
 	for i in range(len(pose_rec_0)):
 		pose_0.pose.position.x += pose_rec_0[i].pose.position.x
 		pose_0.pose.position.y += pose_rec_0[i].pose.position.y
@@ -157,7 +157,7 @@ def eval_frame():
 		pose_0.pose.orientation.z += pose_rec_0[i].pose.orientation.z
 		pose_0.pose.orientation.w += pose_rec_0[i].pose.orientation.w
 
-	# evaluate mean value
+	# evaluate mean value di tag0
 	pose_0.pose.position.x /=  len(pose_rec_0)
 	pose_0.pose.position.y /=  len(pose_rec_0)
 	pose_0.pose.position.z /=  len(pose_rec_0)
@@ -165,9 +165,9 @@ def eval_frame():
 	pose_0.pose.orientation.x /= len(pose_rec_0)
 	pose_0.pose.orientation.y /= len(pose_rec_0)
 	pose_0.pose.orientation.z /= len(pose_rec_0)
-	pose_0.pose.orientation.w /= len(pose_rec_0) # not sure if legit
+	pose_0.pose.orientation.w /= len(pose_rec_0) # not sure if legit (si spera stia fermo!)
 
-		# sum all vectors
+	# sum all vectors di tag1
 	for i in range(len(pose_rec_1)):
 		pose_1.pose.position.x += pose_rec_1[i].pose.position.x
 		pose_1.pose.position.y += pose_rec_1[i].pose.position.y
@@ -178,7 +178,7 @@ def eval_frame():
 		pose_1.pose.orientation.z += pose_rec_1[i].pose.orientation.z
 		pose_1.pose.orientation.w += pose_rec_1[i].pose.orientation.w
 
-	# evaluate mean value
+	# evaluate mean value di tag1
 	pose_1.pose.position.x /=  len(pose_rec_1)
 	pose_1.pose.position.y /=  len(pose_rec_1)
 	pose_1.pose.position.z /=  len(pose_rec_1)
@@ -188,13 +188,17 @@ def eval_frame():
 	pose_1.pose.orientation.z /= len(pose_rec_1)
 	pose_1.pose.orientation.w /= len(pose_rec_1) # not sure if legit
 
+	#------------------------------------------------------------------------	
 	# evaluate center position between tags 
 	tag_center.pose.position.x =  (pose_0.pose.position.x + pose_1.pose.position.x) * 0.5
 	tag_center.pose.position.y =  (pose_0.pose.position.y + pose_1.pose.position.y) * 0.5
 	tag_center.pose.position.z =  0 #(pose_0.pose.position.z + pose_1.pose.position.z) * 0.5
 	
-	heading = -(orientation.z) #correzione z-down a z-up
-	lidar_quat = tf.transformations.quaternion_from_euler(0,0, heading)
+	# heading = np.arctan2(	(pose_0.pose.position.y - pose_1.pose.position.y), 
+	# 						(pose_0.pose.position.x - pose_1.pose.position.x))  # volendo bypassare stm
+
+	heading = -(orient_stm.z)	#correzione z-down a z-up 
+	lidar_quat = tf.transformations.quaternion_from_euler(heading, 0, 0, axes='szyx')
 	
 	tag_center.pose.orientation.x = lidar_quat[0]
 	tag_center.pose.orientation.y = lidar_quat[1]
@@ -202,7 +206,7 @@ def eval_frame():
 	tag_center.pose.orientation.w = lidar_quat[3]
 
 
-##################################################
+# save_map_TF -------------------------------------------------------------------------
 def save_map_TF():
 	global rcvd_msgs_0
 	global n_samples
@@ -242,16 +246,20 @@ def save_map_TF():
 			rospy.loginfo('data collection terminated... \n\t TAG_0: %d / %d samples collected \n\t TAG_1: %d / %d samples collected', rcvd_msgs_0, n_samples, rcvd_msgs_1, n_samples, )
 			rospy.loginfo('evaluating TF: %s -> %s', UWB_frame_ID, odom_frame_ID)
 			
-			# unsubscribe
+			# unsubscribe to stop listening (and appending) samples
 			tag_0_sub.unregister()
 			tag_1_sub.unregister()
-			
+
 			# prima di salvare, attendi per sicurezza almeno il tempo di convergenza del filtro AHRS implemetato su STM
 			rospy.loginfo('waiting for yaw to settle ... (35s)')
 			time.sleep(35)	
 			rospy.loginfo('done')
-			eval_frame()
+			orie_sub.unregister()	
 			
+			# valuta posa
+			eval_frame()
+
+			# Scrittura file.txt
 			f = open(TF_filename,"w+") # accedi al file in scrittura
 			f.write("%f\r\n" %tag_center.pose.position.x)
 			f.write("%f\r\n" %tag_center.pose.position.y)
@@ -261,20 +269,18 @@ def save_map_TF():
 			f.write("%f\r\n" %tag_center.pose.orientation.y)
 			f.write("%f\r\n" %tag_center.pose.orientation.z)			
 			f.write("%f\r\n" %tag_center.pose.orientation.w)	
-			f.close()				
+			f.close()
+
 			# inform that frame setup is complete
 			status = 'done'
 	
 		else:
 			rospy.loginfo('collecting data... \n\t TAG_0: %d / %d samples collected \n\t TAG_1: %d / %d samples collected', rcvd_msgs_0, n_samples, rcvd_msgs_1, n_samples, )
 
-
-
-			
-
-
+#--------------------------------------------------------------------------
+# main
 if __name__ == '__main__':
-    try:
-        save_map_TF()
-    except rospy.ROSInterruptException:
+	try:
+		save_map_TF()
+	except rospy.ROSInterruptException:
 		pass

@@ -29,16 +29,15 @@ amcl_pose = PoseWithCovarianceStamped()
 orient = Point()
 startstop = 0.0
 
-def vicon_cb_0(data):
+def tag_center_cb(data):
     global tag_center_pose
     tag_center_pose = data
     
-def vicon_cb_1(data):
+def amcl_pose_cb(data):
     global amcl_pose
     amcl_pose = data
-    
-    
-def vicon_cb_2(data):
+       
+def orient_cb(data):
     global orient
     orient = data
         
@@ -58,15 +57,15 @@ def pozyx_pose_fix_pub():
 	
 	rospy.init_node('pozyx_initial_pose_pub')
 	
-  # si iscrive al topic che contiene la posa del punto centrale tra le due tag
-	sub_tag_in_map = rospy.Subscriber(tag_in_map_topic_ID, PoseStamped, vicon_cb_0)
-	sub_start_stop = rospy.Subscriber("/start_and_stop", Float64, motori_cb)
+	# si iscrive al topic che contiene la posa del punto centrale tra le due tag
+	sub_tag_in_map 	= rospy.Subscriber(tag_in_map_topic_ID, PoseStamped, 	tag_center_cb)
+	sub_start_stop 	= rospy.Subscriber("/start_and_stop", 	Float64, 		motori_cb)
 	
-	sub_amcl_pose = rospy.Subscriber("amcl_pose", PoseWithCovarianceStamped, vicon_cb_1)
-	sub_orient = rospy.Subscriber("orientation", Point, vicon_cb_2)
+	sub_amcl_pose 	= rospy.Subscriber("amcl_pose", 		PoseWithCovarianceStamped, 	amcl_pose_cb)
+	sub_orient 		= rospy.Subscriber("orientation", 		Point, 						orient_cb)
 	
-	pose_fix_pub = rospy.Publisher("/initialpose", PoseWithCovarianceStamped, queue_size=1)  #100
-	pub_start_stop = rospy.Publisher("/start_and_stop", Float64, queue_size=100)
+	pose_fix_pub 	= rospy.Publisher("/initialpose", 		PoseWithCovarianceStamped, queue_size=1)  #100
+	pub_start_stop 	= rospy.Publisher("/start_and_stop", 	Float64, queue_size=100)
 	time.sleep(30) 
 	
 	client = dynamic_reconfigure.client.Client("amcl", timeout=30, config_callback=pose_fix_callback)
@@ -77,7 +76,6 @@ def pozyx_pose_fix_pub():
 		initial_pose = PoseWithCovarianceStamped()
 		
 		# controlla quanto la posa di AMCL si discosta da quella delle UWB, tutto nel frame MAP
-		
 		amcl_x = amcl_pose.pose.pose.position.x
 		amcl_y = amcl_pose.pose.pose.position.y
 		
@@ -109,6 +107,7 @@ def pozyx_pose_fix_pub():
 			initial_pose.pose.covariance[28] = 0.0;
 			initial_pose.pose.covariance[35] = 0.0001573948106108449;"""
 			
+			# si modifica la diagonale
 			initial_pose.pose.covariance[0]  = 0.215;
 			initial_pose.pose.covariance[7]  = 0.26;
 			initial_pose.pose.covariance[14] = 0.0;
@@ -125,8 +124,8 @@ def pozyx_pose_fix_pub():
 			# orientazione come ATAN tra 2 punti
 			#theta = np.arctan2([tag0_pose.pose.position.y -  tag1_pose.pose.position.y], [tag0_pose.pose.position.x - tag1_pose.pose.position.x])
 			
+			# orientazione presa da STM che la valuta internamente
 			theta = -orient.z #STM in z-down, viene convertito in z-up
-		
 			quat = tf.transformations.quaternion_from_euler(0, 0, theta)
 		
 			initial_pose.pose.pose.orientation = tag_center_pose.pose.orientation

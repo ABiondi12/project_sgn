@@ -8,7 +8,6 @@
 <!-- Start Lidar -->
 <include file="$(find charlie_launch)/launch/rplidar_a3.launch"/>
 
-
 <!--Hector Mapping-->
 <node pkg="hector_mapping" type="hector_mapping" name="hector_mapping" output="screen" >
 	<param name="pub_odometry" value="false" />

@@ -86,9 +86,11 @@ def doPos_pubtf(tag_serial, tag_id, pose_pub):
 	'''
 	# check name
 	if tag_id == 0x6760:
-		tagname = "tag0"
+		tag_name = "tag0"
+		tag_framename = tag0_frame_ID
 	elif tag_id == 0x675d:
-		tagname = "tag1"
+		tag_name = "tag1"
+		tag_framename = tag1_frame_ID
 	else:
 		rospy.loginfo("Check id of the connected tag!")
 	
@@ -105,7 +107,7 @@ def doPos_pubtf(tag_serial, tag_id, pose_pub):
 	status &= 	tag_serial.getEulerAngles_deg(euler_angles, remote_id=None)
 
 	if status != pypozyx.POZYX_SUCCESS:
-		rospy.loginfo("%s failed ", tagname)
+		rospy.loginfo("%s failed ", tag_name)
 
 	if status == pypozyx.POZYX_SUCCESS and not (coords.x == 0.0 and coords.y == 0.0 and coords.z == 0.0):
 		pose.header.frame_id = UWB_frame_ID
@@ -122,17 +124,18 @@ def doPos_pubtf(tag_serial, tag_id, pose_pub):
 
 		# Pubblico sul rispettivo topic
 		pose_pub.publish(pose)
-		br_0 = tf.TransformBroadcaster() #init broadcaster
 
-		br_0.sendTransform(
+		br = tf.TransformBroadcaster() #init broadcaster
+
+		br.sendTransform(
 			(pose.pose.position.x, pose.pose.position.y, pose.pose.position.z), 	# posizione
 			(pose.pose.orientation.x, pose.pose.orientation.y, 
 				pose.pose.orientation.z, pose.pose.orientation.w),					# orientazione
 			rospy.Time.now(),														# tempo
-			tag0_frame_ID,															# child sdr
+			tag_framename,															# child sdr
 			UWB_frame_ID															# parent sdr
 		)
-		rospy.loginfo("%s || POS-> X: %f Y: %f Z: %f \t | ANGLE-> roll: %f pitch: %f yaw: %f ||" , tagname,
+		rospy.loginfo("%s || POS-> X: %f Y: %f Z: %f \t | ANGLE-> roll: %f pitch: %f yaw: %f ||" , tag_name,
 					pose.pose.position.x, pose.pose.position.y, pose.pose.position.z, 
 					euler_angles.roll, euler_angles.pitch, euler_angles.heading)
 
@@ -151,7 +154,7 @@ def pozyx_pose_pub():
 	rate = rospy.Rate(20)
 	
 	# Inizializzazione delle porte seriali, cerca automaticamente 2 tag (se si lascia una sola tag connessa non funziona e richiede di connettere un dispositivo Pozyx)
-	try:
+	try: 
 		serial_port_0 	= pypozyx.get_pozyx_ports()[0]			# prende la stringa contentente l'indirizzo della seriale a cui e` connesso un tag
 		pozyx_0 		= pypozyx.PozyxSerial(serial_port_0)	# crea la comunicazione seriale
 

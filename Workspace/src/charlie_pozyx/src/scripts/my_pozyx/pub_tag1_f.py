@@ -102,7 +102,7 @@ def filter():
 	global coords
 
 	rospy.init_node('filter_node_2')
-	#rate = rospy.Rate(100.0)
+	rate = rospy.Rate(100.0)
 
 	filter_sub = rospy.Subscriber(tag1_topic_ID, PoseStamped, callback)
 	filter_pub = rospy.Publisher(tag1_topic_ID_f, PoseStamped, queue_size=100)
@@ -128,12 +128,12 @@ def filter():
 		)
 		
 
-		#rate.sleep()
+		rate.sleep()
 		
 
 
 if __name__ == '__main__':
-    try:
-        filter()
-    except rospy.ROSInterruptException:
-        pass
+	try:
+		filter()
+	except rospy.ROSInterruptException:
+		pass

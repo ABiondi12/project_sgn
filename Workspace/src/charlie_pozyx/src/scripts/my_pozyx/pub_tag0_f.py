@@ -127,7 +127,7 @@ def filter():
 	global coords
 
 	rospy.init_node('filter_node')
-	#rate = rospy.Rate(100.0)
+	rate = rospy.Rate(100.0)
 
 	filter_sub = rospy.Subscriber(tag0_topic_ID, PoseStamped, callback)
 	filter_pub = rospy.Publisher(tag0_topic_ID_f, PoseStamped, queue_size=100)
@@ -190,7 +190,7 @@ def filter():
 		#tag1_fake_pub.publish(pose_fake)
 		
 
-		#rate.sleep()
+		rate.sleep()
 		
 
 

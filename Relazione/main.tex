@@ -1,0 +1,64 @@
+\input{structure}
+\graphicspath{{./figs/}}
+
+\begin{document}
+	
+\input{titlepage}
+
+% pagina vuota e indice
+\newpage\null\thispagestyle{empty}\newpage
+\newpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\tableofcontents
+
+\newpage
+
+\input{introduzione.tex}
+
+\input{Descrizione_Sistema.tex}
+
+\section{Dispositivi??}
+
+\subsection{Google drive account}
+Bibbi
+
+\subsection{Raspberry 4}
+Il cuore pulsante di Charlie\\
+come connettere raspberry4 al wifi!\\
+suggerimenti, ssh e rviz master/slave \\
+\subsection{Lidar}
+orientazione (asse zero insomma) del lidar \\
+se voltaggio sotto 4.7V rischia di non funzionare bene\\
+seriale slamtec "delicata" va stoppata per bene\\
+pacchetto ros rplidarros\\
+viene lanciato da rplidar\_a3.launch \\
+topic \texttt{/scan} letto da hector\_slam produce mappa e da scan\_tools produce la tf da laser odom a base\_link \\
+
+\subsection{UltraWideBand}
+discorso pausa tra le due dopositioning\\
+come disporre le ancore \\
+salvataggi dei dispotivi nelle memorie flash \\
+autocalibrazione \\
+
+
+\section{Guida all'esperimento}
+papsaoicbas \\
+\section{Guida al codice}
+info pacchetti \\
+come installare tutto nel caso di reset \\
+grafico tf
+
+
+\appendix
+\section{Autocalibrazione}
+copia da proj vecchi
+
+
+
+% Bibliography
+\newpage
+\bibliography{biblio}
+
+
+\end{document}

@@ -1,0 +1,239 @@
+\documentclass[
+12pt, % Main document font size
+a4paper, % Paper type, use 'letterpaper' for US Letter paper
+oneside,
+% One page layout (no page indentation)
+%twoside, % Two page layout (page indentation for binding and different headers)
+%hidelinks, % Hide links like hyperref
+%headinclude,footinclude, % Extra spacing for the header and footer
+%BCOR5mm, % Binding correction
+]{article}
+
+
+
+\setlength{\parindent}{5pt} %Modifica la dimensione dell'indentazione dei paragrafi
+
+
+
+%%%%% Packages
+%\usepackage [english]{babel}
+\usepackage [italian]{babel}
+
+\usepackage{enumitem} % migliori enumerate, ad esempio \begin{enumerate}[label=\Alph*]
+
+%per far chiudere e aprire " "
+%\usepackage [autostyle, english = american]{csquotes}
+%\MakeOuterQuote{"}
+
+\usepackage{hyphenat}
+\begin{hyphenrules}{english}
+\hyphenation{Fortran}
+\hyphenation{spa-sti-ci-ty} 
+\end{hyphenrules}
+
+\usepackage[section]{placeins} %Also one can consider the placeins package and the \FloatBarrier command that prevents figures from floating any further. If figures are supposed to remain in the section, one can load
+
+\usepackage{tabularx} %advance tables, like wrap text inside cell
+\usepackage{longtable}
+
+\usepackage{graphicx}
+%\usepackage{subfig}
+\usepackage{xcolor} %Colori Aggiuntiv
+\usepackage[colorlinks = true,
+	linkcolor = teal,
+	urlcolor  = blue,
+	citecolor = teal,
+	anchorcolor = blue]{hyperref} %Hyperref
+	
+% listings for code	
+\usepackage{listings}
+\usepackage{color}
+\definecolor{dkgreen}{rgb}{0,0.8,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=shadowbox,
+  language=Matlab,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+
+\usepackage{url}
+
+%\usepackage{lipsum} %Crea dummy text
+
+\usepackage{amsmath,amssymb,amscd,amsfonts,amsthm} %Roba matematica
+
+%bibliografia
+%\usepackage[shortalphabetic,abbrev]{amsrefs}
+%\usepackage[author-year, y2k]{amsrefs}
+\usepackage[alphabetic]{amsrefs}
+\usepackage{mathtools}
+
+\usepackage{physics}
+
+\usepackage{siunitx} %database unita` di misura, \si{ \kg \per \second},  \SI{20}{ \kg \per \second}
+\sisetup{
+	round-mode          = places,
+	round-precision     = 2,
+}
+
+\usepackage{gensymb} %simboli extra, come \degree
+
+\usepackage{tikz}
+	\usetikzlibrary{shapes,arrows}
+	\tikzstyle{block} = [draw, fill=white, rectangle, 
+	minimum height=3em, minimum width=6em]
+	\tikzstyle{sum} = [draw, fill=white, circle, node distance=1cm]
+	\tikzstyle{input} = [coordinate]
+	\tikzstyle{output} = [coordinate]
+	\tikzstyle{pinstyle} = [pin edge={to-,thin,black}]
+	\usepackage{tikzscale}
+
+\usepackage{pgfplots}
+	\pgfplotsset{width=7cm,compat=1.14}
+	%\pgfplotsset{compat=newest} % Allows to place the legend below plot
+	\pgfplotsset{every minor tick/.append style={thin}}  % applies only to minor ticks,
+	\usepgfplotslibrary{units} % Allows to enter the units nicely
+	%\usepgfplotslibrary{external} 
+	%\tikzexternalize
+	%\tikzset{external/force remake}
+	\pgfkeys{/pgf/number format/.cd,1000 sep={\,}}
+
+\usepackage{afterpage}
+
+\usepackage{comment} % inserisce la funzionalita` \begin{comment}
+\usepackage{wrapfig}
+\usepackage{vmargin}
+\setmarginsrb  {25mm}  % left margin
+	{ 5mm}  % top margin
+	{25mm}  % right margin
+	{15mm}  % bottom margin
+	{10mm}  % head height
+	{15mm}  % head sep
+	{10mm}  % foot height
+	{15mm}  % foot sep
+
+
+
+% permettono l'uso di subfigures
+\usepackage{caption}
+\usepackage{subcaption}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Comandi homebrewed
+
+
+%% comando per fare matrix con linee verticali. Esempio:
+%\[
+%\begin{pmatrix}[cc|c]
+%  1 & 2 & 3\\
+%  4 & 5 & 9
+%\end{pmatrix}
+%\]
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{#1}}
+\makeatother
+
+
+%% renew comando paragraph per far andare a capo dopo \paragraph
+\newcommand{\myparagraph}[1]{\paragraph{#1}\mbox{}\\}
+
+\newcommand{\bs}{\textbackslash}
+
+%% BLANKPAGE
+%per creare pagine vuote
+\newcommand\blankpage{%
+	\null
+	\thispagestyle{empty}%
+	%\addtocounter{page}{-1}%
+	\newpage}
+
+%% RNUM 
+% porta in numeri romani il unmero
+\newcommand{\RNum}[1]{\uppercase\expandafter{\romannumeral #1\relax}}
+
+%% AT
+% Comando per le derivate calcolate nel punto. Esempio: \dv{\text{Im}T(j \omega)}{t} \at[\Big]{\omega = \omega_1}
+\newcommand{\at}[2][]{#1|_{#2}}
+
+%% Comando per valori assoluti che scalano
+%\DeclarePairedDelimiter\abs{\lvert}{\rvert}%
+%\DeclarePairedDelimiter\norm{\lVert}{\rVert}%
+% Swap the definition of \abs* and \norm*, so that \abs
+% and \norm resizes the size of the brackets, and the 
+% starred version does not.
+\makeatletter
+\let\oldabs\abs
+\def\abs{\@ifstar{\oldabs}{\oldabs*}}
+%
+%\let\oldnorm\norm
+%\def\norm{\@ifstar{\oldnorm}{\oldnorm*}}
+\makeatother
+
+%% CEILING and FLOOR
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+%% Prova theorem
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\newenvironment{Proof}[1][Proof]{\begin{trivlist}
+		\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{definition}[1][Definition]{\begin{trivlist}
+		\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{example}[1][Example]{\begin{trivlist}
+		\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{remark}[1][Remark]{\begin{trivlist}
+		\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+%\newcommand{\qed}{\nobreak \ifvmode \relax \else
+%	\ifdim\lastskip<1.5em \hskip-\lastskip
+%	\hskip1.5em plus0em minus0.5em \fi \nobreak
+%	\vrule height0.75em width0.5em depth0.25em\fi}
+
+%% \xoverline
+% simile a \bar ma copre tutta il width della lettera
+\makeatletter
+\newsavebox\myboxA
+\newsavebox\myboxB
+\newlength\mylenA
+
+\newcommand*\xoverline[2][0.75]{%
+    \sbox{\myboxA}{$\m@th#2$}%
+    \setbox\myboxB\null% Phantom box
+    \ht\myboxB=\ht\myboxA%
+    \dp\myboxB=\dp\myboxA%
+    \wd\myboxB=#1\wd\myboxA% Scale phantom
+    \sbox\myboxB{$\m@th\overline{\copy\myboxB}$}%  Overlined phantom
+    \setlength\mylenA{\the\wd\myboxA}%   calc width diff
+    \addtolength\mylenA{-\the\wd\myboxB}%
+    \ifdim\wd\myboxB<\wd\myboxA%
+       \rlap{\hskip 0.5\mylenA\usebox\myboxB}{\usebox\myboxA}%
+    \else
+        \hskip -0.5\mylenA\rlap{\usebox\myboxA}{\hskip 0.5\mylenA\usebox\myboxB}%
+    \fi}
+\makeatother
+
+%%
+
+
