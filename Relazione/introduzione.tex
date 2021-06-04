@@ -1,9 +1,0 @@
-
-\section*{Introduzione}
-L'obiettivo di questo progetto \`e stato quello di migliorare lo stato del veicolo, partendo dal risolvere le molte problematiche accumulatesi nel passaggio di testimone tra i vari gruppi.
-Lo scopo principale dell'intero sistema, composto dal veicolo affiancato da una serie di sensori, \`e quello di riuscire a localizzarsi all'interno di una mappa preacquisita e di navigare al suo interno.
-La posizione \`e ottenuta seguendo due metodologie tra loro complementari: da una parte si sfrutta il lidar montato sul corpo del veicolo, che permette di avere buoni risultati in ambienti chiusi dove siano presenti pareti e confini ben precisi, dall'altra si appoggia ad un sistema Ultra Wide Band (UWB), che ha invece performance migliori in ambienti esterni privi di ostacoli sui quali il segnale possa avere interferenze dovute a scattering.
-\`E importante focalizzare fin da subito che, attraverso il lidar, non viene effettuata una SLAM vera e propria bens\`i uno Scan Matching.
-Infatti, l'algoritmo di localizzazione in condizioni nominali prende come posa del veicolo quella ottenuta dallo scan matcher. 
-Quest'ultima viene periodicamente confrontata con quella misurata dal sistema UWB: solo nel momento in cui i due valori restituiti differiscono di molto, viene riposizionato il veicolo all'ultima posa ottenuta dalle antenne.
-In questo modo si ottiene un sistema robusto alla perdita del lidar, che pu\`o verificarsi a seguito di una rottura o nel momento in cui sono esplorati ambienti dove le condizioni non permettono di avere misure affidabili.

@@ -1,7 +1,8 @@
 <?xml version="1.0"?>
 
 <!-- Scegliere quale configurazione usare commentando/scommentando le righe giuste  -->
-<launch>	
+<launch>
+	<param name ="/use_sim_time"	value="false"/>
 
 	<!-- start rviz -->
 	<node pkg="rviz" type="rviz" name="rviz"

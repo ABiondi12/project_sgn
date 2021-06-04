@@ -11,23 +11,80 @@
 \pagenumbering{arabic}
 \setcounter{page}{1}
 \tableofcontents
-
 \newpage
 
-\input{introduzione.tex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+% TO DO
+%	1.
+%	2.
+%	3.
+%
+%
+%%%%%%
 
-\input{Descrizione_Sistema.tex}
 
-\section{Dispositivi??}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% introduzione
+\section*{Introduzione}
+L'obiettivo di questo progetto \`e stato quello di migliorare lo stato del veicolo, partendo dal risolvere le molte problematiche accumulatesi nel passaggio di testimone tra i vari gruppi.
+Lo scopo principale dell'intero sistema, composto dal veicolo affiancato da una serie di sensori, \`e quello di riuscire a localizzarsi all'interno di una mappa preacquisita e di navigare al suo interno.
+La posizione \`e ottenuta seguendo due metodologie tra loro complementari: da una parte si sfrutta il lidar montato sul corpo del veicolo, che permette di avere buoni risultati in ambienti chiusi dove siano presenti pareti e confini ben precisi, dall'altra si appoggia ad un sistema Ultra Wide Band (UWB), che ha invece performance migliori in ambienti esterni privi di ostacoli sui quali il segnale possa avere interferenze dovute a scattering.
+\`E importante focalizzare fin da subito che, attraverso il lidar, non viene effettuata una SLAM vera e propria bens\`i uno Scan Matching.
+Infatti, l'algoritmo di localizzazione in condizioni nominali prende come posa del veicolo quella ottenuta dallo scan matcher. 
+Quest'ultima viene periodicamente confrontata con quella misurata dal sistema UWB: solo nel momento in cui i due valori restituiti differiscono di molto, viene riposizionato il veicolo all'ultima posa ottenuta dalle antenne.
+In questo modo si ottiene un sistema robusto alla perdita del lidar, che pu\`o verificarsi a seguito di una rottura o nel momento in cui sono esplorati ambienti dove le condizioni non permettono di avere misure affidabili.
 
-\subsection{Google drive account}
-Bibbi
+\subsection*{Funzionamento in due parole}
+hector fa mappa
+scan matcher acquisisce una posa
+amcl confronta tale posa e il cloud di punti del lidar con la mappa nota
+uwb resetta nel caso di scazzi
 
-\subsection{Raspberry 4}
-Il cuore pulsante di Charlie\\
-come connettere raspberry4 al wifi!\\
+\subsection*{Come ottenere codice}
+google drive account
+link github
+
+Invece per ottenere l'hardware non scriveteci, chiedete a Lorenzo Pollini metti mail
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% descrizione hardware
+\section{Descrizione Hardware}
+
+Il veicolo, per gli amici e i lettori Charlie, \`e basato su un Crawler RC, una piattaforma meccanica radio--comandata, su cui sono stati installati dei sensori e delle schede elettroniche. 
+
+\textbf{FARE IMMAGINE CONCETTUALE}
+
+A bordo si trovano quindi due unit\`a centrali:
+\begin{itemize}
+	\item un Raspberry Pi 4 (8Gb Ram), con sistema operativo Linux 18.04 su cui viene eseguito Robot Operating System (ROS)
+	\item una scheda STM32F407 su cui è implementato il sistema di guida e alcuni filtraggi
+\end{itemize}
+
+Come sensori sono presenti:
+\begin{itemize}
+	\item Lidar Slamtec RPLIDAR-A3
+	
+	\item due tag del sistema UWB creato da Pozyx che dialogano con 4 anchors disposte nell'ambiente
+\end{itemize}
+
+Per connettere e alimentare quanto qui sopra \`e stato installato:
+\begin{itemize}
+	\item una custom pcb 
+	
+	\item USB-HUB alimentato, che ci permette di utilizzare ulteriori porte usb senza far affidamento al Raspberry Pi per la loro alimentazione (che risulta inefficace per alimentare il lidar)
+\end{itemize}
+
+
+
+schede (PRIMO COLLEGAMENTO A RASPBERRY)
 suggerimenti, ssh e rviz master/slave \\
-\subsection{Lidar}
+descrizione alimentazione
+disegnino dei collegamenti
+batterie (come si ricaricano per dummies)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{RPlidar}
+sensore lidar 
 orientazione (asse zero insomma) del lidar \\
 se voltaggio sotto 4.7V rischia di non funzionare bene\\
 seriale slamtec "delicata" va stoppata per bene\\
@@ -35,20 +92,40 @@ pacchetto ros rplidarros\\
 viene lanciato da rplidar\_a3.launch \\
 topic \texttt{/scan} letto da hector\_slam produce mappa e da scan\_tools produce la tf da laser odom a base\_link \\
 
-\subsection{UltraWideBand}
-discorso pausa tra le due dopositioning\\
-come disporre le ancore \\
-salvataggi dei dispotivi nelle memorie flash \\
-autocalibrazione \\
+pacchetto ros gi\`a fornito da slamtec
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Sistema Pozyx}
+comportamento fisico
+tag
+anchors, come disporre le ancore \\
+autocalibrazione
+come gestire flash memory dei device
+warning: remote\_id 
+problematiche relative al doPositioning veloce (servono le pause)
+pacchetto ros custom descrivere in breve cosa fanno i file dentro charlie\_pozyx
 
 
-\section{Guida all'esperimento}
-papsaoicbas \\
-\section{Guida al codice}
-info pacchetti \\
-come installare tutto nel caso di reset \\
-grafico tf
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{L'esperimento}
+procedura con i comandi, ogni cosa che facciamo \`e commentata e descritta \\
+albero nodi\\
+albero tf\\
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Prove?}
+\subsection{Confronto Vicon}
+
+\subsection{Esperimento nel cortile}
+
+\subsection{Esperimento all'aperto}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Guida breve all'esperimento}
+lista di codici da runnare da terminale
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \appendix
 \section{Autocalibrazione}

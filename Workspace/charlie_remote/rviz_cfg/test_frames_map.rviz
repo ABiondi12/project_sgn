@@ -4,10 +4,12 @@ Panels:
     Name: Displays
     Property Tree Widget:
       Expanded:
+        - /Global Options1
         - /Status1
         - /TF1
         - /TF1/Frames1
         - /PoseWithCovariance1/Covariance1
+        - /Pose1
       Splitter Ratio: 0.5
     Tree Height: 728
   - Class: rviz/Selection
@@ -59,6 +61,8 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: false
+        Charlie:
+          Value: false
         UWB:
           Value: true
         base_link:
@@ -66,7 +70,7 @@ Visualization Manager:
         laser:
           Value: false
         laser_odom:
-          Value: true
+          Value: false
         map:
           Value: true
         robot_pose:
@@ -81,30 +85,35 @@ Visualization Manager:
           Value: false
         tag_center_frame:
           Value: true
+        vicon_frame:
+          Value: true
       Marker Scale: 1
       Name: TF
       Show Arrows: true
       Show Axes: true
       Show Names: true
       Tree:
-        UWB:
-          map:
-            laser_odom:
-              base_link:
-                laser:
-                  {}
-            robot_pose:
+        vicon_frame:
+          Charlie:
+            {}
+          UWB:
+            map:
+              laser_odom:
+                base_link:
+                  laser:
+                    {}
+              robot_pose:
+                {}
+              tag_center_frame:
+                {}
+            tag0_frame:
               {}
-            tag_center_frame:
+            tag0_frame_f:
               {}
-          tag0_frame:
-            {}
-          tag0_frame_f:
-            {}
-          tag1_frame:
-            {}
-          tag1_frame_f:
-            {}
+            tag1_frame:
+              {}
+            tag1_frame_f:
+              {}
       Update Interval: 0
       Value: true
     - Alpha: 0.699999988079071
@@ -177,6 +186,21 @@ Visualization Manager:
       Topic: /amcl_pose
       Unreliable: false
       Value: true
+    - Alpha: 1
+      Axes Length: 1
+      Axes Radius: 0.10000000149011612
+      Class: rviz/Pose
+      Color: 173; 127; 168
+      Enabled: true
+      Head Length: 0.07999999821186066
+      Head Radius: 0.05000000074505806
+      Name: Pose
+      Shaft Length: 0.30000001192092896
+      Shaft Radius: 0.02500000037252903
+      Shape: Arrow
+      Topic: /charlie_vicon_map
+      Unreliable: false
+      Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
@@ -205,25 +229,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 8.588061332702637
+      Distance: 7.930241584777832
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.384492963552475
-        Y: -0.030123542994260788
-        Z: -0.46044066548347473
+        X: -0.22191807627677917
+        Y: 0.39582887291908264
+        Z: -0.1844724714756012
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.9547967910766602
+      Pitch: 0.5347973108291626
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 3.1303980350494385
+      Yaw: 3.113591432571411
     Saved: ~
 Window Geometry:
   Displays:

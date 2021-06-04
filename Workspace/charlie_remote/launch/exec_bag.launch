@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+
+<!-- Scegliere quale bag usare inserendo il nome giusto a riga 13 (in arg file_*)  -->
+<launch>	
+	<!-- define paths -->
+	<arg name="path" default="/home/francesco/rosbags_folder/" />
+	<arg name="file_1" default="0528_1130_Robot_pose_error_NaN" />
+	<arg name="file_2" default="0528_1140_velbassa_fine_alta" />
+	<arg name="file_3" default="0528_1200_rapimento_lidar" />
+	
+	<!-- start rosbag -->
+	<node pkg="rosbag" type="play" name="player" output="screen" 
+		args="--topics /scan /tag_center /orientation /map --clock $(arg path)$(arg file_3).bag"/>
+	
+</launch>
