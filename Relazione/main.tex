@@ -35,6 +35,16 @@ Quest'ultima viene periodicamente confrontata con quella misurata dal sistema UW
 In questo modo si ottiene un sistema robusto alla perdita del lidar, che pu\`o verificarsi a seguito di una rottura o nel momento in cui sono esplorati ambienti dove le condizioni non permettono di avere misure affidabili.
 
 \subsection*{Funzionamento in due parole}
+Molto sinteticamente andiamo a descrivere il funzionamento di Charlie. 
+In primis viene utilizzato il pacchetto hector-slam per realizzare una mappa. 
+In un secondo momento, utilizzando questa mappa si riesce a localizzarsi confrontando le misure acquisite dal lidar con le feature della mappa stessa attraverso di Adaptive Monte Carlo Localization. 
+
+SONO ARRIVATO QUI
+
+
+Dato che possono innescarsi dei fenomeni di simmetria in cui non si riescono a rimuovere delle ambiguit\`a, il sistema UWB fa s\`i che si venga reinizializzato l'algoritmo AMCL 
+
+
 hector fa mappa
 scan matcher acquisisce una posa
 amcl confronta tale posa e il cloud di punti del lidar con la mappa nota
@@ -43,6 +53,7 @@ uwb resetta nel caso di scazzi
 \subsection*{Come ottenere codice}
 google drive account
 link github
+e mini organizzazione
 
 Invece per ottenere l'hardware non scriveteci, chiedete a Lorenzo Pollini metti mail
 
@@ -77,6 +88,10 @@ Per connettere e alimentare quanto qui sopra \`e stato installato:
 
 
 schede (PRIMO COLLEGAMENTO A RASPBERRY)
+\subsection{Primo collegamento a Raspberry}
+\label{sez: primo collegamento a raspberry}
+\subsection{Ros master/slave}
+\label{sez: Ros master/slave}
 suggerimenti, ssh e rviz master/slave \\
 descrizione alimentazione
 disegnino dei collegamenti
@@ -96,6 +111,14 @@ pacchetto ros gi\`a fornito da slamtec
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Sistema Pozyx}
+\label{sez:Sistema Pozyx}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[height=0.2\textheight]{uwb_axis.png}
+	\caption{Disposizione ancore}
+	\label{fig: disposizione ancore}
+\end{figure}
 comportamento fisico
 tag
 anchors, come disporre le ancore \\
@@ -105,9 +128,16 @@ warning: remote\_id
 problematiche relative al doPositioning veloce (servono le pause)
 pacchetto ros custom descrivere in breve cosa fanno i file dentro charlie\_pozyx
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Sistema Vicon}
+\label{sez:Sistema Vicon}
+come si installa \\
+come si crea un oggetto\\
+come si calibra
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{L'esperimento}
+\label{sez:L'esperimento}
 procedura con i comandi, ogni cosa che facciamo \`e commentata e descritta \\
 albero nodi\\
 albero tf\\
@@ -120,16 +150,139 @@ albero tf\\
 
 \subsection{Esperimento all'aperto}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Guida breve all'esperimento}
-lista di codici da runnare da terminale
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Guida breve all'esperimento}
+In questa sezione \`e scritta, in modo molto sintetico, la procedura per lanciare un esperimento. Per una guida dettagliata rifarsi a sez.~\ref{sez:L'esperimento}. 
+
+Prima di tutto \`e necessario disporre le ancore come descritto in sez.~\ref{sez:Sistema Pozyx} e come si pu\`o vedere in fig.~\ref{fig: disposizione ancore}. Assicurarsi di aver impostato correttamente le impostazioni WiFi (sez.~\ref{sez: primo collegamento a raspberry}) e di avere connessi alla stessa rete pc e Raspberry.
+
+
+Connettersi \textbf{ssh} con password \texttt{robot}:
+\begin{lstlisting}[style=bash]
+	ssh -X -C pi@raspberrypi.local		# avvia ssh
+\end{lstlisting}
+
+Per l'\textbf{autocalibrazione} (necessaria ogni volta che viene riposizionato il sistema di ancore) lanciare \textbf{ABBIAMO FATTO IL FILE .SH DA CAMBIARE}:
+\begin{lstlisting}[style=bash]
+	python3 /charlie_autocalibration/autocalibration_ransac.py
+\end{lstlisting}
+infine rispondere ``y'' per salvare i risultati nella memoria flash delle ancore.
+
+Adesso \`e necessario avviare il \textbf{posizionamento} delle tag pozyx e la comunicazione \textbf{seriale} con Icaro (suggeriamo di utilizzare pi\`u terminali con \href{https://terminator-gtk3.readthedocs.io/en/latest/}{terminator}):
+\begin{lstlisting}[style=bash]
+	roslaunch charlie_launch start_uwb.launch		# avvia uwb
+	roslaunch charlie_launch start_serial.launch	# avvia seriale con stm
+\end{lstlisting}
+
+\subsection*{Nuova Mappa}
+Una nuova mappa \`e necessaria quando si cambia posizionamento alle ancore o banalmente si cambia luogo. Consigliamo di muovere Charlie attraverso il radiocomando in questa fase.
+\begin{lstlisting}[style=bash]
+	roslaunch charlie_launch save_map_origin.launch		# con Charlie fermo!
+	roslaunch charlie_launch new_map.launch 	# muovere Charlie lentamente
+\end{lstlisting}
+
+Una volta soddisfatti del risultato salvare la mappa attraverso:
+\begin{lstlisting}[style=bash]
+	cd charlie_ws/maps
+	rosrun map_server map_saver -f NOME_MAPPA
+\end{lstlisting}
+
+\subsection*{Localizzazione}
+Sostituire il nome della mappa che si vuole utilizzare nel file
+
+\verb|/home/pi/charlie_ws/src/charlie_launch/launch/localization.launch|:
+
+\huge \textbf{VERIFICARE} \normalsize 
+\begin{lstlisting}[style=xml, firstnumber=11]
+	<node name="map_server" pkg="map_server" type="map_server" args="/home/pi/charlie_ws/maps/NOME_MAPPA.yaml"/>
+\end{lstlisting}
+
+Quindi lanciare:
+\begin{lstlisting}[style=bash]
+	roslaunch charlie_launch localization.launch
+\end{lstlisting}
+
+Nello stesso file \`e possibile impostare di visualizzare rviz attraverso il ``Compressed X11 Forwarding '' scommentando la riga corrispondente di rviz. Questa opzione \`e molto sconsigliata da noi in quanto rende la visione poco reattiva. Per ovviare a questo problema, dopo aver configurato pc e raspberry come descritto in sez.~\ref{sez: Ros master/slave}, \`e possibile lanciare da pc:
+
+\begin{lstlisting}[style=bashPC]
+	roslaunch charlie_remote rviz_remote.launch
+\end{lstlisting}
+In questo momento l'esperimento \`e iniziato!
+
+\subsection*{Waypoints}
+\`E possibile indicare una posa-goal tramite il comando \texttt{2DNavgoal} direttamente da rviz (tenere premuto per assegnare l'orientazione).
+Per attivare i motori e permettere al robot di spostarsi, pubblicare il seguente messaggio sul topic \verb|start\_and\_stop|:
+
+\begin{lstlisting}[style=bash]
+	rostopic pub /start_and_stop std_msgs/Float64 "data: 1.0"
+\end{lstlisting}
+
+e per fermarli:
+
+\begin{lstlisting}[style=bash]
+	rostopic pub /start_and_stop std_msgs/Float64 "data: 0.0"
+\end{lstlisting}
+
+\subsection*{Sistema Vicon}
+Ovviamente per utilizzare il sistema Vicon \`e necessario essere nella stanza del volo. Per l'installazione rifarsi a sez.~\ref{sez:Sistema Vicon}. Una volta che il sistema \`e in funzione, avviare l'applicazione di tracking \textbf{SCRIVERE NOME PER BENE} e selezionare nella lista oggetti: \texttt{Charlie} e \texttt{WAND NOME PER BENE}.
+
+Per avviare i dialoghi tra ros e il sistema Vicon avviare da pc:
+\begin{lstlisting}[style=bashPC]
+	roslaunch charlie_remote vicon_charlie.launch
+\end{lstlisting}
+
+poi salvare la trasformazione tra vicon e uwb (richiede il posizionamento della wand sulle ancore):
+\begin{lstlisting}[style=bashPC]
+	rosrun charlie_remote vicon2uwb_tf.py
+\end{lstlisting}
+
+e infine lanciare il nodo che pubblica la posizione di Charlie in frame map:
+\begin{lstlisting}[style=bashPC]
+	rosrun charlie_remote charlie_vicon2map.py
+\end{lstlisting}
+
+
+\subsection*{Rosbag}
+Per registrare i dati attraverso una rosbag suggeriamo di non sottroiscriversi a tutti i topic ma quindi di lanciare il seguente comando da pc (dopo essersi spostati nella cartella desiderata):
+\begin{lstlisting}[style=bashPC]
+	rosbag record /clock /initialpose /map /orientation /particlecloud /robot_pose /rosout /rosout_agg /scan /tag_center /tf /amcl_pose /charlie_vicon_map -O NOME_BAG.bag
+\end{lstlisting}
+
+Per eseguire i topic necessari a AMCL, prima riconfigurare il file:
+
+\verb|../charlie_remote/launch/exec_bash.launch| con i file e il path che si vogliono utilizzare e quindi lanciare da pc:
+\begin{lstlisting}[style=bashPC]
+	roslaunch charlie_remote exec_bag.launch
+\end{lstlisting}
+e da raspberry:
+\begin{lstlisting}[style=bash]
+	roslaunch charlie_launch localization_bag.launch
+\end{lstlisting}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\newpage
 \appendix
 \section{Autocalibrazione}
-copia da proj vecchi
+L'autocalibrazione si basa sullo script \texttt{python3} ``autocalibration\_ransac.py''. 
+Per farlo funzionare occorre per prima cosa avere quattro ancore correttamente alimentate ed un dispositivo Pozyx connesso, il quale servirà da comunicazione seriale tra la rete Pozyx e l’utente. 
+Il dispositivo seriale può, a discrezione dell’utente, essere un’ancora o un tag. 
+É possibile, se si desidera, effettuare una calibrazione manuale delle ancore, andando a settare la variabile \verb|autoCal| a \verb|True|. 
+In tal caso si dovrà utilizzare un metro per misurare la distanza relativa tra le coppie di ancore della rete ed inserire manualmente i valori misurati nelle opportune variabili \texttt{r01}, \texttt{r02}, \texttt{r03}, \texttt{r12}, \texttt{r13} ed \texttt{r23}, che rappresentano le distanze tra le rispettive antenne.
+Per quanto riguarda invece la calibrazione automatica, lo script prevede una fase di acquisizione dei dati necessari, successivamente viene eseguito l’algoritmo ransac ed infine viene utilizzato l’algoritmo algebrico per determinare le coordinate effettive delle ancore. 
+L’algoritmo ransac rimuove eventuali outliers dalle misurazioni delle distanze relative tra le antenne e fornisce quindi una stima della distanza tra ciascuna coppia di ancore basata sui dati senza outliers.
+Nel corso della procedura di autocalibrazione vengono stampati sul terminale vari dati, tra cui i fondamentali sono:
+\begin{itemize}
+	\item Coordinate dei dispositivi all’accensione del sistema, prima che sia effettuata la nuova calibrazione;
+	
+	\item Risultato del settaggio dei parametri UWB della rete;
+	
+	\item Il risultato dell’algoritmo ransac per la distanza tra le ancore;
+	
+	\item Risultato dell'algoritmo algebrico per determinare le coordinate delle ancore: se tale algoritmo fallisca, \`e mostrato su terminale l'errore;
+\end{itemize}
 
 
 

@@ -16,7 +16,7 @@ oneside,
 
 
 %%%%% Packages
-%\usepackage [english]{babel}
+% \usepackage [english]{babel}
 \usepackage [italian]{babel}
 
 \usepackage{enumitem} % migliori enumerate, ad esempio \begin{enumerate}[label=\Alph*]
@@ -41,19 +41,58 @@ oneside,
 \usepackage{xcolor} %Colori Aggiuntiv
 \usepackage[colorlinks = true,
 	linkcolor = teal,
-	urlcolor  = blue,
+	urlcolor  = teal,
 	citecolor = teal,
 	anchorcolor = blue]{hyperref} %Hyperref
 	
 % listings for code	
-\usepackage{listings}
 \usepackage{color}
 \definecolor{dkgreen}{rgb}{0,0.8,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
 \definecolor{mauve}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.98,0.98,0.95}
+\definecolor{backcolourPC}{rgb}{0.93,0.97,0.97}
+\definecolor{white}{rgb}{1,1,1}
 
-\lstset{frame=shadowbox,
-  language=Matlab,
+\usepackage{listings}
+% BASH
+\lstdefinestyle{bash}{
+	language=bash,
+	backgroundcolor=\color{backcolour},
+	frame=trBL,
+	aboveskip=3mm,
+	belowskip=3mm,
+	breaklines=true,
+	columns=flexible,
+	tabsize=4,
+	basicstyle=\ttfamily
+}
+\lstdefinestyle{bashPC}{
+	language=bash,
+	backgroundcolor=\color{backcolourPC},
+	frame=trBL,
+	aboveskip=3mm,
+	belowskip=3mm,
+	breaklines=true,
+	columns=flexible,
+	tabsize=4,
+	basicstyle=\ttfamily
+}
+\lstdefinestyle{xml}{
+	language=xml,
+	backgroundcolor=\color{white},
+	frame=leftline,
+	aboveskip=3mm,
+	belowskip=3mm,
+	columns=flexible,
+	breaklines=true,
+	numbers=left,
+	numberstyle=,
+	tabsize=4
+}
+% MATLAB
+\lstdefinestyle{matlab}{frame=shadowbox,
+  language=matlab,
   aboveskip=3mm,
   belowskip=3mm,
   showstringspaces=false,
@@ -68,6 +107,13 @@ oneside,
   breakatwhitespace=true,
   tabsize=3
 }
+
+
+\lstset{style=bash}
+
+
+
+
 
 
 \usepackage{url}

@@ -1,0 +1,55 @@
+\documentclass[a4paper,12pt,times,numbered,print,index]{Classes/TemplateDoWonPark}
+
+% ********************************* Preamble **********************************
+% Preamble: Contiene pacchetti e comandi e impostazioni definiti dall'utente 
+\input{Preamble/preamble}
+\urlstyle{same}
+% ************************ INFORMAZIONI TESI & META-DATA**********************
+% Titolo della tesi e informazioni sull'autore, file di riferimento per biblatex
+
+\begin{document} 
+\input{report-copertina}
+
+% ****************************** INIZIO DOCUMENTO ******************************
+
+\frontmatter % con questo finché non inizia \mainmatter le pagine sono in numero romano
+
+
+
+% ******************************* INDICE & LISTE ********************************
+
+\tableofcontents
+
+\listoffigures
+
+\listoftables
+
+% ******************************** Main Matter *********************************
+\mainmatter
+
+\include{Capitolo1/introduzione}
+\include{Capitolo2/capitolo2}
+\include{Capitolo3/capitolo3}
+\include{Capitolo4/capitolo4}
+\include{Capitolo5/capitolo5}
+
+% ********************************** BIBLIOGRAFIA ******************************
+\begin{spacing}{0.9}
+
+\bibliographystyle{ieeetr}
+\cleardoublepage
+\bibliography{References/references} 
+
+\end{spacing}
+
+% ********************************** APPENDICI ********************************
+
+\begin{appendices} 
+
+\include{Appendice1/appendice1}
+\include{Appendice2/appendice2}
+\include{Appendice3/appendice3}
+
+\end{appendices}
+
+\end{document}

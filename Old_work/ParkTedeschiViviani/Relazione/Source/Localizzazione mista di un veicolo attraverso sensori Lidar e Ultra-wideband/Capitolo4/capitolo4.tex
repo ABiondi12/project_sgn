@@ -1,0 +1,16 @@
+
+%*******************************************************************************
+%****************************** Quarto Capitolo **********************************
+%*******************************************************************************
+\chapter{Conclusioni}
+\label{capitolo4}
+
+A differenza del robot di partenza, vedi Sezione~\ref{section1.2}, il robot funziona.
+
+È in grado di determinare la sua posizione all’interno della mappa, anche senza la stima di posa iniziale\footnote{Alla partenza, la posa iniziale di default di AMCL corrisponde all'origine della mappa e qualora il robot si trovasse ad una distanza superiore ad 1.5m da essa, automaticamente verrebbe inviato un fix di posa. Nel caso in cui la distanza fosse minore, sarà necessario intervenire manualmente.}, e quando si muove la convergenza è molto rapida. Una volta che si è localizzato può spostarsi liberamente senza perdersi, purché rimanga all'interno di un'area in cui le UWB hanno una buona copertura, altrimenti si verificano i problemi esposti nell'esperimento 2.
+Nel caso di “kidnapped robot problem” e spostamento manuale del robot, il veicolo è in grado di ritrovarsi non appena il Lidar viene scoperto, con il filtro che converge in maniera soddisfacente, riuscendo ad allineare la mappa senza eccessivi problemi.
+
+Tuttavia quello che emerge dagli esperimenti effettuati, è che la scarsa affidabilità del sistema UWB influenza fortemente i risultati.
+Infatti, anche se la parte che sfrutta lo scan-matching sta funzionando correttamente, il forte rumore presente sul sistema UWB può causare l'invio dati di posa errati e discordanti che spesso portano al fallimento della localizzazione. In aggiunta a ciò, è necessario sottolineare che la procedura scelta per la reinizializzazione online di AMCL non è sufficientemente robusta, d'altra parte si sta utilizzando il software in un modo non previsto\footnote{Nel suo utilizzo standard, AMCL presuppone che il robot abbia sempre una fonte stabile e buona di odometria e che il Lidar non sia mai offline, inoltre richiede uno spostamento non nullo - dell'ordine dei cm - per portare a convergenza la stima.}. 
+
+Ciononostante, l'obiettivo prefissato di riuscire a navigare all'interno di una mappa nota, combinando le potenzialità dei sensori a disposizione, è stato raggiunto.

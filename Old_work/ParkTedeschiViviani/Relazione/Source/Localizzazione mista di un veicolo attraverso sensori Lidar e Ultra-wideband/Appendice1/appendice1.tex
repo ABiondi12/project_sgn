@@ -1,0 +1,75 @@
+% ******************************* APPENDICE A - CENNI TEORICI********************************
+
+\chapter{Cenni teorici}
+\label{appendice1}
+
+% ******************************* AMCL ******************************* 
+
+\section{Adaptive Monte Carlo Localization}
+\label{appendice1.1}
+
+La \textit{Monte Carlo Localization} (MCL), nota anche come Particle Filter Localization, è un algoritmo di localizzazione che sfrutta un filtro a particelle per stimare la posizione e l'orientazione di un robot mentre esso si muove e percepisce l'ambiente all'interno di una mappa nota.
+
+
+
+La distribuzione degli stati probabili viene rappresentata come una nuvola di particelle nello spazio di stato (o delle configurazioni) \footnote{Lo spazio delle configurazioni è lo spazio a cui appartiene lo stato del robot, esso dipende dalla specifica applicazione e progettazione. Per esempio, lo stato di un robot capace del semplice moto nello spazio 2D consiste in $(x, y)$ per la posizione e $(\theta)$ per l’orientazione.}.
+La stima dello stato corrente del robot ottenuta dal filtro a particelle è una funzione di densità di probabilità (distribuita nello spazio di stato), che al tempo $t$ è rappresentata da un insieme di particelle $X_{t} = \{x_{t}^{1},x_{t}^{2},\dots,x_{t}^{M}\}$. 
+Ogni particella descrive uno stato possibile, e di conseguenza, nel caso di un problema di localizzazione, una posa possibile.Tipicamente l’inizializzazione viene fatta con una distribuzione uniforme delle particelle nello spazio di configurazione, dato che, non avendo informazioni sulla posizione del robot, è lecito assumere che questo possa trovarsi in ogni punto con la stessa probabilità. Ogni volta che il robot si muove, grazie ai dati di odometria, le particelle vengono fatte avanzare effettuando una previsione del nuovo stato e queste, all'arrivo di nuove misurazioni, vengono poi ricampionate basandosi su una stima Bayesiana ricorsiva, vale a dire, quanto bene i dati effettivamente rilevati sono correlati allo stato previsto. In definitiva, le particelle dovrebbero convergere verso la posizione reale del robot, ottenendo una nuvola sempre più piccola e concentrata.
+
+\bigskip
+
+
+
+Le regioni dello spazio di stato dove si addensano più particelle definiscono gli stati più probabili del robot, mentre vale il contrario per quelle con poche particelle. L’algoritmo assume la proprietà di Markov, per cui la distribuzione di probabilità dello stato attuale dipende solo dallo stato precedente, cioè $X_t$ dipende solo da $X_{t-1}$. 
+Questo funziona solo se l’ambiente è statico e non cambia con il tempo. 
+
+\bigskip
+
+Elemento fondamentale per il funzionamento dell'algoritmo è la conoscenza della mappa dell’ambiente, l’obiettivo è quindi quello di stimare la posa del robot all'interno di essa.
+Ad ogni istante $t$ viene presa come input la stima precedente $X_{t-1} = \{x_{t-1}^{1},x_{t-1}^{2},\dots,x_{t-1}^{M}\}$, un controllo $u_t$ e i dati ricevuti dai sensori $z_t$; tramite la funzione \texttt{Motion\_Update()} ogni particella viene fatta avanzare di un passo temporale (predizione), noti il valore all'istante precedente ed il controllo attuato, successivamente, la funzione \texttt{Sensor\_Update()} gli associa un peso valutando la correlazione con i dati ricevuti dai sensori.
+
+Segue quindi un ricampionamento delle particelle in base ai pesi appena calcolati; infine si restituisce in output la nuova stima dello stato (nuvola) $X_t$. I passi dell'algoritmo sono  descritti di seguito.
+
+\bigskip
+\bigskip
+
+\begin{algorithm}[H]
+\SetAlgoLined
+\SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+\BlankLine
+\Input{$X_{t-1}$, $u_{t}$, $z_{t}$}
+\Output{$X_{t}$}
+\BlankLine
+ $\bar{X}_{t}=X_{t}=0$\;
+ \For{$m=1$ \KwTo $M$}{
+    $x_{t}^{[m]}$= \texttt{Motion\_Update(}$u_{t},x_{t-1}^{[m]}$\texttt{)}\;
+    $w_{t}^{[m]}$= \texttt{Sensor\_Update(}$z_{t},x_{t}^{[m]}$\texttt{)}\;
+    $\bar{X}_{t}=\bar{X}_{t}+\left< x_{t}^{[m]},w_{t}^{[m]}\right>$\;
+ }
+ \For{$m=1$ \KwTo $M$}{
+    draw $x_{t}^{[m]}$ da $\bar{X}_{t}$ with probability $\propto w_{t}^{[m]}$\;
+    }
+ \Return $X_{t}$
+ \BlankLine
+ \caption{Algoritmo MCL}
+ \label{MCL}
+\end{algorithm}
+
+\bigskip
+\bigskip
+
+Inizialmente, è necessario utilizzare un grande numero di particelle $(M)$ in modo da coprire l’intera mappa con una distribuzione uniformemente casuale. Tuttavia, quando le particelle iniziano a convergere intorno ad una certa posizione, mantenere una dimensione del campione così grande è uno spreco computazionale.
+
+\bigskip
+
+L’algoritmo MCL può essere quindi migliorato campionando le particelle in modo adattivo sulla base di una stima di errore utilizzando la divergenza Kullback-Leibler (KLD), è qui che si introduce la \textit{Adaptive Monte Carlo Localization} (AMCL), una variante del MCL semplice. In questo algoritmo, ad ogni iterazione viene calcolata una nuova dimensione del campione $M_x$ (numero di particelle) in modo tale che l’errore tra l’approssimazione a posteriori\footnote{La stima dello stato basata sulla stima all'istante precedente propagata con i dati forniti dall'odometria.} e quella sample-based\footnote{La stima dello stato basata sullo scan matching.} sia minore di un certo $\epsilon$ con probabilità $1-\delta$, dove $\delta$ ed $\epsilon$ sono parametri fissati.
+
+In estrema sintesi, l'algoritmo AMCL, avvicinandosi alla convergenza, riduce progressivamente il numero di particelle utilizzate riducendo il carico computazionale.
+
+ \bigskip
+ 
+Più in dettaglio, AMCL gestisce in modo adattivo il numero di particelle $M_x$: l’idea principale è quella di creare una griglia (istogramma) sovrapposta allo spazio di stato dove ogni cella dell'istogramma è inizialmente vuota; ad ogni iterazione, una nuova particella viene ricavata dall'insieme di particelle precedenti e ricadrà di conseguenza in una determinata cella. L'algoritmo controlla quali celle vengono riempite e tiene traccia del loro numero - $k$ - e se una particella viene inserita in una cella precedentemente vuota, il valore di $M_x$ viene ricalcolato (questo aumenta circa in modo lineare in $k$). Il ricampionamento viene ripetuto fino a quando la dimensione corrente $M$ del campione è pari ad $M_x$, che sarà quasi sempre minore del numero massimo di particelle possibili.
+
+\bigskip
+
+Di fatto, quando il ricampionamento porta ad un progressivo addensarsi delle particelle che quindi ricadranno in un numero $k$ sempre più ridotto di celle, si ridurrà anche il numero complessivo di particelle $M_x$. Viceversa, nel caso in cui il ricampionamento non porti le particelle a concentrarsi (ad esempio quando si hanno misure e predizioni discordanti), bensì a spargersi, il numero di celle occupate tenderà ad aumentare e questo determinerà anche un aumento del numero di future particelle considerate. In conclusione AMCL ha come caratteristica chiave un numero di particelle adattivo in base al corrente stato di convergenza della stima: più la stima è concentrata (bassa covarianza) e meno particelle verranno usate per il suo tracking, mentre più la stima è incerta e più saranno le particelle utilizzate.
