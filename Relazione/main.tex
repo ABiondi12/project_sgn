@@ -37,38 +37,29 @@ In questo modo si ottiene un sistema robusto alla perdita del lidar, che pu\`o v
 \subsection*{Funzionamento in due parole}
 Molto sinteticamente andiamo a descrivere il funzionamento di Charlie. 
 In primis viene utilizzato il pacchetto hector-slam per realizzare una mappa. 
-In un secondo momento, utilizzando questa mappa si riesce a localizzarsi confrontando le misure acquisite dal lidar con le feature della mappa stessa attraverso di Adaptive Monte Carlo Localization. 
+In un secondo momento, utilizzando questa mappa si riesce a localizzarsi confrontando le misure acquisite dal lidar con le feature della mappa stessa attraverso l'algoritmo Adaptive Monte Carlo Localization. 
 
-SONO ARRIVATO QUI
-
-
-Dato che possono innescarsi dei fenomeni di simmetria in cui non si riescono a rimuovere delle ambiguit\`a, il sistema UWB fa s\`i che si venga reinizializzato l'algoritmo AMCL 
-
-
-hector fa mappa
-scan matcher acquisisce una posa
-amcl confronta tale posa e il cloud di punti del lidar con la mappa nota
-uwb resetta nel caso di scazzi
+Dato che questo algoritmo pu\`o convergere su una posa del veicolo non corretta a causa, per esempio, di ambiguit\`a  tra simmetrie della mappa 
+il sistema UWB fa s\`i che venga reinizializzato l'algoritmo AMCL. 
+In questo utilizzo quindi il sistema UWB serve solamente come check.
 
 \subsection*{Come ottenere codice}
-google drive account
-link github
-e mini organizzazione
+Il codice sviluppato \`e disponibile nella repository \href{https://github.com/ABiondi12/project_sgn}{github} e un backup del catkin workspace sul 
+\href{https://drive.google.com/drive/folders/1rXppVs0qSfeEKQumRFrPhkpiYDCvTXOL?usp=sharing}{Google Drive} associato a Charlie. 
+e mini organizzazione \textbf{FARE ALLA FINE QUANDO PRESENTIAMO IL CODICE}
 
-Invece per ottenere l'hardware non scriveteci, chiedete a Lorenzo Pollini metti mail
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % descrizione hardware
+\newpage
 \section{Descrizione Hardware}
 
-Il veicolo, per gli amici e i lettori Charlie, \`e basato su un Crawler RC, una piattaforma meccanica radio--comandata, su cui sono stati installati dei sensori e delle schede elettroniche. 
-
-\textbf{FARE IMMAGINE CONCETTUALE}
+Il veicolo, per gli amici e i lettori Charlie, \`e basato su un Crawler RC, una piattaforma meccanica radio--comandata,  su cui sono stati installati dei sensori e delle schede elettroniche. 
 
 A bordo si trovano quindi due unit\`a centrali:
 \begin{itemize}
 	\item un Raspberry Pi 4 (8Gb Ram), con sistema operativo Linux 18.04 su cui viene eseguito Robot Operating System (ROS)
-	\item una scheda STM32F407 su cui è implementato il sistema di guida e alcuni filtraggi
+	\item una scheda STM32F407 connessa ad una pcb Icaro su cui è implementato il sistema di guida e alcuni filtraggi
 \end{itemize}
 
 Come sensori sono presenti:
@@ -78,24 +69,98 @@ Come sensori sono presenti:
 	\item due tag del sistema UWB creato da Pozyx che dialogano con 4 anchors disposte nell'ambiente
 \end{itemize}
 
-Per connettere e alimentare quanto qui sopra \`e stato installato:
+\subsubsection*{Alimentazione e Connessioni}
+
+\begin{figure}[] 
+	\centering
+	\includegraphics[width=0.45\textwidth]{pcb_controlli.png}
+	\caption{PCB controlli}
+	\label{fig:pcb_controlli}
+\end{figure}
+
+\begin{figure}[] 
+	\centering    
+	\includegraphics[width=1\textwidth]{schema_completo.pdf}
+	\caption{Schema connessioni completo. \textbf{DA EDITARE CON RASPBERRY}}
+	\label{fig:schema_completo}
+\end{figure}
+
+Il robot è dotato di due batterie:
 \begin{itemize}
-	\item una custom pcb 
-	
-	\item USB-HUB alimentato, che ci permette di utilizzare ulteriori porte usb senza far affidamento al Raspberry Pi per la loro alimentazione (che risulta inefficace per alimentare il lidar)
+	\item LiPo \SI{14.8}{\volt} \SI{4200}{\milli \ampere \hour}, dedicata ad un’alimentazione generica, che viene sfruttata da tutti i componenti tranne i motori; da questa partono 3 linee di alimentazione: 
+	\begin{itemize}
+		\item a \SI{14.8}{\volt} per la STM
+		\item a \SI{5}{\volt} per la Raspberry con connettore usb-c
+		\item a \SI{5}{\volt} per fornire alimentazione ausiliaria all’HUB-USB
+	\end{itemize}
+	\item LiPo \SI{7.4}{\volt} \SI{6000}{\milli \ampere \hour} o NiMH \SI{7.2}{\volt} \SI{3000}{\milli \ampere \hour}, dedicate ai motori
 \end{itemize}
 
+I vari convertitori di tensione sono tutti installati su una PCB, che è posizionata all’interno di un box metallico.
 
+Altro elemento da evidenziare \`e la piccola PCB che consente di utilizzare, alternativamente all’STM, un radiocomando per il controllo di sterzo e acceleratore.
+Questa PCB (fig.~\ref{fig:pcb_controlli}) ha un led di stato verde che notifica quando l’alimentazione dei motori è attiva; 
+inoltre sono presenti due jumper che permettono di scegliere tra STM e radiocomando come sorgente del controllo per sterzo e acceleratore. 
+Sono sempre disponibili all’utente i contatti per potersi connettere e leggere quanto prodotto dal radiocomando.
 
-schede (PRIMO COLLEGAMENTO A RASPBERRY)
+\begin{enumerate}
+    \item Connettore per il ricevitore del radiocomando;
+    \item Pin per prelievo segnali PWM (steering/throttle) provenienti dal radiocomando;
+    \item Jumper di selezione per la fonte di controllo: (jumper a sinistra) controllo da radiocomando e (jumper a destra) controllo da STM;
+	\item Pin per connessione dei canali PWM provenienti da STM (steering/throttle);
+    \item Pin per connessione GND comune;
+    \item Connettore per i motori;
+    \item Jumper di abilitazione alimentazione motori;
+    \item LED di stato, indica quando l'alimentazione dei motori è attiva.
+\end{enumerate}
+
+Per ulteriori dettagli e motivazioni dietro alle connessioni fatte riferirsi a \cite{ptvlocalizzazione}.
+Lo schema completo è mostrato in fig.~\ref{fig:schema_completo}.
+
 \subsection{Primo collegamento a Raspberry}
 \label{sez: primo collegamento a raspberry}
+
+Per iniziare a lavorare sulla raspberry in ssh, modalit\`a richiesta per gli esperimenti, \`e necessario impostare le connessioni WiFi a cui la raspberry si
+connette all'avvio. Per comodit\`a suggeriamo di collegare la raspberry ad un monitor tramite un cavo microHDMI-HDMI e una tastiera/mouse usb.
+
+Abbiamo scritto tutto il necessario nel file: \texttt{Info/README\_wifi\_settings.txt} e adesso lo riportiamo brevemente anche qui.
+Il file con le impostazioni si trova in \texttt{/etc/network/} e si chiama interfaces. Per editarlo:
+
+\begin{lstlisting}[style=bash]
+	sudo nano /etc/network/interfaces
+\end{lstlisting}
+
+Il file legge le configurazioni salvate in un file \texttt{.conf} di cui deve essere indicata la locazione. Aggiungere una riga per file conf e commentare le altre (con \#).
+Ad esempio se volessimo aggiungere una configurazione di rete con nome "NOME" \`e consigliato inserire la seguente riga:
+
+\begin{lstlisting}[style=xml]
+	wpa-conf /etc/wpa_supplicant/wpa_supplicant_NOME.conf
+\end{lstlisting}
+
+All'interno del file \texttt{.conf} ci deve essere questo:
+\begin{lstlisting}[style=xml]
+	ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+	update_config=1
+	country=IT
+
+	network={
+		ssid="nome-wifi"
+		psk="password"
+	}
+\end{lstlisting}
+
+E deve essere posizionato nel path specificato. Nel caso si usi quello di default (\texttt{/etc/wpa\_supplicant/}), si riporta un comando utile:
+\begin{lstlisting}[style=bash]
+	sudo nano /etc/wpa_supplicant/wpa_supplicant_NOME.conf
+\end{lstlisting}
+
+Al prossimo riavvio la raspberry si connetter\`a automaticamente alla prima rete configurata disponibile. 
+Dato che si \`e connessi tramite lo schermo suggeriamo di fare un backup, tramite l'apposito tool, della scheda originale cos\`i da avere un punto di ripristino. 
+
 \subsection{Ros master/slave}
 \label{sez: Ros master/slave}
 suggerimenti, ssh e rviz master/slave \\
-descrizione alimentazione
-disegnino dei collegamenti
-batterie (come si ricaricano per dummies)
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{RPlidar}
@@ -119,14 +184,67 @@ pacchetto ros gi\`a fornito da slamtec
 	\caption{Disposizione ancore}
 	\label{fig: disposizione ancore}
 \end{figure}
-comportamento fisico
-tag
-anchors, come disporre le ancore \\
-autocalibrazione
-come gestire flash memory dei device
-warning: remote\_id 
-problematiche relative al doPositioning veloce (servono le pause)
-pacchetto ros custom descrivere in breve cosa fanno i file dentro charlie\_pozyx
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Il Pozyx è un sistema di localizzazione alternativo al GPS, basato sulla tecnologia ultra-wideband
+(UWB). In breve, si tratta di una tecnica di trasmissione sviluppata per la trasmissione e la ricezione di segnali 
+sfruttando degli impulsi di energia a radiofrequenza di durata temporale molto ridotta (nanosecondi) con conseguente
+banda spettrale ampia.
+Nel sistema Pozyx si possono distinguere due entità: le ancore e le tag.
+La configurazione base prevede l'utilizzo 4 ancore, che fungono da dispositivi fissi, e un tag, che rappresenta il dispositivo mobile.
+Grazie all'utilizzo di un algoritmo di triangolazione, il tag si può localizzare rispetto alle ancore. Teoricamente, la localizzazione 
+effettuata sfruttando la tecnologia ultra-wideband permette di ottenere un posizionamento con una accuratezza al centimetro anche
+in ambienti indoor e in presenza di ostacoli di natura non metallica, condizioni sfavorevoli per la natura fisica del sistema (che presenta 
+migliori performance in ambienti aperti ed ampi, privi di oggetti metallici e ostacoli sui quali possano verificarsi fenomeni di scatterning 
+del segnale inviato). 
+Sia all'interno delle tag che delle ancore è presente un microcontrollore, nel quale vengono eseguiti la maggior parte dei task richiesti,
+come gli algoritmi di triangolazione e autocalibrazione. A lui è demandata anche la gestione dell’interfaccia con dispositivi esterni
+(come Arduino).
+Solo nel caso delle tag, che per questo sono utilizzate come dispositivi mobili, sono presenti i seguenti sensori: un magnetometro, un giroscopio, un
+accelerometro e un sensore di pressione (altimetro). I dati dei sensori vengono utilizzati dal microcontrollore
+per la triangolazione e sono disponibili all’utente.
+Per quanto riguarda l'utilizzo di tale sistema di posizionamento, è necessario prima di tutto predisporre l'ambiente di lavoro.
+La prima cosa da fare è posizionare le ancore in modo tale che delimitino uno spazio entro il quale il sistema di localizzazione
+funzioni correttamente. Il miglior modo di disporle è quello di metterle in alto e sulla line-of-sight dell’utente: questo tipo di scelta
+aumenta infatti la possibilità di ricevere un buon segnale in quanto si limita la presenza di possibili ostacoli. 
+Per un buon funzionamento e per ridurre il più possibile l'errore di posizionamento, è consigliato inoltre distribuire le ancore affinché tutte le 
+direzioni siano coperte.
+Nel caso, infatti, in cui gli ancoraggi si trovino su una linea retta, l'errore di posizionamento risultante sarà molto grande e potranno
+verificarsi ambiguità di posizione legate alla simmetria della configurazione.
+Importante sottolineare che le ancore devono essere disposte verticalmente con l’antenna UWB rivolta verso l’alto.
+
+Per tutte le operazioni che vengono richieste tra le ancore e le tag, è necessario specificare tra quali dispositivi lavorare. 
+Con l'identificativo assegnato al campo \verb|remote_id|, si dichiara la tag o l'ancora sulla quale vogliamo usare le funzioni di registro. Nel caso (di default)
+in cui questo sia settato al valore \verb|None|, verrà usata la tag locale, ovvero quella connessa al pc (su cui viene utilizzata la seriale).
+Presa ad esempio la funzione doRanging(destination, \verb|device_range|, \verb|remote_id=None|), essa effettua una misurazione della distanza tra i dispositivi i cui identificativi sono
+\verb|remote_id| e destination. Lasciando il valore di default per \verb|remote_id|, cioè \verb|None|, la distanza viene automaticamente valutata tra il dispositivo connesso alla seriale del PC e il
+dispositivo il cui identificativo è destination. 
+Se si desidera invece che il ranging venga effettuato tra due diversi dispositivi della rete basterà inserire l’opportuno valore di \verb|remote_id|.
+
+Nel nostro caso, questo aspetto è importante nel momento in cui vengono prelevate le posizioni relative delle ancore nella configurazione attuale. Con \verb|remote_id=None| chiediamo di fatto
+alla tag connessa in seriale ad Arduino le informazioni delle ancore, ovvero leggiamo sul suo chip i valori relativi all'ancora richiesta (posizione, id...).
+Per questo motivo, ad ogni nuovo avvio del sistema è necessario salvare all'interno delle tag i valori di posizione più recenti delle ancore, ovvero gli ultimi salvati all'interno delle ancore stesse
+al termine del processo di autocalibrazione.
+Affinché il sistema funzioni è infatti necessario che ogni ancora abbia coscienza della sua posizione rispetto alle altre ancore: la procedura di autocalibrazione è quella utilizzata a tale scopo.
+Per informazioni inerenti alla procedura adottata, vedere app.~\ref{sez:Autocalibrazione}. Per come funziona l'algoritmo, l'ancora 0 è quella scelta come origine del frame UWB che verrà costruito. 
+L'ancora 1 è quella che fornisce la direzione dell'asse y, ovvero le cui coordinate finali saranno \begin{verbatim}(0, y1, 0)\end{verbatim}, mentre l'ancora 2 quella dell'asse x. La quarta ancora, 
+posizionata a una altezza diversa dalle altre 3 (che devono invece essece complanari), evidenzia la direzione dell'asse z.
+
+
+
+
+infine, è importante verificare che siano assenti eventuali interferenze elettromagnetiche tra i dispositivi, le quali, specialmente se interposte tra le ancore, 
+possono rendere difficile la comunicazione tra i dispositivi della rete.
+********
+
+* tag
+* anchors, come disporre le ancore \\
+* autocalibrazione
+* come gestire flash memory dei device
+* warning: remote\_id 
+		problematiche relative al doPositioning veloce (servono le pause)
+		pacchetto ros custom descrivere in breve cosa fanno i file dentro charlie\_pozyx
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Sistema Vicon}
@@ -157,15 +275,16 @@ albero tf\\
 \section{Guida breve all'esperimento}
 In questa sezione \`e scritta, in modo molto sintetico, la procedura per lanciare un esperimento. Per una guida dettagliata rifarsi a sez.~\ref{sez:L'esperimento}. 
 
-Prima di tutto \`e necessario disporre le ancore come descritto in sez.~\ref{sez:Sistema Pozyx} e come si pu\`o vedere in fig.~\ref{fig: disposizione ancore}. Assicurarsi di aver impostato correttamente le impostazioni WiFi (sez.~\ref{sez: primo collegamento a raspberry}) e di avere connessi alla stessa rete pc e Raspberry.
+Prima di tutto \`e necessario disporre le ancore come descritto in sez.~\ref{sez:Sistema Pozyx} e come si pu\`o vedere in fig.~\ref{fig: disposizione ancore}. Assicurarsi di aver impostato correttamente le impostazioni WiFi (sez.~\ref{sez: primo collegamento a raspberry}) e di avere il PC e la Raspberry connessi alla stessa rete WiFi.
 
 
-Connettersi \textbf{ssh} con password \texttt{robot}:
-\begin{lstlisting}[style=bash]
+Connettersi \textbf{ssh} alla Raspberry dal PC digitando da terminale del PC, con password \texttt{robot}:
+\begin{lstlisting}[style=bashPC]
 	ssh -X -C pi@raspberrypi.local		# avvia ssh
 \end{lstlisting}
 
-Per l'\textbf{autocalibrazione} (necessaria ogni volta che viene riposizionato il sistema di ancore) lanciare \textbf{ABBIAMO FATTO IL FILE .SH DA CAMBIARE}:
+Per l'\textbf{autocalibrazione} (necessaria ogni volta che viene riposizionato il sistema di ancore) lanciare 
+dalla cartella \texttt{home} (da terminale della Raspberry):
 \begin{lstlisting}[style=bash]
 	python3 /charlie_autocalibration/autocalibration_ransac.py
 \end{lstlisting}
@@ -195,9 +314,9 @@ Sostituire il nome della mappa che si vuole utilizzare nel file
 
 \verb|/home/pi/charlie_ws/src/charlie_launch/launch/localization.launch|:
 
-\huge \textbf{VERIFICARE} \normalsize 
-\begin{lstlisting}[style=xml, firstnumber=11]
-	<node name="map_server" pkg="map_server" type="map_server" args="/home/pi/charlie_ws/maps/NOME_MAPPA.yaml"/>
+\begin{lstlisting}[style=xml, firstnumber=14]
+	<arg name="file_NUM" default="NOME_MAPPA" />
+	<node name="map_server" pkg="map_server" type="map_server" args="$(arg path)$(arg file_NUM).yaml"/>
 \end{lstlisting}
 
 Quindi lanciare:
@@ -205,7 +324,7 @@ Quindi lanciare:
 	roslaunch charlie_launch localization.launch
 \end{lstlisting}
 
-Nello stesso file \`e possibile impostare di visualizzare rviz attraverso il ``Compressed X11 Forwarding '' scommentando la riga corrispondente di rviz. Questa opzione \`e molto sconsigliata da noi in quanto rende la visione poco reattiva. Per ovviare a questo problema, dopo aver configurato pc e raspberry come descritto in sez.~\ref{sez: Ros master/slave}, \`e possibile lanciare da pc:
+Nello stesso file \`e possibile impostare di visualizzare rviz attraverso la connessione ssh con il ``Compressed X11 Forwarding '' scommentando la riga corrispondente di rviz. Questa opzione \`e molto sconsigliata da noi in quanto rende la visione poco reattiva. Per ovviare a questo problema, dopo aver configurato pc e raspberry come descritto in sez.~\ref{sez: Ros master/slave}, \`e possibile lanciare da pc:
 
 \begin{lstlisting}[style=bashPC]
 	roslaunch charlie_remote rviz_remote.launch
@@ -227,14 +346,16 @@ e per fermarli:
 \end{lstlisting}
 
 \subsection*{Sistema Vicon}
-Ovviamente per utilizzare il sistema Vicon \`e necessario essere nella stanza del volo. Per l'installazione rifarsi a sez.~\ref{sez:Sistema Vicon}. Una volta che il sistema \`e in funzione, avviare l'applicazione di tracking \textbf{SCRIVERE NOME PER BENE} e selezionare nella lista oggetti: \texttt{Charlie} e \texttt{WAND NOME PER BENE}.
+Ovviamente per utilizzare il sistema Vicon \`e necessario essere nella stanza del volo. 
+Per l'installazione rifarsi a sez.~\ref{sez:Sistema Vicon}. 
+Una volta che il sistema \`e in funzione, avviare l'applicazione ``Vicon Tracker 3.7.0 x64'' e selezionare nella lista oggetti: \texttt{Charlie} e \texttt{Active Wand v2 (Origin Tracking)}.
 
 Per avviare i dialoghi tra ros e il sistema Vicon avviare da pc:
 \begin{lstlisting}[style=bashPC]
 	roslaunch charlie_remote vicon_charlie.launch
 \end{lstlisting}
 
-poi salvare la trasformazione tra vicon e uwb (richiede il posizionamento della wand sulle ancore):
+poi salvare la trasformazione tra vicon e uwb (all'utente \`e richiesto di posizionare la wand in successione sulle ancore):
 \begin{lstlisting}[style=bashPC]
 	rosrun charlie_remote vicon2uwb_tf.py
 \end{lstlisting}
@@ -246,14 +367,14 @@ e infine lanciare il nodo che pubblica la posizione di Charlie in frame map:
 
 
 \subsection*{Rosbag}
-Per registrare i dati attraverso una rosbag suggeriamo di non sottroiscriversi a tutti i topic ma quindi di lanciare il seguente comando da pc (dopo essersi spostati nella cartella desiderata):
+Per registrare i dati attraverso una rosbag suggeriamo di non sottoscriversi a tutti i topic ma di lanciare il seguente comando da pc (dopo essersi spostati nella cartella desiderata):
 \begin{lstlisting}[style=bashPC]
 	rosbag record /clock /initialpose /map /orientation /particlecloud /robot_pose /rosout /rosout_agg /scan /tag_center /tf /amcl_pose /charlie_vicon_map -O NOME_BAG.bag
 \end{lstlisting}
 
 Per eseguire i topic necessari a AMCL, prima riconfigurare il file:
 
-\verb|../charlie_remote/launch/exec_bash.launch| con i file e il path che si vogliono utilizzare e quindi lanciare da pc:
+\verb|../charlie_remote/launch/exec_bag.launch| con i file e il path che si vogliono utilizzare e quindi lanciare da pc:
 \begin{lstlisting}[style=bashPC]
 	roslaunch charlie_remote exec_bag.launch
 \end{lstlisting}
@@ -266,6 +387,7 @@ e da raspberry (modificando il nome della mappa da utilizzare all'interno del fi
 \newpage
 \appendix
 \section{Autocalibrazione}
+\label{sez:Autocalibrazione}
 L'autocalibrazione si basa sullo script \texttt{python3} ``autocalibration\_ransac.py''. 
 Per farlo funzionare occorre per prima cosa avere quattro ancore correttamente alimentate ed un dispositivo Pozyx connesso, il quale servirà da comunicazione seriale tra la rete Pozyx e l’utente. 
 Il dispositivo seriale può, a discrezione dell’utente, essere un’ancora o un tag. 
@@ -281,10 +403,18 @@ Nel corso della procedura di autocalibrazione vengono stampati sul terminale var
 	
 	\item Il risultato dell’algoritmo ransac per la distanza tra le ancore;
 	
-	\item Risultato dell'algoritmo algebrico per determinare le coordinate delle ancore: se tale algoritmo fallisca, \`e mostrato su terminale l'errore;
+	\item Risultato dell'algoritmo algebrico per determinare le coordinate delle ancore: in caso di fallimento dell'algoritmo, \`e mostrato su terminale l'errore;
 \end{itemize}
 
+Una volta terminata la calibrazione, sia questa stata manuale o automatica, ciascuna ancora avrà
+salvato nella propria lista dei dispositivi le proprie coordinate, ossia conoscerà le proprie coordinate. 
+Questi dati sono salvati permanentemente nella memoria flash.
+In una successiva fase di positioning è quindi buona norma che il dispositivo che si deve localiz-
+zare interroghi le ancore per conoscere la loro posizione e crei quindi una propria lista interna dei
+dispositivi della rete.
 
+
+Per maggiori dettagli, fare riferimento al dettagliato lavoro~\cite{ctesconistudio}.
 
 % Bibliography
 \newpage

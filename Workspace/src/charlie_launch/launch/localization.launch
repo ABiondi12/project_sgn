@@ -8,6 +8,7 @@
 	<include file="$(find charlie_launch)/launch/rplidar_a3.launch"/>
 
 	<!-- Load map, cambiare numero a file_NUM nel lancio del nodo/-->
+	<!-- e inserire nuove righe per ciascuna nuova mappa acquisita -->
 	<arg name="path" default="/home/pi/charlie_ws/maps/" />
 	<arg name="file_1" default="stanza_volo_26_05" />
 	<arg name="file_2" default="stanza_volo_04_06" />
