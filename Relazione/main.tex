@@ -99,7 +99,7 @@ Il robot è dotato di due batterie:
 I vari convertitori di tensione sono tutti installati su una PCB, che è posizionata all’interno di un box metallico.
 
 Altro elemento da evidenziare \`e la piccola PCB che consente di utilizzare, alternativamente all’STM, un radiocomando per il controllo di sterzo e acceleratore.
-Questa PCB (fig.~\ref{fig:pcb_controlli}) ha un led di stato verde che notifica quando l’alimentazione dei motori è attiva; 
+Questa PCB, visibile in fig.~\ref{fig:pcb_controlli}, ha un led di stato verde che notifica quando l’alimentazione dei motori è attiva; 
 inoltre sono presenti due jumper che permettono di scegliere tra STM e radiocomando come sorgente del controllo per sterzo e acceleratore. 
 Sono sempre disponibili all’utente i contatti per potersi connettere e leggere quanto prodotto dal radiocomando.
 
@@ -114,67 +114,120 @@ Sono sempre disponibili all’utente i contatti per potersi connettere e leggere
     \item LED di stato, indica quando l'alimentazione dei motori è attiva.
 \end{enumerate}
 
-Per ulteriori dettagli e motivazioni dietro alle connessioni fatte riferirsi a \cite{ptvlocalizzazione}.
+Per ulteriori dettagli e motivazioni dietro alle connessioni fatte riferirsi a~\cite{ptvlocalizzazione}.
 Lo schema completo è mostrato in fig.~\ref{fig:schema_completo}.
 
+
+%--------------------------------------------------------
 \subsection{Primo collegamento a Raspberry}
 \label{sez: primo collegamento a raspberry}
 
 Per iniziare a lavorare sulla raspberry in ssh, modalit\`a richiesta per gli esperimenti, \`e necessario impostare le connessioni WiFi a cui la raspberry si
-connette all'avvio. Per comodit\`a suggeriamo di collegare la raspberry ad un monitor tramite un cavo microHDMI-HDMI e una tastiera/mouse usb.
+connette automaticamente all'avvio. Per comodit\`a suggeriamo di collegare la raspberry ad un monitor tramite un cavo microHDMI-HDMI e una tastiera/mouse usb.
 
 Abbiamo scritto tutto il necessario nel file: \texttt{Info/README\_wifi\_settings.txt} e adesso lo riportiamo brevemente anche qui.
-Il file con le impostazioni si trova in \texttt{/etc/network/} e si chiama interfaces. Per editarlo:
-
+Il file con le varie impostazioni WiFi chiamato \texttt{interfaces} si trova in \texttt{/etc/network/}. Per editarlo:
 \begin{lstlisting}[style=bash]
 	sudo nano /etc/network/interfaces
 \end{lstlisting}
+Il file legge le configurazioni salvate nei file \texttt{.conf} di cui sono indicati i path. 
 
-Il file legge le configurazioni salvate in un file \texttt{.conf} di cui deve essere indicata la locazione. Aggiungere una riga per file conf e commentare le altre (con \#).
-Ad esempio se volessimo aggiungere una configurazione di rete con nome "NOME" \`e consigliato inserire la seguente riga:
-
+Per aggiungere una configurazione aggiungere una riga per file \texttt{.conf} e commentare le altre (con \#).
+Ad esempio se volessimo aggiungere una configurazione di rete con nome "NOME\_RETE" \`e consigliato inserire la seguente riga all'interno del file (attenzione: l'ordine conta! Vengono tentate prima le reti riportate):
 \begin{lstlisting}[style=xml]
-	wpa-conf /etc/wpa_supplicant/wpa_supplicant_NOME.conf
+	wpa-conf /etc/wpa_supplicant/wpa_supplicant_NOME_RETE.conf
 \end{lstlisting}
-
-All'interno del file \texttt{.conf} ci deve essere questo:
+Il file \verb|wpa_supplicant_NOME_RETE.conf| deve contenere:
 \begin{lstlisting}[style=xml]
 	ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 	update_config=1
 	country=IT
 
 	network={
-		ssid="nome-wifi"
+		ssid="NOME_RETE"
 		psk="password"
 	}
 \end{lstlisting}
-
-E deve essere posizionato nel path specificato. Nel caso si usi quello di default (\texttt{/etc/wpa\_supplicant/}), si riporta un comando utile:
+e deve essere posizionato nel path specificato. 
+Nel caso si usi quello di default (\texttt{/etc/wpa\_supplicant/}), si riporta un comando utile per creare un nuovo file:
 \begin{lstlisting}[style=bash]
-	sudo nano /etc/wpa_supplicant/wpa_supplicant_NOME.conf
+	sudo nano /etc/wpa_supplicant/wpa_supplicant_NOME_RETE.conf
 \end{lstlisting}
 
-Al prossimo riavvio la raspberry si connetter\`a automaticamente alla prima rete configurata disponibile. 
-Dato che si \`e connessi tramite lo schermo suggeriamo di fare un backup, tramite l'apposito tool, della scheda originale cos\`i da avere un punto di ripristino. 
+Al prossimo riavvio la raspberry si connetter\`a automaticamente alla prima rete (in ordine di righe) configurata disponibile. 
+Dato che si \`e gi\`a connessi tramite lo schermo suggeriamo di fare un backup, tramite l'apposito tool all'interno di raspbian, della scheda originale cos\`i da avere un punto di ripristino. 
 
 \subsection{Ros master/slave}
 \label{sez: Ros master/slave}
-suggerimenti, ssh e rviz master/slave \\
+Ai fine di non sovraccaricare la raspberry e di avere un'interazione fluida con rviz e altri tool grafici di ros \`e fortemente consigliato sfruttare ros su pi\`u computer. 
+Riportiamo i passaggi utilizzati da noi cos\`i  da facilitare i nuovi utenti; per saperne di pi\`u consultare la \href{https://wiki.ros.org/ROS/Tutorials/MultipleMachines}{guida ufficiale}. 
 
+Quello che  vogliamo fare \`e avere il RosMaster su raspberry e utilizzare il pc per tool grafici, esempio rviz o rqt. 
+Otteniamo l'ip dei nostri dispositivi attraverso vari comandi (come \texttt{ifconfig} o \texttt{ip address}) e generalmente sar\`a qulcosa del tipo: \verb|192.168.43.247|. 
+Ipotizziamo quindi che l'ip della raspberry sia \texttt{IPrasp} e quello del pc \texttt{IPpc}. 
+Adesso occorre modificare il file \texttt{.bashrc} sia su raspberry che su pc. Iniziamo da pc:
+\begin{lstlisting}[style=bashpc]
+	nano ~/.bashrc 
+\end{lstlisting}
+e inseriamo a fine file:
+\begin{lstlisting}[style=xml]
+	# ROS MASTER SU RASPBERRY, LATO PC
+	export ROS_MASTER_URI=http://IPrasp:11311/
+	export ROS_HOSTNAME=IPpc
+	export ROS_IP=IPpc
+\end{lstlisting}
+
+Ripetiamo l'operazione su raspberry:
+\begin{lstlisting}[style=bash]
+	nano ~/.bashrc 
+\end{lstlisting}
+e quindi:
+\begin{lstlisting}[style=xml]
+	% # ROS MASTER SU RASPBERRY, LATO RASPBERRY
+	% export ROS_MASTER_URI=http://localhost:11311/
+	% export ROS_HOSTNAME=IPrasp
+	% export ROS_IP=IPrasp
+\end{lstlisting}
+
+A questo punto ravviare le shell dei terminali che si vogliono utilizzare, e sar\`a possibile utilizzare lanciare i nodi, installati su pc, da pc ma sfruttando il master su raspberry.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
 \section{RPlidar}
-sensore lidar 
-orientazione (asse zero insomma) del lidar \\
-se voltaggio sotto 4.7V rischia di non funzionare bene\\
-seriale slamtec "delicata" va stoppata per bene\\
-pacchetto ros rplidarros\\
-viene lanciato da rplidar\_a3.launch \\
-topic \texttt{/scan} letto da hector\_slam produce mappa e da scan\_tools produce la tf da laser odom a base\_link \\
+\begin{figure}[] 
+	\centering    
+	\includegraphics[height=.2\textheight]{rplidar_axis.pdf}
+	\caption{Riferimenti  \textbf{DA EDITARE}}
+	\label{fig: rplidar axis}
+\end{figure}
 
-pacchetto ros gi\`a fornito da slamtec
+Il lidar utilizzato su Charlie \`e un RPlidar A3 prodotto da Slamtec, documentazione e caratteristiche sono disponibili sulla \href{https://www.slamtec.com/en/Lidar/A3}{pagina} del produttore.
+Per quanto riguarda il codice, abbiamo scelto di utilizzare il \href{https://wiki.ros.org/rplidar}{pacchetto} ros sviluppato proprio da Slamtec. 
+Alcune accortezze hardware sono state:
+
+\begin{itemize}
+	\item utilizzare un cavo micro usb di buona qualit\`a. Infatti questo cavo \`e responsabile sia dell'alimentazione del motore brushless sia della seriale di comunicazione.
+			Ci siamo accorti che se il voltaggio in ingresso al lidar cala sotto i \SI{4.7}{\volt} la comunicazione seriale si interrompe e non \`e pi\`u possibile sfruttare i nodi ros
+			di RPlidar.
+
+	\item orientare correttamente il sistema di riferimento del lidar, in quanto le rappresentazioni nel datasheet sono invertite di $\pi$. 
+	L'asse x ($\vartheta = 0$) infatti coincide con l'uscita del cavo dalla struttura principale come si pu\`o vedere in fig.~\ref{fig: rplidar axis}.
+
+	\item cercare di far vibrare il meno possibile la struttura di sostegno e rialzo del lidar.
+
+\end{itemize}
+
+Per evitare che l'ordine di inizializzazione delle porte usb della raspberry non influenzasse il nome del collegamento (per esempio: \texttt{ttyUSB0} oppure \texttt{ttyUSB1})
+abbiamo realizzato un symlink in modo tale che la porta seriale del lidar sia sempre chiamata \texttt{ttyUSBlidar}. 
+Su come si realizzi tale symlink abbiamo riportato la procedura dentro il file \texttt{/Info/renaming\_ttyUSB.txt}.
+
+In ambiente ros viene eseguito il lidar andando a lanciare il nodo \texttt{rplidarNode} che pubblica sul topic \texttt{/scan}. 
+\`E stato sviluppato il file di lancio \texttt{rplidar\_a3.launch} con i parametri opportuni.  
+Per quanto riguarda l'utilizzo del lidar non \`e stato necessario alcun sviluppo software in quanto il pacchetto ros risulta gi\`a completo.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
 \section{Sistema Pozyx}
 \label{sez:Sistema Pozyx}
 
@@ -185,7 +238,6 @@ pacchetto ros gi\`a fornito da slamtec
 	\label{fig: disposizione ancore}
 \end{figure}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 Il Pozyx è un sistema di localizzazione alternativo al GPS, basato sulla tecnologia ultra-wideband
 (UWB). In breve, si tratta di una tecnica di trasmissione sviluppata per la trasmissione e la ricezione di segnali 
@@ -257,6 +309,7 @@ come si calibra
 \section{L'esperimento}
 \label{sez:L'esperimento}
 procedura con i comandi, ogni cosa che facciamo \`e commentata e descritta \\
+topic \texttt{/scan} letto da hector\_slam produce mappa e da scan\_tools produce la tf da laser odom a base\_link \\
 albero nodi\\
 albero tf\\
 
