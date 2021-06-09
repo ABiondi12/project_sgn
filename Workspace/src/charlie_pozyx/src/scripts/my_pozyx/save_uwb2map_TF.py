@@ -261,14 +261,14 @@ def save_map_TF():
 
 			# Scrittura file.txt
 			f = open(TF_filename,"w+") # accedi al file in scrittura
-			f.write("%f\r\n" %tag_center.pose.position.x)
-			f.write("%f\r\n" %tag_center.pose.position.y)
-			f.write("%f\r\n" %tag_center.pose.position.z)
+			f.write("%f\r\n" %float(tag_center.pose.position.x))
+			f.write("%f\r\n" %float(tag_center.pose.position.y))
+			f.write("%f\r\n" %float(tag_center.pose.position.z))
 			
-			f.write("%f\r\n" %tag_center.pose.orientation.x)
-			f.write("%f\r\n" %tag_center.pose.orientation.y)
-			f.write("%f\r\n" %tag_center.pose.orientation.z)			
-			f.write("%f\r\n" %tag_center.pose.orientation.w)	
+			f.write("%f\r\n" %float(tag_center.pose.orientation.x))
+			f.write("%f\r\n" %float(tag_center.pose.orientation.y))
+			f.write("%f\r\n" %float(tag_center.pose.orientation.z))			
+			f.write("%f\r\n" %float(tag_center.pose.orientation.w))	
 			f.close()
 
 			# inform that frame setup is complete

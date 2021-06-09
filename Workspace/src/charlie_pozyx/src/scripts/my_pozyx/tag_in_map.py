@@ -153,11 +153,6 @@ def pozyx_tag_center_pub():
 		# tag center in map
 		temp_pose = UWB2map(tag_center_UWB) # salviamo la posa in una variabile temporanea
 		
-		# assegnazione posizione
-		tag_center.pose.position.x = temp_pose.pose.position.x
-		tag_center.pose.position.y = temp_pose.pose.position.y
-		tag_center.pose.position.z = 0		# always zero
-
 		# orientazione dei tag bypassata, si usa lo yaw proveniente da Icaro (STM)
 		theta = -orient.z - map_yaw	#STM in z-down, viene convertito in z-up
 		z_quat = tf.transformations.quaternion_from_euler(0, 0, theta)
@@ -166,6 +161,16 @@ def pozyx_tag_center_pub():
 		tag_center.pose.orientation.z = z_quat[2]
 		tag_center.pose.orientation.w = z_quat[3]
 		
+		# correzione offset legato al montaggio laterale delle tag rispetto al lidar
+		offset_montaggio_tag = 0.125
+		offset_montaggio_tagx = offset_montaggio_tag * sin(theta)
+		offset_montaggio_tagy = -offset_montaggio_tag * cos(theta)
+
+		# assegnazione posizione
+		tag_center.pose.position.x = temp_pose.pose.position.x + offset_montaggio_tagx
+		tag_center.pose.position.y = temp_pose.pose.position.y + offset_montaggio_tagy
+		tag_center.pose.position.z = 0		# always zero
+
 		# send to broadcaster
 		br = tf.TransformBroadcaster()
 		br.sendTransform((tag_center.pose.position.x, tag_center.pose.position.y, 0.00),
