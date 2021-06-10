@@ -117,7 +117,6 @@ Sono sempre disponibili all’utente i contatti per potersi connettere e leggere
 Per ulteriori dettagli e motivazioni dietro alle connessioni fatte riferirsi a~\cite{ptvlocalizzazione}.
 Lo schema completo è mostrato in fig.~\ref{fig:schema_completo}.
 
-
 %--------------------------------------------------------
 \subsection{Primo collegamento a Raspberry}
 \label{sez: primo collegamento a raspberry}
@@ -301,17 +300,54 @@ possono rendere difficile la comunicazione tra i dispositivi della rete.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Sistema Vicon}
 \label{sez:Sistema Vicon}
-come si installa \\
-come si crea un oggetto\\
-come si calibra
+
+Il sistema Vicon \`e un sistema molto accurato di motion capture. 
+In questo progetto \`e stato usato per fornire un \textit{ground-truth} e un confrotno all'algoritmo di navigazione. 
+In tal senso quindi abbiamo ritenuto opportuno sviluppare i nodi e i topic di dialogo con il sistema Vicon all'esterno del workspace della raspberry: infatti questi si trovano su pc nel pacchetto in \texttt{charlie\_remote}.
+
+Per poter dialogare con il sistema Vicon \`e sufficiente includere nel proprio \texttt{catkin\_ws} il pacchetto \texttt{vrpn\_client\_ros} disponibile sulla \href{https://wiki.ros.org/vrpn_client_ros}{wiki.ros} e scaricabile dalla \href{https://github.com/ros-drivers/vrpn_client_ros}{repo GitHub}.
+Questo pubblicher\`a la posa, il twist e l'accelerazione di ogni oggetto selezionato nel software di tracking (maggiori dettagli su quali oggetti selezionare nelle sezioni \ref{sez:L'esperimento} e \ref{sez: Guida breve all'esperimento}).
+
+\subsubsection*{Creazione oggetto}
+Nonostante ci siano gi\`a gli oggetti necessari per il tracking di Charlie riportiamo la procedura di creazione di un nuovo oggetto che pu\`o essere utile in caso di modifiche ai marker o in altre circostanze. 
+Sinteticamente:
+\begin{enumerate}
+	\item Disporre 4 o pi\`u marker sull'oggetto desiderato in modo asimmetrico. Per facilitare i prossimi passi disporre alcuni marker sugli assi del sistema di riferimento body.
+	
+	\item Selezionare i marker nell'applicazione ``Vicon Tracker 3.7.0 x64'' semplicemente clickando e tenendo premuto il tasto sinistro del mouse, poi premere pausa (pulsante collocato a sinistra).
+	
+	\item spostarsi nel tab Objects, assegnare un nome in basso e premere Create Object. L'applicazione assegna un sistema locale di default.
+	
+	\item Modificare il sistema locale premendo sugli assi o andando nelle propriet\`a dell'oggetto appena creato. Una volta soddisfatti premere \texttt{Ctrl+S} per salvare l'oggetto.
+	
+	\item Premere di nuovo il pulsante di pausa e verificare che il tracciamento stia funzionando.
+\end{enumerate}
+
+\subsubsection*{Calibrazione}
+Per effettuare una calibrazione del sistema, necessaria di tanto in tanto \`e necessario utilizzare la wand. 
+Per prima cosa spostarsi quindi accedere all'applicazione ``Vicon Tracker 3.7.0 x64'' e collocarsi nella tab \textbf{CALIBRAZIONE}?. 
+Premere su ?? avviando la procedura di autocalibrazione: spostare la wand con pattern circolari all'interno della stanza assicurandosi di avere sempre pi\`u camere ``a vista''. 
+Il software interromper\`a da solo l'acquisizione dei dati una volta che questi siano sufficienti.
+
+Adesso \`e necessario definire il sistema di riferimento. Per far questo andiamo a posizionare l'incrocio degli assi della wand nel punto in cui vogliamo l'origine e gli assi stessi allineati con gli assi-Vicon desiderati.
+Selezioniamo quindi il marker all'incrocio come origine e gli altri marker come asse x e asse y e abbiamo ricalibrato il sistema. 
+Nella stanza volo il sistema di riferimento pi\`u usato \`e rappresentato in fig.REF.
+\textbf{FARE IMMAGINEEE}
+
+\textbf{NON MI RICORDOOO BENE RIVEDERE!!}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
 \section{L'esperimento}
 \label{sez:L'esperimento}
 procedura con i comandi, ogni cosa che facciamo \`e commentata e descritta \\
 topic \texttt{/scan} letto da hector\_slam produce mappa e da scan\_tools produce la tf da laser odom a base\_link \\
 albero nodi\\
 albero tf\\
+
+\subsection{Sistema di riferimento body}
+\textbf{FARE FIGURINAAAAAAAAAAAAAAAAA}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Prove?}
@@ -326,6 +362,7 @@ albero tf\\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \section{Guida breve all'esperimento}
+\label{sez: Guida breve all'esperimento}
 In questa sezione \`e scritta, in modo molto sintetico, la procedura per lanciare un esperimento. Per una guida dettagliata rifarsi a sez.~\ref{sez:L'esperimento}. 
 
 Prima di tutto \`e necessario disporre le ancore come descritto in sez.~\ref{sez:Sistema Pozyx} e come si pu\`o vedere in fig.~\ref{fig: disposizione ancore}. Assicurarsi di aver impostato correttamente le impostazioni WiFi (sez.~\ref{sez: primo collegamento a raspberry}) e di avere il PC e la Raspberry connessi alla stessa rete WiFi.
@@ -401,7 +438,11 @@ e per fermarli:
 \subsection*{Sistema Vicon}
 Ovviamente per utilizzare il sistema Vicon \`e necessario essere nella stanza del volo. 
 Per l'installazione rifarsi a sez.~\ref{sez:Sistema Vicon}. 
-Una volta che il sistema \`e in funzione, avviare l'applicazione ``Vicon Tracker 3.7.0 x64'' e selezionare nella lista oggetti: \texttt{Charlie} e \texttt{Active Wand v2 (Origin Tracking)}.
+Una volta che il sistema \`e in funzione, avviare l'applicazione ``Vicon Tracker 3.7.0 x64'' e selezionare nella lista oggetti: \texttt{Charlie} e \texttt{Active Wand v2 (Origin Tracking)}. 
+Connettere il computer fisso connesso fisicamente al sistema Vicon (che sar\`a il server Vicon) alla stessa rete di raspberry e pc e in seguito modificare nel file di lancio \texttt{charlie\_remote/launch/vicon\_charlie.launch} l'ip del server Vicon nella seguente riga:
+\begin{lstlisting}[style=xml, firstnumber=6]
+	<arg name="server" default="IP_SERVER"/>
+\end{lstlisting}
 
 Per avviare i dialoghi tra ros e il sistema Vicon avviare da pc:
 \begin{lstlisting}[style=bashPC]
