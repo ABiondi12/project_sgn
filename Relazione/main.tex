@@ -72,18 +72,27 @@ Come sensori sono presenti:
 \subsubsection*{Alimentazione e Connessioni}
 
 \begin{figure}[] 
+	\centering    
+	\includegraphics[width=1\textwidth]{schema_completo.pdf}
+	\caption{Schema connessioni completo. \textbf{DA EDITARE CON RASPBERRY}}
+	\label{fig:schema_completo}
+\end{figure}
+
+\begin{figure}[] 
 	\centering
 	\includegraphics[width=0.45\textwidth]{pcb_controlli.png}
 	\caption{PCB controlli}
 	\label{fig:pcb_controlli}
 \end{figure}
 
-\begin{figure}[] 
+
+\begin{figure}
 	\centering    
-	\includegraphics[width=1\textwidth]{schema_completo.pdf}
-	\caption{Schema connessioni completo. \textbf{DA EDITARE CON RASPBERRY}}
-	\label{fig:schema_completo}
+	\includegraphics[height=0.2\textheight]{charlie_adulto.jpeg}
+	\caption{Pinout del convertitore USB-seriale. \textbf{DA FARE!!!}}
+	\label{fig: pinout usbserial}
 \end{figure}
+
 
 Il robot è dotato di due batterie:
 \begin{itemize}
@@ -98,7 +107,17 @@ Il robot è dotato di due batterie:
 
 I vari convertitori di tensione sono tutti installati su una PCB, che è posizionata all’interno di un box metallico.
 
-Altro elemento da evidenziare \`e la piccola PCB che consente di utilizzare, alternativamente all’STM, un radiocomando per il controllo di sterzo e acceleratore.
+Altro componente fondamentale \`e il convertitore usb-seriale ``TTL-232R-PCB'' prodotto da 
+``Future Technology Devices International Ltd''. 
+Questo consente di comunicare, appunto, in seriale con la STM e di trasmettere informazioni necessarie all'algoritmo di navigazione.
+Per leggere cosa viene trasmesso, rifarsi alla sez.~\ref{sez:L'esperimento}, mentre per sapere che funzione hanno i pin 
+consultare datasheet o pi\`u comodamente fig.~\ref{fig: pinout usbserial}. 
+A questo dispositivo \`e stato associato il symlink \texttt{ttyUSBserial} per evitare che l’ordine di inizializzazione delle porte usb della raspberry non influenzasse
+il nome del collegamento (per esempio: \texttt{ttyUSB0} oppure  \texttt{ttyUSB1})
+Su come si realizzi tale symlink abbiamo riportato la procedura dentro il file \texttt{/Info/renaming\_ttyUSB.txt}.
+
+
+Ultimo elemento da evidenziare \`e la piccola PCB che consente di utilizzare, alternativamente alla STM, un radiocomando per il controllo di sterzo e acceleratore.
 Questa PCB, visibile in fig.~\ref{fig:pcb_controlli}, ha un led di stato verde che notifica quando l’alimentazione dei motori è attiva; 
 inoltre sono presenti due jumper che permettono di scegliere tra STM e radiocomando come sorgente del controllo per sterzo e acceleratore. 
 Sono sempre disponibili all’utente i contatti per potersi connettere e leggere quanto prodotto dal radiocomando.
@@ -191,7 +210,6 @@ e quindi:
 A questo punto ravviare le shell dei terminali che si vogliono utilizzare, e sar\`a possibile utilizzare lanciare i nodi, installati su pc, da pc ma sfruttando il master su raspberry.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
 \section{RPlidar}
 \begin{figure}[] 
 	\centering    
@@ -217,7 +235,7 @@ Alcune accortezze hardware sono state:
 \end{itemize}
 
 Per evitare che l'ordine di inizializzazione delle porte usb della raspberry non influenzasse il nome del collegamento (per esempio: \texttt{ttyUSB0} oppure \texttt{ttyUSB1})
-abbiamo realizzato un symlink in modo tale che la porta seriale del lidar sia sempre chiamata \texttt{ttyUSBlidar}. 
+abbiamo realizzato il symlink \texttt{ttyUSBlidar} in modo tale che la porta seriale del lidar sia sempre chiamata \texttt{ttyUSBlidar}. 
 Su come si realizzi tale symlink abbiamo riportato la procedura dentro il file \texttt{/Info/renaming\_ttyUSB.txt}.
 
 In ambiente ros viene eseguito il lidar andando a lanciare il nodo \texttt{rplidarNode} che pubblica sul topic \texttt{/scan}. 
@@ -325,16 +343,14 @@ Sinteticamente:
 
 \subsubsection*{Calibrazione}
 Per effettuare una calibrazione del sistema, necessaria di tanto in tanto \`e necessario utilizzare la wand. 
-Per prima cosa spostarsi quindi accedere all'applicazione ``Vicon Tracker 3.7.0 x64'' e collocarsi nella tab \textbf{CALIBRAZIONE}?. 
-Premere su ?? avviando la procedura di autocalibrazione: spostare la wand con pattern circolari all'interno della stanza assicurandosi di avere sempre pi\`u camere ``a vista''. 
+Per prima cosa accedere all'applicazione ``Vicon Tracker 3.7.0 x64'' e collocarsi nella tab ``Calibrate''. 
+Premere su ``Start'' nella sezione ``CALIBRATE CAMERAS'', avviando cos\`i la procedura di autocalibrazione: spostare la wand con pattern circolari all'interno della stanza assicurandosi di avere sempre pi\`u camere ``a vista''. 
 Il software interromper\`a da solo l'acquisizione dei dati una volta che questi siano sufficienti.
 
 Adesso \`e necessario definire il sistema di riferimento. Per far questo andiamo a posizionare l'incrocio degli assi della wand nel punto in cui vogliamo l'origine e gli assi stessi allineati con gli assi-Vicon desiderati.
-Selezioniamo quindi il marker all'incrocio come origine e gli altri marker come asse x e asse y e abbiamo ricalibrato il sistema. 
+Selezioniamo quindi il marker all'incrocio come origine e gli altri marker come asse x e asse y completando cos\`i la calibrazione del sistema. 
 Nella stanza volo il sistema di riferimento pi\`u usato \`e rappresentato in fig.REF.
 \textbf{FARE IMMAGINEEE}
-
-\textbf{NON MI RICORDOOO BENE RIVEDERE!!}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -376,7 +392,7 @@ Connettersi \textbf{ssh} alla Raspberry dal PC digitando da terminale del PC, co
 Per l'\textbf{autocalibrazione} (necessaria ogni volta che viene riposizionato il sistema di ancore) lanciare 
 dalla cartella \texttt{home} (da terminale della Raspberry):
 \begin{lstlisting}[style=bash]
-	python3 /charlie_autocalibration/autocalibration_ransac.py
+	python3 ~/charlie_autocalibration/autocalibration_ransac.py
 \end{lstlisting}
 infine rispondere ``y'' per salvare i risultati nella memoria flash delle ancore.
 
@@ -480,7 +496,7 @@ e da raspberry (modificando il nome della mappa da utilizzare all'interno del fi
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \appendix
-\section{Autocalibrazione}
+\section{Autocalibrazione ancore Pozyx}
 \label{sez:Autocalibrazione}
 L'autocalibrazione si basa sullo script \texttt{python3} ``autocalibration\_ransac.py''. 
 Per farlo funzionare occorre per prima cosa avere quattro ancore correttamente alimentate ed un dispositivo Pozyx connesso, il quale servirà da comunicazione seriale tra la rete Pozyx e l’utente. 
