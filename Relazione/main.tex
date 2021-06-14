@@ -214,29 +214,28 @@ A questo punto, è sufficiente riavviare le shell dei terminali che si vogliono 
 	\label{fig: rplidar axis}
 \end{figure}
 
-Il lidar utilizzato su Charlie \`e un RPlidar A3 prodotto da Slamtec, documentazione e caratteristiche sono disponibili sulla \href{https://www.slamtec.com/en/Lidar/A3}{pagina} del produttore.
+Il lidar utilizzato su Charlie è un RPlidar A3 prodotto da Slamtec, di cui documentazione e caratteristiche sono disponibili sulla \href{https://www.slamtec.com/en/Lidar/A3}{pagina} del produttore.
 Per quanto riguarda il codice, abbiamo scelto di utilizzare il \href{https://wiki.ros.org/rplidar}{pacchetto} ros sviluppato proprio da Slamtec. 
 Alcune accortezze hardware sono state:
 
 \begin{itemize}
-	\item utilizzare un cavo micro usb di buona qualit\`a. Infatti questo cavo \`e responsabile sia dell'alimentazione del motore brushless sia della seriale di comunicazione.
-			Ci siamo accorti che se il voltaggio in ingresso al lidar cala sotto i \SI{4.7}{\volt} la comunicazione seriale si interrompe e non \`e pi\`u possibile sfruttare i nodi ros
-			di RPlidar.
+	\item utilizzare un cavo micro usb di buona qualità. Infatti, questo cavo è responsabile sia dell'alimentazione del motore brushless sia della seriale di comunicazione.
+			Ci siamo accorti che, se il voltaggio in ingresso al lidar cala sotto i \SI{4.7}{\volt}, la comunicazione seriale si interrompe e non è più possibile sfruttare i nodi ros di RPlidar.
 
 	\item orientare correttamente il sistema di riferimento del lidar, in quanto le rappresentazioni nel datasheet sono invertite di $\pi$. 
-	L'asse x ($\vartheta = 0$) infatti coincide con l'uscita del cavo dalla struttura principale come si pu\`o vedere in fig.~\ref{fig: rplidar axis}.
+	L'asse x ($\vartheta = 0$), infatti, coincide con l'uscita del cavo dalla struttura principale, come si può vedere in fig.~\ref{fig: rplidar axis}.
 
 	\item cercare di far vibrare il meno possibile la struttura di sostegno e rialzo del lidar.
 
 \end{itemize}
 
-Per evitare che l'ordine di inizializzazione delle porte usb della raspberry non influenzasse il nome del collegamento (per esempio: \texttt{ttyUSB0} oppure \texttt{ttyUSB1})
-abbiamo realizzato il symlink \texttt{ttyUSBlidar} in modo tale che la porta seriale del lidar sia sempre chiamata \texttt{ttyUSBlidar}. 
-Su come si realizzi tale symlink abbiamo riportato la procedura dentro il file \texttt{/Info/renaming\_ttyUSB.txt}.
+Per evitare, di nuovo, che l'ordine di inizializzazione delle porte usb della raspberry possa influenzare il nome del collegamento (per esempio: \texttt{ttyUSB0} oppure \texttt{ttyUSB1})
+abbiamo realizzato anche per questo dispositivo il symlink \texttt{ttyUSBlidar}:ciò fa sì che la porta seriale del lidar sia sempre chiamata \texttt{ttyUSBlidar}. 
+Per realizzare tale symlink, consultare la procedura riportata nel file \texttt{/Info/renaming\_ttyUSB.txt}.
 
-In ambiente ros viene eseguito il lidar andando a lanciare il nodo \texttt{rplidarNode} che pubblica sul topic \texttt{/scan}. 
-\`E stato sviluppato il file di lancio \texttt{rplidar\_a3.launch} con i parametri opportuni.  
-Per quanto riguarda l'utilizzo del lidar non \`e stato necessario alcun sviluppo software in quanto il pacchetto ros risulta gi\`a completo.
+In ambiente ros viene eseguito il lidar andando a lanciare il nodo \texttt{rplidarNode}, il quale pubblica sul topic \texttt{/scan}. 
+\`E stato sviluppato il file di lancio \texttt{rplidar\_a3.launch} con i parametri opportuni per il nostro sistema.  
+Per quanto riguarda l'utilizzo del lidar, non è stato necessario alcun sviluppo software in quanto il pacchetto ros risulta già completo.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -253,14 +252,11 @@ Per quanto riguarda l'utilizzo del lidar non \`e stato necessario alcun sviluppo
 
 
 Il Pozyx è un sistema di localizzazione alternativo al GPS, basato sulla tecnologia ultra-wideband
-(UWB). In breve, si tratta di una tecnica di trasmissione sviluppata per la trasmissione e la ricezione di segnali 
-sfruttando degli impulsi di energia a radiofrequenza di durata temporale molto ridotta (nanosecondi) con conseguente
-banda spettrale ampia.
-Nel sistema Pozyx si possono distinguere due entità: le ancore e le tag.
-La configurazione base prevede l'utilizzo 4 ancore, che fungono da dispositivi fissi, e un tag, che rappresenta il dispositivo mobile.
-Grazie all'utilizzo di un algoritmo di triangolazione, il tag si può localizzare rispetto alle ancore. Teoricamente, la localizzazione 
-effettuata sfruttando la tecnologia ultra-wideband permette di ottenere un posizionamento con una accuratezza al centimetro anche
-in ambienti indoor e in presenza di ostacoli di natura non metallica, condizioni sfavorevoli per la natura fisica del sistema (che presenta 
+(UWB). In breve, si tratta di una tecnica per la trasmissione e la ricezione di segnali sviluppata in modo tale che vengano sfruttati impulsi di energia a radiofrequenza aventi durata temporale molto ridotta (nanosecondi), con conseguente banda spettrale ampia.
+Nel sistema Pozyx si possono distinguere due entità, ciascuna con le proprie peculiarità: le ancore e le tag.
+La configurazione base prevede l'utilizzo 4 ancore, che fungono da dispositivi fissi, e una tag, che rappresenta il dispositivo mobile.
+Grazie all'utilizzo di un algoritmo di triangolazione, la tag si può localizzare rispetto alle ancore. Teoricamente, la localizzazione tramite tecnologia ultra-wideband permette di ottenere un posizionamento con una accuratezza al centimetro anche
+in ambienti indoor e in presenza di ostacoli di natura non metallica, condizioni sfavorevoli per il sistema (che presenta 
 migliori performance in ambienti aperti ed ampi, privi di oggetti metallici e ostacoli sui quali possano verificarsi fenomeni di scatterning 
 del segnale inviato). 
 Sia all'interno delle tag che delle ancore è presente un microcontrollore, nel quale vengono eseguiti la maggior parte dei task richiesti,
@@ -272,35 +268,28 @@ per la triangolazione e sono disponibili all’utente.
 Per quanto riguarda l'utilizzo di tale sistema di posizionamento, è necessario prima di tutto predisporre l'ambiente di lavoro.
 La prima cosa da fare è posizionare le ancore in modo tale che delimitino uno spazio entro il quale il sistema di localizzazione
 funzioni correttamente. Il miglior modo di disporle è quello di metterle in alto e sulla line-of-sight dell’utente: questo tipo di scelta
-aumenta infatti la possibilità di ricevere un buon segnale in quanto si limita la presenza di possibili ostacoli. 
+aumenta la possibilità di ricevere un buon segnale, in quanto permette di limitare la presenza di possibili ostacoli. 
 Per un buon funzionamento e per ridurre il più possibile l'errore di posizionamento, è consigliato inoltre distribuire le ancore affinché tutte le 
 direzioni siano coperte.
-Nel caso, infatti, in cui gli ancoraggi si trovino su una linea retta, l'errore di posizionamento risultante sarà molto grande e potranno
+Nel caso, infatti, in cui gli ancoraggi si trovino su una linea retta, l'errore di posizionamento risultante sarebbe molto grande e potrebbero
 verificarsi ambiguità di posizione legate alla simmetria della configurazione.
-Importante sottolineare che le ancore devono essere disposte verticalmente con l’antenna UWB rivolta verso l’alto.
+Per un buon funzionamento del sistema, è infine importante disporre le ancore verticalmente e con l’antenna UWB rivolta verso l’alto.
 
-Per tutte le operazioni che vengono richieste tra le ancore e le tag, è necessario specificare tra quali dispositivi lavorare. 
-Con l'identificativo assegnato al campo \verb|remote_id|, si dichiara la tag o l'ancora sulla quale vogliamo usare le funzioni di registro. Nel caso (di default)
-in cui questo sia settato al valore \verb|None|, verrà usata la tag locale, ovvero quella connessa al pc (su cui viene utilizzata la seriale).
-Presa ad esempio la funzione doRanging(destination, \verb|device_range|, \verb|remote_id=None|), essa effettua una misurazione della distanza tra i dispositivi i cui identificativi sono
-\verb|remote_id| e destination. Lasciando il valore di default per \verb|remote_id|, cioè \verb|None|, la distanza viene automaticamente valutata tra il dispositivo connesso alla seriale del PC e il
-dispositivo il cui identificativo è destination. 
-Se si desidera invece che il ranging venga effettuato tra due diversi dispositivi della rete basterà inserire l’opportuno valore di \verb|remote_id|.
+Una volta predisposto l'ambiente di lavoro, si passa alla parte di comunicazione tra i vari agenti in gioco. Per tutte le operazioni che vengono richieste tra le ancore e le tag, è necessario specificare tra quali dispositivi lavorare. 
+Con l'identificativo assegnato al campo \verb|remote_id|, si dichiara la tag o l'ancora sulla quale vogliamo usare le funzioni di registro. Nel caso (di default) in cui questo sia settato al valore \verb|None|, verrà usata la tag locale, ovvero quella connessa al pc (su cui viene utilizzata la seriale).
+Presa ad esempio la funzione doRanging(destination, \verb|device_range|, \verb|remote_id=None|), essa effettua una misurazione della distanza tra i dispositivi i cui identificativi sono \verb|remote_id| e destination. Lasciando il valore di default per \verb|remote_id|, cioè \verb|None|, la distanza viene automaticamente valutata tra il dispositivo connesso alla seriale del PC e il dispositivo il cui identificativo è destination. 
+Se si desidera, invece, che il ranging venga effettuato tra due diversi dispositivi della rete, basterà inserire l’opportuno valore di \verb|remote_id|.
 
-Nel nostro caso, questo aspetto è importante nel momento in cui vengono prelevate le posizioni relative delle ancore nella configurazione attuale. Con \verb|remote_id=None| chiediamo di fatto
-alla tag connessa in seriale ad Arduino le informazioni delle ancore, ovvero leggiamo sul suo chip i valori relativi all'ancora richiesta (posizione, id...).
-Per questo motivo, ad ogni nuovo avvio del sistema è necessario salvare all'interno delle tag i valori di posizione più recenti delle ancore, ovvero gli ultimi salvati all'interno delle ancore stesse
-al termine del processo di autocalibrazione.
-Affinché il sistema funzioni è infatti necessario che ogni ancora abbia coscienza della sua posizione rispetto alle altre ancore: la procedura di autocalibrazione è quella utilizzata a tale scopo.
-Per informazioni inerenti alla procedura adottata, vedere app.~\ref{sez:Autocalibrazione}. Per come funziona l'algoritmo, l'ancora 0 è quella scelta come origine del frame UWB che verrà costruito. 
-L'ancora 1 è quella che fornisce la direzione dell'asse y, ovvero le cui coordinate finali saranno \begin{verbatim}(0, y1, 0)\end{verbatim}, mentre l'ancora 2 quella dell'asse x. La quarta ancora, 
-posizionata a una altezza diversa dalle altre 3 (che devono invece essece complanari), evidenzia la direzione dell'asse z.
+Nel nostro caso, questo aspetto risulta essere fondamentale nel momento in cui vengono prelevate le posizioni relative delle ancore nella configurazione corrente. Con \verb|remote_id=None|, chiediamo di fatto alla tag connessa in seriale ad Arduino di fornirci le informazioni delle ancore, ovvero leggiamo sul suo chip i valori relativi all'ancora richiesta (posizione, id...).
+Per questo motivo, ad ogni nuovo avvio del sistema è necessario salvare all'interno delle tag i valori di posizione più recenti delle ancore, ovvero gli ultimi salvati all'interno delle ancore stesse al termine del processo di autocalibrazione.
+Affinché il sistema funzioni, è infatti necessario che ogni ancora abbia coscienza della propria posizione rispetto alle altre ancore: la procedura di autocalibrazione è quella utilizzata a tale scopo.
+Per informazioni inerenti alla procedura adottata, vedere app.~\ref{sez:Autocalibrazione}. Per come è stati scritto l'algoritmo in questione, l'ancora 0 è quella la cui posizione fornisce l'origine del frame UWB che verrà costruito. 
+L'ancora 1 indica invece la direzione dell'asse y, ovvero le sue coordinate finali saranno \verb|(0, y1, 0)|, così come l'ancora 2 quella dell'asse x. La quarta ancora, posizionata a una altezza diversa dalle altre 3 (che devono invece essece complanari), evidenzia infine la direzione dell'asse z.
 
 
 
 
-infine, è importante verificare che siano assenti eventuali interferenze elettromagnetiche tra i dispositivi, le quali, specialmente se interposte tra le ancore, 
-possono rendere difficile la comunicazione tra i dispositivi della rete.
+infine, è importante verificare che siano assenti eventuali interferenze elettromagnetiche tra i dispositivi, le quali, specialmente se interposte tra le ancore, possono rendere difficile la comunicazione tra i dispositivi della rete.
 ********
 
 * tag
@@ -315,37 +304,37 @@ possono rendere difficile la comunicazione tra i dispositivi della rete.
 \section{Sistema Vicon}
 \label{sez:Sistema Vicon}
 
-Il sistema Vicon \`e un sistema molto accurato di motion capture. 
-In questo progetto \`e stato usato per fornire un \textit{ground-truth} e un confrotno all'algoritmo di navigazione. 
-In tal senso quindi abbiamo ritenuto opportuno sviluppare i nodi e i topic di dialogo con il sistema Vicon all'esterno del workspace della raspberry: infatti questi si trovano su pc nel pacchetto in \texttt{charlie\_remote}.
+Il sistema Vicon è un sistema molto accurato di motion capture. 
+In questo progetto è stato utilizzato per fornire un \textit{ground-truth} e un confronto all'algoritmo di navigazione, del quale possiamo così valutare la bontà. 
+In tal senso, quindi, abbiamo ritenuto opportuno sviluppare i nodi e i topic di dialogo con il sistema Vicon all'esterno del workspace della raspberry: infatti, questi si trovano su pc nel pacchetto in \texttt{charlie\_remote}.
 
-Per poter dialogare con il sistema Vicon \`e sufficiente includere nel proprio \texttt{catkin\_ws} il pacchetto \texttt{vrpn\_client\_ros} disponibile sulla \href{https://wiki.ros.org/vrpn_client_ros}{wiki.ros} e scaricabile dalla \href{https://github.com/ros-drivers/vrpn_client_ros}{repo GitHub}.
-Questo pubblicher\`a la posa, il twist e l'accelerazione di ogni oggetto selezionato nel software di tracking (maggiori dettagli su quali oggetti selezionare nelle sezioni \ref{sez:L'esperimento} e \ref{sez: Guida breve all'esperimento}).
+Per poter dialogare con il sistema Vicon, è sufficiente includere nel proprio \texttt{catkin\_ws} il pacchetto \texttt{vrpn\_client\_ros}, disponibile sulla \href{https://wiki.ros.org/vrpn_client_ros}{wiki.ros} e scaricabile dalla \href{https://github.com/ros-drivers/vrpn_client_ros}{repo GitHub}.
+Questo pubblicherà la posa, il twist e l'accelerazione di ogni oggetto selezionato nel software di tracking (maggiori dettagli su quali oggetti selezionare nelle sezioni \ref{sez:L'esperimento} e \ref{sez: Guida breve all'esperimento}).
 
 \subsubsection*{Creazione oggetto}
-Nonostante ci siano gi\`a gli oggetti necessari per il tracking di Charlie riportiamo la procedura di creazione di un nuovo oggetto che pu\`o essere utile in caso di modifiche ai marker o in altre circostanze. 
-Sinteticamente:
+Nonostante siano già presenti gli oggetti necessari per il tracking di Charlie, riportiamo la procedura di creazione di un nuovo oggetto, la quale potrebbe essere utile in caso di modifiche ai marker o in altre circostanze. 
+Sinteticamente è necessario procedere come segue:
 \begin{enumerate}
-	\item Disporre 4 o pi\`u marker sull'oggetto desiderato in modo asimmetrico. Per facilitare i prossimi passi disporre alcuni marker sugli assi del sistema di riferimento body.
+	\item Disporre 4 o più marker sull'oggetto desiderato in modo asimmetrico. Per facilitare i passi successivi, è consigliato disporre alcuni marker sugli assi del sistema di riferimento body.
 	
 	\item Selezionare i marker nell'applicazione ``Vicon Tracker 3.7.0 x64'' semplicemente clickando e tenendo premuto il tasto sinistro del mouse, poi premere pausa (pulsante collocato a sinistra).
 	
 	\item spostarsi nel tab Objects, assegnare un nome in basso e premere Create Object. L'applicazione assegna un sistema locale di default.
 	
-	\item Modificare il sistema locale premendo sugli assi o andando nelle propriet\`a dell'oggetto appena creato. Una volta soddisfatti premere \texttt{Ctrl+S} per salvare l'oggetto.
+	\item Modificare il sistema locale premendo sugli assi o accedendo nelle proprietà dell'oggetto appena creato. Una volta soddisfatti, premere \texttt{Ctrl+S} per salvare l'oggetto.
 	
 	\item Premere di nuovo il pulsante di pausa e verificare che il tracciamento stia funzionando.
 \end{enumerate}
 
 \subsubsection*{Calibrazione}
-Per effettuare una calibrazione del sistema, necessaria di tanto in tanto \`e necessario utilizzare la wand. 
-Per prima cosa accedere all'applicazione ``Vicon Tracker 3.7.0 x64'' e collocarsi nella tab ``Calibrate''. 
-Premere su ``Start'' nella sezione ``CALIBRATE CAMERAS'', avviando cos\`i la procedura di autocalibrazione: spostare la wand con pattern circolari all'interno della stanza assicurandosi di avere sempre pi\`u camere ``a vista''. 
-Il software interromper\`a da solo l'acquisizione dei dati una volta che questi siano sufficienti.
+Per effettuare una calibrazione del sistema, necessaria di tanto in tanto affiché il motion capture non accumuli errori dovuti a cambiamenti delle condizioni dell'ambiente o a piccoli spostamenti delle camere, è necessario utilizzare la wand. 
+La procedura richiesta si compone dei seguenti passi, riportati sempre in via sintetica. Per prima cosa, è necessario accedere all'applicazione ``Vicon Tracker 3.7.0 x64'' e collocarsi nella tab ``Calibrate''. 
+Premere poi su ``Start'' nella sezione ``CALIBRATE CAMERAS'', avviando così la procedura di autocalibrazione: spostare la wand con pattern circolari all'interno della stanza assicurandosi di avere sempre più camere ``a vista''. 
+Il software interromperà da solo l'acquisizione dei dati una volta che questi risultino essere sufficienti.
 
-Adesso \`e necessario definire il sistema di riferimento. Per far questo andiamo a posizionare l'incrocio degli assi della wand nel punto in cui vogliamo l'origine e gli assi stessi allineati con gli assi-Vicon desiderati.
-Selezioniamo quindi il marker all'incrocio come origine e gli altri marker come asse x e asse y completando cos\`i la calibrazione del sistema. 
-Nella stanza volo il sistema di riferimento pi\`u usato \`e rappresentato in fig.REF.
+Adesso è necessario definire il sistema di riferimento. Per fare questo, andiamo a posizionare l'incrocio degli assi della wand nel punto in cui vogliamo l'origine e gli assi stessi dell'oggetto in modo che siano allineati con gli assi-Vicon desiderati.
+Selezioniamo quindi il marker all'incrocio come origine e gli altri marker come asse x e asse y, completando così la calibrazione del sistema. 
+Nella stanza del volo del DII, il sistema di riferimento più usato è rappresentato in fig.REF.
 \textbf{FARE IMMAGINEEE}
 
 
@@ -375,12 +364,12 @@ albero tf\\
 \newpage
 \section{Guida breve all'esperimento}
 \label{sez: Guida breve all'esperimento}
-In questa sezione \`e scritta, in modo molto sintetico, la procedura per lanciare un esperimento. Per una guida dettagliata rifarsi a sez.~\ref{sez:L'esperimento}. 
+In questa sezione è riportata, sommariamente, la procedura da eseguire per lanciare un esperimento completo. Per una guida dettagliata, riferirsi a sez.~\ref{sez:L'esperimento}. 
 
-Prima di tutto \`e necessario disporre le ancore come descritto in sez.~\ref{sez:Sistema Pozyx} e come si pu\`o vedere in fig.~\ref{fig: disposizione ancore}. Assicurarsi di aver impostato correttamente le impostazioni WiFi (sez.~\ref{sez: primo collegamento a raspberry}) e di avere il PC e la Raspberry connessi alla stessa rete WiFi.
+Prima di tutto, è necessario disporre le ancore come descritto in sez.~\ref{sez:Sistema Pozyx}, come si può vedere in fig.~\ref{fig: disposizione ancore}. Assicurarsi di aver impostato correttamente le impostazioni WiFi (sez.~\ref{sez: primo collegamento a raspberry}) e di avere il PC e la Raspberry connessi alla stessa rete WiFi.
 
 
-Connettersi \textbf{ssh} alla Raspberry dal PC digitando da terminale del PC, con password \texttt{robot}:
+Connettersi poi in \textbf{ssh} alla Raspberry dal PC digitando, da terminale del PC e con password \texttt{robot}, il seguente comando:
 \begin{lstlisting}[style=bashPC]
 	ssh -X -C pi@raspberrypi.local		# avvia ssh
 \end{lstlisting}
@@ -390,29 +379,29 @@ dalla cartella \texttt{home} (da terminale della Raspberry):
 \begin{lstlisting}[style=bash]
 	python3 ~/charlie_autocalibration/autocalibration_ransac.py
 \end{lstlisting}
-infine rispondere ``y'' per salvare i risultati nella memoria flash delle ancore.
+infine, rispondere ``y'' per salvare i risultati nella memoria flash delle ancore (necessario per avere informazioni corrette sulle loro posizioni, vedere sez.~\ref{sez:Sistema Pozyx}).
 
-Adesso \`e necessario avviare il \textbf{posizionamento} delle tag pozyx e la comunicazione \textbf{seriale} con Icaro (suggeriamo di utilizzare pi\`u terminali con \href{https://terminator-gtk3.readthedocs.io/en/latest/}{terminator}):
+Adesso è necessario avviare il \textbf{posizionamento} delle tag pozyx e la comunicazione \textbf{seriale} con Icaro (suggeriamo di utilizzare più terminali con \href{https://terminator-gtk3.readthedocs.io/en/latest/}{terminator}):
 \begin{lstlisting}[style=bash]
 	roslaunch charlie_launch start_uwb.launch		# avvia uwb
 	roslaunch charlie_launch start_serial.launch	# avvia seriale con stm
 \end{lstlisting}
 
 \subsection*{Nuova Mappa}
-Una nuova mappa \`e necessaria quando si cambia posizionamento alle ancore o banalmente si cambia luogo. Consigliamo di muovere Charlie attraverso il radiocomando in questa fase.
+Una nuova mappa è necessaria quando si cambia posizionamento alle ancore o banalmente si cambia luogo. Consigliamo di muovere Charlie attraverso il radiocomando in questa fase, per averne un maggiore controllo, soprattutto in termini di limitarne la velocità di avanzamento, che in questa fase di acquisizione della mappa è bene che sia molto bassa.
 \begin{lstlisting}[style=bash]
 	roslaunch charlie_launch save_map_origin.launch		# con Charlie fermo!
-	roslaunch charlie_launch new_map.launch 	# muovere Charlie lentamente
+	roslaunch charlie_launch new_map.launch 			# muovere Charlie lentamente
 \end{lstlisting}
 
-Una volta soddisfatti del risultato salvare la mappa attraverso:
+Una volta soddisfatti del risultato, salvare la mappa all'interno di una cartella dedicata, detta qua \verb|maps| attraverso i comandi:
 \begin{lstlisting}[style=bash]
 	cd charlie_ws/maps
 	rosrun map_server map_saver -f NOME_MAPPA
 \end{lstlisting}
 
 \subsection*{Localizzazione}
-Sostituire il nome della mappa che si vuole utilizzare nel file
+Prima di procedere, è necessario sostituire il nome della mappa che si vuole utilizzare all'interno del file:
 
 \verb|/home/pi/charlie_ws/src/charlie_launch/launch/localization.launch|:
 
@@ -421,17 +410,18 @@ Sostituire il nome della mappa che si vuole utilizzare nel file
 	<node name="map_server" pkg="map_server" type="map_server" args="$(arg path)$(arg file_NUM).yaml"/>
 \end{lstlisting}
 
-Quindi lanciare:
+Quindi, si può adesso lanciare il file appena modificato con il comando standard per eseguire file \verb|.launch|:
 \begin{lstlisting}[style=bash]
 	roslaunch charlie_launch localization.launch
 \end{lstlisting}
 
-Nello stesso file \`e possibile impostare di visualizzare rviz attraverso la connessione ssh con il ``Compressed X11 Forwarding '' scommentando la riga corrispondente di rviz. Questa opzione \`e molto sconsigliata da noi in quanto rende la visione poco reattiva. Per ovviare a questo problema, dopo aver configurato pc e raspberry come descritto in sez.~\ref{sez: Ros master/slave}, \`e possibile lanciare da pc:
+All'interno dello stesso file è predisposta anche la possibilità di visualizzare rviz attraverso la connessione ssh con il ``Compressed X11 Forwarding '', scommentando la riga corrispondente di rviz. Questa opzione è però molto sconsigliata da noi, in quanto rende la visione poco reattiva. Per ovviare a questo problema, dopo aver configurato pc e raspberry come descritto in sez.~\ref{sez: Ros master/slave}, è possibile lanciare direttamente dal terminale del pc il comando:
 
 \begin{lstlisting}[style=bashPC]
 	roslaunch charlie_remote rviz_remote.launch
 \end{lstlisting}
-In questo momento l'esperimento \`e iniziato!
+Così da aprire rviz da pc, ma sfruttando il master su raspberry.
+In questo momento l'esperimento è iniziato!
 
 \subsection*{Waypoints}
 \`E possibile indicare una posa-goal tramite il comando \texttt{2DNavgoal} direttamente da rviz (tenere premuto per assegnare l'orientazione).
@@ -440,45 +430,45 @@ Per attivare i motori e permettere al robot di spostarsi, pubblicare il seguente
 \begin{lstlisting}[style=bash]
 	rostopic pub /start_and_stop std_msgs/Float64 "data: 1.0"
 \end{lstlisting}
-
-e per fermarli:
+Si consiglia di farlo una volta dato il comando del waypoint da raggiungere con rviz.
+Per fermarli, similmente, è sufficiente pubblicare il messaggio complementare, sempre sul topic \verb|start\_and\_stop|:
 
 \begin{lstlisting}[style=bash]
 	rostopic pub /start_and_stop std_msgs/Float64 "data: 0.0"
 \end{lstlisting}
 
 \subsection*{Sistema Vicon}
-Ovviamente per utilizzare il sistema Vicon \`e necessario essere nella stanza del volo. 
-Per l'installazione rifarsi a sez.~\ref{sez:Sistema Vicon}. 
-Una volta che il sistema \`e in funzione, avviare l'applicazione ``Vicon Tracker 3.7.0 x64'' e selezionare nella lista oggetti: \texttt{Charlie} e \texttt{Active Wand v2 (Origin Tracking)}. 
-Connettere il computer fisso connesso fisicamente al sistema Vicon (che sar\`a il server Vicon) alla stessa rete di raspberry e pc e in seguito modificare nel file di lancio \texttt{charlie\_remote/launch/vicon\_charlie.launch} l'ip del server Vicon nella seguente riga:
+Ovviamente, per poter utilizzare il sistema Vicon è necessario trovarsi nella stanza del volo del DII. 
+Per quanto concerne l'installazione, rifarsi a sez.~\ref{sez:Sistema Vicon}. 
+Una volta che il sistema è in funzione, avviare l'applicazione ``Vicon Tracker 3.7.0 x64'' e selezionare nella lista oggetti: \texttt{Charlie} e \texttt{Active Wand v2 (Origin Tracking)}. 
+Connettere poi il computer fisso, a sua volta attaccato fisicamente al sistema Vicon (che sarà il server Vicon), alla stessa rete in cui abbiamo già raspberry e pc. In seguito, modificare nel file di lancio \texttt{charlie\_remote/launch/vicon\_charlie.launch} l'ip del server Vicon nella seguente riga:
 \begin{lstlisting}[style=xml, firstnumber=6]
 	<arg name="server" default="IP_SERVER"/>
 \end{lstlisting}
 
-Per avviare i dialoghi tra ros e il sistema Vicon avviare da pc:
+Per avviare i dialoghi tra ros e il sistema Vicon, eseguire da pc il file di lancio \verb|vicon_charlie.launch|con il comando:
 \begin{lstlisting}[style=bashPC]
 	roslaunch charlie_remote vicon_charlie.launch
 \end{lstlisting}
 
-poi salvare la trasformazione tra vicon e uwb (all'utente \`e richiesto di posizionare la wand in successione sulle ancore):
+Salvare poi la trasformazione tra vicon e uwb (all'utente sarà richiesto di posizionare la wand, in successione, sulle verie ancore):
 \begin{lstlisting}[style=bashPC]
 	rosrun charlie_remote vicon2uwb_tf.py
 \end{lstlisting}
 
-e infine lanciare il nodo che pubblica la posizione di Charlie in frame map:
+e, infine, lanciare il nodo che pubblica la posizione di Charlie in frame map:
 \begin{lstlisting}[style=bashPC]
 	rosrun charlie_remote charlie_vicon2map.py
 \end{lstlisting}
 
 
 \subsection*{Rosbag}
-Per registrare i dati attraverso una rosbag suggeriamo di non sottoscriversi a tutti i topic ma di lanciare il seguente comando da pc (dopo essersi spostati nella cartella desiderata):
+Per registrare i dati attraverso una rosbag suggeriamo di non sottoscriversi a tutti i topic, in quanto verrebbero salvati molti elementi non necessari al nostro esperimento. Si consiglia quindi di lanciare il seguente comando da pc (dopo essersi spostati nella cartella desiderata nella quale salvare i file \verb|.bag|), contenente la selezione da noi fatta in merito ai topic ai quali sottoscriversi per ottenere tutti e soli i dati di nostro interesse:
 \begin{lstlisting}[style=bashPC]
 	rosbag record /clock /initialpose /map /orientation /particlecloud /robot_pose /rosout /rosout_agg /scan /tag_center /tf /amcl_pose /charlie_vicon_map -O NOME_BAG.bag
 \end{lstlisting}
 
-Per eseguire i topic necessari a AMCL, prima riconfigurare il file:
+Per eseguire i topic necessari ad AMCL, prima riconfigurare il file:
 
 \verb|../charlie_remote/launch/exec_bag.launch| con i file e il path che si vogliono utilizzare e quindi lanciare da pc:
 \begin{lstlisting}[style=bashPC]
@@ -495,32 +485,32 @@ e da raspberry (modificando il nome della mappa da utilizzare all'interno del fi
 \section{Autocalibrazione ancore Pozyx}
 \label{sez:Autocalibrazione}
 L'autocalibrazione si basa sullo script \texttt{python3} ``autocalibration\_ransac.py''. 
-Per farlo funzionare occorre per prima cosa avere quattro ancore correttamente alimentate ed un dispositivo Pozyx connesso, il quale servirà da comunicazione seriale tra la rete Pozyx e l’utente. 
+Affinché possa funzionare, occorre per prima cosa avere quattro ancore correttamente alimentate ed un dispositivo Pozyx connesso, il quale servirà da comunicazione seriale tra la rete Pozyx e l’utente. 
 Il dispositivo seriale può, a discrezione dell’utente, essere un’ancora o un tag. 
 É possibile, se si desidera, effettuare una calibrazione manuale delle ancore, andando a settare la variabile \verb|autoCal| a \verb|True|. 
-In tal caso si dovrà utilizzare un metro per misurare la distanza relativa tra le coppie di ancore della rete ed inserire manualmente i valori misurati nelle opportune variabili \texttt{r01}, \texttt{r02}, \texttt{r03}, \texttt{r12}, \texttt{r13} ed \texttt{r23}, che rappresentano le distanze tra le rispettive antenne.
-Per quanto riguarda invece la calibrazione automatica, lo script prevede una fase di acquisizione dei dati necessari, successivamente viene eseguito l’algoritmo ransac ed infine viene utilizzato l’algoritmo algebrico per determinare le coordinate effettive delle ancore. 
-L’algoritmo ransac rimuove eventuali outliers dalle misurazioni delle distanze relative tra le antenne e fornisce quindi una stima della distanza tra ciascuna coppia di ancore basata sui dati senza outliers.
+In tal caso, si dovrà innanzitutto utilizzare un metro col quale misurare la distanza relativa tra le coppie di ancore della rete. Queste misure andranno poi inserite manualmente  nelle opportune variabili \texttt{r01}, \texttt{r02}, \texttt{r03}, \texttt{r12}, \texttt{r13} ed \texttt{r23}, che rappresentano per l'appunto le distanze tra le rispettive antenne.
+Per quanto riguarda invece la calibrazione automatica, lo script prevede una prima fase nella quale si ha l'acquisizione dei dati necessari, seguita dall'esecuzione l’algoritmo ransac. Infine, viene utilizzato l’algoritmo algebrico per determinare le coordinate effettive delle ancore. 
+L’algoritmo ransac permette di rimuovere eventuali outliers dalle misurazioni delle distanze relative tra le antenne e fornisce, quindi, una stima della distanza tra ciascuna coppia di ancore basata sui dati senza outliers.
 Nel corso della procedura di autocalibrazione vengono stampati sul terminale vari dati, tra cui i fondamentali sono:
 \begin{itemize}
-	\item Coordinate dei dispositivi all’accensione del sistema, prima che sia effettuata la nuova calibrazione;
+	\item Le coordinate dei dispositivi all’accensione del sistema, prima che sia effettuata la nuova calibrazione.
 	
-	\item Risultato del settaggio dei parametri UWB della rete;
+	\item Il risultato del settaggio dei parametri UWB della rete.
 	
-	\item Il risultato dell’algoritmo ransac per la distanza tra le ancore;
+	\item Il risultato dell’algoritmo ransac per la distanza tra le ancore senza outliers.
 	
-	\item Risultato dell'algoritmo algebrico per determinare le coordinate delle ancore: in caso di fallimento dell'algoritmo, \`e mostrato su terminale l'errore;
+	\item Il risultato dell'algoritmo algebrico per determinare le coordinate delle ancore: in caso di fallimento dell'algoritmo, è mostrato a terminale l'errore.
 \end{itemize}
 
 Una volta terminata la calibrazione, sia questa stata manuale o automatica, ciascuna ancora avrà
-salvato nella propria lista dei dispositivi le proprie coordinate, ossia conoscerà le proprie coordinate. 
+salvato nella propria lista dei dispositivi le proprie coordinate, ossia potremmo dire che conoscerà le proprie coordinate. 
 Questi dati sono salvati permanentemente nella memoria flash.
 In una successiva fase di positioning è quindi buona norma che il dispositivo che si deve localiz-
-zare interroghi le ancore per conoscere la loro posizione e crei quindi una propria lista interna dei
+zare interroghi le ancore per conoscere la loro posizione e crei quindi, con queste informazioni, una propria lista interna dei
 dispositivi della rete.
 
 
-Per maggiori dettagli, fare riferimento al dettagliato lavoro~\cite{ctesconistudio}.
+Per maggiori approfondimenti, fare riferimento al dettagliato lavoro~\cite{ctesconistudio}.
 
 % Bibliography
 \newpage
