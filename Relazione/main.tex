@@ -26,18 +26,17 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % introduzione
 \section*{Introduzione}
-L'obiettivo di questo progetto \`e stato quello di migliorare lo stato del veicolo, partendo dal risolvere le molte problematiche accumulatesi nel passaggio di testimone tra i vari gruppi.
+L'obiettivo di questo progetto \`e stato quello di migliorare lo stato del veicolo, partendo dal risolvere le molte problematiche accumulatesi nel passaggio di testimone tra i gruppi precedenti.
 Lo scopo principale dell'intero sistema, composto dal veicolo affiancato da una serie di sensori, \`e quello di riuscire a localizzarsi all'interno di una mappa preacquisita e di navigare al suo interno.
-La posizione \`e ottenuta seguendo due metodologie tra loro complementari: da una parte si sfrutta il lidar montato sul corpo del veicolo, che permette di avere buoni risultati in ambienti chiusi dove siano presenti pareti e confini ben precisi, dall'altra si appoggia ad un sistema Ultra Wide Band (UWB), che ha invece performance migliori in ambienti esterni privi di ostacoli sui quali il segnale possa avere interferenze dovute a scattering.
-\`E importante focalizzare fin da subito che, attraverso il lidar, non viene effettuata una SLAM vera e propria bens\`i uno Scan Matching.
-Infatti, l'algoritmo di localizzazione in condizioni nominali prende come posa del veicolo quella ottenuta dallo scan matcher. 
-Quest'ultima viene periodicamente confrontata con quella misurata dal sistema UWB: solo nel momento in cui i due valori restituiti differiscono di molto, viene riposizionato il veicolo all'ultima posa ottenuta dalle antenne.
-In questo modo si ottiene un sistema robusto alla perdita del lidar, che pu\`o verificarsi a seguito di una rottura o nel momento in cui sono esplorati ambienti dove le condizioni non permettono di avere misure affidabili.
+La posizione \`e ottenuta seguendo due metodologie tra loro complementari: da una parte viene sfruttato un lidar montato sul corpo del veicolo, che permette di avere buoni risultati in ambienti chiusi in cui siano presenti pareti e confini ben precisi, dall'altra si appoggia ad un sistema Ultra Wide Band (UWB), che ha invece performance migliori in ambienti esterni e privi di ostacoli, sui quali il segnale potrebbe avere interferenze dovute a scattering.
+\`E importante sottolineare fin da subito che, tramite il lidar, non viene effettuata una SLAM vera e propria bens\`i uno Scan Matching: infatti, l'algoritmo di localizzazione in condizioni nominali prende come posa del veicolo quella ottenuta dallo scan matcher. 
+Quest'ultima viene quindi periodicamente confrontata con quella misurata dal sistema UWB, la quale non rappresenta, in condizioni standard, un indice della posizione del veicolo. Solo nel momento in cui i due valori, restituiti da Lidar e UWB, differiscono di molto, allora l'ultima posa ottenuta dalle antenne viene assegnata al veicolo stesso come sua posa attuale.
+In questo modo si ottiene un sistema robusto alla perdita del lidar, che pu\`o verificarsi a seguito di una rottura del sensore o nel momento in cui sono esplorati ambienti dove le condizioni non permettono di avere misure affidabili.
 
 \subsection*{Funzionamento in due parole}
 Molto sinteticamente andiamo a descrivere il funzionamento di Charlie. 
-In primis viene utilizzato il pacchetto hector-slam per realizzare una mappa. 
-In un secondo momento, utilizzando questa mappa si riesce a localizzarsi confrontando le misure acquisite dal lidar con le feature della mappa stessa attraverso l'algoritmo Adaptive Monte Carlo Localization. 
+In primis viene utilizzato il pacchetto hector-slam allo scopo di pre-acquisire e realizzare una mappa dell'ambiente nel quale il veicolo dovrà poi muoversi. 
+Solo in un secondo momento, utilizzando questa mappa, avrà luogo la fase di moto, durante la quale il sistema riesce a localizzarsi nell'ambiente attraverso l'algoritmo Adaptive Monte Carlo Localization, nel quale ha luogo il confronto tra le misure acquisite dal lidar e le feature della mappa stessa. 
 
 Dato che questo algoritmo pu\`o convergere su una posa del veicolo non corretta a causa, per esempio, di ambiguit\`a  tra simmetrie della mappa 
 il sistema UWB fa s\`i che venga reinizializzato l'algoritmo AMCL. 
@@ -105,21 +104,18 @@ Il robot è dotato di due batterie:
 	\item LiPo \SI{7.4}{\volt} \SI{6000}{\milli \ampere \hour} o NiMH \SI{7.2}{\volt} \SI{3000}{\milli \ampere \hour}, dedicate ai motori
 \end{itemize}
 
-I vari convertitori di tensione sono tutti installati su una PCB, che è posizionata all’interno di un box metallico.
+I vari convertitori di tensione sono tutti installati su una PCB, posizionata all’interno di un box metallico.
 
 Altro componente fondamentale \`e il convertitore usb-seriale ``TTL-232R-PCB'' prodotto da 
 ``Future Technology Devices International Ltd''. 
-Questo consente di comunicare, appunto, in seriale con la STM e di trasmettere informazioni necessarie all'algoritmo di navigazione.
-Per leggere cosa viene trasmesso, rifarsi alla sez.~\ref{sez:L'esperimento}, mentre per sapere che funzione hanno i pin 
-consultare datasheet o pi\`u comodamente fig.~\ref{fig: pinout usbserial}. 
-A questo dispositivo \`e stato associato il symlink \texttt{ttyUSBserial} per evitare che l’ordine di inizializzazione delle porte usb della raspberry non influenzasse
-il nome del collegamento (per esempio: \texttt{ttyUSB0} oppure  \texttt{ttyUSB1})
-Su come si realizzi tale symlink abbiamo riportato la procedura dentro il file \texttt{/Info/renaming\_ttyUSB.txt}.
+Questo consente di avere una linea di comunicazione seriale con la STM, attraverso la quale trasmettere informazioni necessarie all'algoritmo di navigazione.
+Per conoscere quali informazioni vengono trasmesse, rifarsi alla sez.~\ref{sez:L'esperimento}, mentre per sapere la funzione dei vari pin, si consiglia di consultare il datasheet o, pi\`u comodamente, di rifarsi alla fig.~\ref{fig: pinout usbserial}. 
+Per migliorare la semplicità di utilizzo ed evitare di incorrere in errori legati alle comunicazioni seriali, \`e stato associato al dispositivo ``TTL-232R-PCB'' il symlink \texttt{ttyUSBserial}, in modo tale che l’ordine di inizializzazione delle porte usb della raspberry non influenzi in alcun modo il nome del collegamento (per esempio: \texttt{ttyUSB0} oppure  \texttt{ttyUSB1})
+Per conoscere i passaggi necessari alla realizzazione di tale symlink, si riporta la procedura dentro il file \texttt{/Info/renaming\_ttyUSB.txt}, fornito insieme al codice.
 
 
-Ultimo elemento da evidenziare \`e la piccola PCB che consente di utilizzare, alternativamente alla STM, un radiocomando per il controllo di sterzo e acceleratore.
-Questa PCB, visibile in fig.~\ref{fig:pcb_controlli}, ha un led di stato verde che notifica quando l’alimentazione dei motori è attiva; 
-inoltre sono presenti due jumper che permettono di scegliere tra STM e radiocomando come sorgente del controllo per sterzo e acceleratore. 
+L'algoritmo implementato all'interno dell'STM non è l'unico mezzo attraverso il quale far muovere il veicolo: grazie alla presenza di una piccola PCB, sulla quale è presente il circuito adibito allo switch di sistema di controllo e al check dello stato dei motori, si ha la possibilità di utilizzare, alternativamente alla STM, un radiocomando per il controllo di sterzo e acceleratore.
+Questa PCB, visibile in fig.~\ref{fig:pcb_controlli}, è dotata infatti di un led di stato verde che notifica quando l’alimentazione dei motori è attiva; sono inoltre presenti due jumper che permettono di scegliere tra STM e radiocomando come sorgente del controllo per sterzo e acceleratore. 
 Sono sempre disponibili all’utente i contatti per potersi connettere e leggere quanto prodotto dal radiocomando.
 
 \begin{enumerate}
@@ -133,7 +129,7 @@ Sono sempre disponibili all’utente i contatti per potersi connettere e leggere
     \item LED di stato, indica quando l'alimentazione dei motori è attiva.
 \end{enumerate}
 
-Per ulteriori dettagli e motivazioni dietro alle connessioni fatte riferirsi a~\cite{ptvlocalizzazione}.
+Per ulteriori dettagli e approfondimenti sulle scelte che stanno dietro alle connessioni fatte, riferirsi a~\cite{ptvlocalizzazione}.
 Lo schema completo è mostrato in fig.~\ref{fig:schema_completo}.
 
 %--------------------------------------------------------
@@ -141,17 +137,17 @@ Lo schema completo è mostrato in fig.~\ref{fig:schema_completo}.
 \label{sez: primo collegamento a raspberry}
 
 Per iniziare a lavorare sulla raspberry in ssh, modalit\`a richiesta per gli esperimenti, \`e necessario impostare le connessioni WiFi a cui la raspberry si
-connette automaticamente all'avvio. Per comodit\`a suggeriamo di collegare la raspberry ad un monitor tramite un cavo microHDMI-HDMI e una tastiera/mouse usb.
+connette automaticamente all'avvio. Per comodit\`a di utilizzo, suggeriamo di collegare la raspberry ad un monitor tramite un cavo microHDMI-HDMI e una tastiera/mouse usb.
 
-Abbiamo scritto tutto il necessario nel file: \texttt{Info/README\_wifi\_settings.txt} e adesso lo riportiamo brevemente anche qui.
-Il file con le varie impostazioni WiFi chiamato \texttt{interfaces} si trova in \texttt{/etc/network/}. Per editarlo:
+Tutto il necessario da sapere riguardo i passaggi per il primo collegamento a raspberry si trovano nel file: \texttt{Info/README\_wifi\_settings.txt}, dei quali riportiamo qui un breve riassunto.
+Come prima cosa è va impostato il WiFi: il file con le varie impostazioni WiFi, chiamato \texttt{interfaces}, si trova in \texttt{/etc/network/}. Per editarlo:
 \begin{lstlisting}[style=bash]
 	sudo nano /etc/network/interfaces
 \end{lstlisting}
-Il file legge le configurazioni salvate nei file \texttt{.conf} di cui sono indicati i path. 
+Questo file si occupa di leggere le configurazioni salvate nei file \texttt{.conf} di cui sono indicati i path al suo interno. 
 
-Per aggiungere una configurazione aggiungere una riga per file \texttt{.conf} e commentare le altre (con \#).
-Ad esempio se volessimo aggiungere una configurazione di rete con nome "NOME\_RETE" \`e consigliato inserire la seguente riga all'interno del file (attenzione: l'ordine conta! Vengono tentate prima le reti riportate):
+Per aggiungere una nuova configurazione, inserire una riga per file \texttt{.conf} e commentare le altre (con \#).
+Ad esempio, se volessimo aggiungere una configurazione di rete con nome "NOME\_RETE", \`e consigliato inserire la seguente riga all'interno del file (attenzione: l'ordine conta! Vengono tentate prima le connessioni alle reti riportate più in alto nel file):
 \begin{lstlisting}[style=xml]
 	wpa-conf /etc/wpa_supplicant/wpa_supplicant_NOME_RETE.conf
 \end{lstlisting}
@@ -167,21 +163,21 @@ Il file \verb|wpa_supplicant_NOME_RETE.conf| deve contenere:
 	}
 \end{lstlisting}
 e deve essere posizionato nel path specificato. 
-Nel caso si usi quello di default (\texttt{/etc/wpa\_supplicant/}), si riporta un comando utile per creare un nuovo file:
+Nel caso si usi quello di default, ovvero (\texttt{/etc/wpa\_supplicant/}), si riporta un comando utile per creare un nuovo file:
 \begin{lstlisting}[style=bash]
 	sudo nano /etc/wpa_supplicant/wpa_supplicant_NOME_RETE.conf
 \end{lstlisting}
 
-Al prossimo riavvio la raspberry si connetter\`a automaticamente alla prima rete (in ordine di righe) configurata disponibile. 
-Dato che si \`e gi\`a connessi tramite lo schermo suggeriamo di fare un backup, tramite l'apposito tool all'interno di raspbian, della scheda originale cos\`i da avere un punto di ripristino. 
+Al prossimo riavvio la raspberry si connetterà automaticamente alla prima rete configurata (in ordine di righe) che sia disponibile. 
+Dato che è già in atto la connessione tramite lo schermo, che permette di visualizzare il contenuto di raspberry, suggeriamo come prima cosa di procedere con un backup della scheda originale: esiste un apposito tool all'interno di raspbian che consentirà di farlo agilmente. \`E buona norma creare il backup a monte dell'apporto di qualsiasi modifica o aggiunta, in quanto ciò consentirà di avere, in caso di necessità, un punto di ripristino funzionante. 
 
 \subsection{Ros master/slave}
 \label{sez: Ros master/slave}
-Ai fine di non sovraccaricare la raspberry e di avere un'interazione fluida con rviz e altri tool grafici di ros \`e fortemente consigliato sfruttare ros su pi\`u computer. 
-Riportiamo i passaggi utilizzati da noi cos\`i  da facilitare i nuovi utenti; per saperne di pi\`u consultare la \href{https://wiki.ros.org/ROS/Tutorials/MultipleMachines}{guida ufficiale}. 
+Al fine di non sovraccaricare la raspberry e di avere un'interazione fluida con rviz e altri tool grafici di ros, è fortemente consigliato l'utilizzo di ros su altri computer in parallelo, delegando loro l'esecuzione dei task più costosi a livello computazionale (come appunto quelli grafici). 
+Sono riportati di seguito i passaggi utilizzati da noi per impostare l'intero sistema, al fine di facilitare i nuovi utenti; per saperne di pi\`u consultare la \href{https://wiki.ros.org/ROS/Tutorials/MultipleMachines}{guida ufficiale}. 
 
-Quello che  vogliamo fare \`e avere il RosMaster su raspberry e utilizzare il pc per tool grafici, esempio rviz o rqt. 
-Otteniamo l'ip dei nostri dispositivi attraverso vari comandi (come \texttt{ifconfig} o \texttt{ip address}) e generalmente sar\`a qulcosa del tipo: \verb|192.168.43.247|. 
+Dopo svariate prove, siamo giunti alla conclusione che, per arrivare ad avere una interfaccia per utente sufficientemente fluida ed efficace, quello che dovevamo fare era avere il RosMaster su raspberry e utilizzare invece il pc per i tool grafici, esempio rviz o rqt. 
+Per farlo, dobbiamo ottenere l'ip dei nostri dispositivi: è possibile farlo attraverso vari comandi (come \texttt{ifconfig} o \texttt{ip address}) e generalmente risulterà essere qulcosa del tipo: \verb|192.168.43.247|. 
 Ipotizziamo quindi che l'ip della raspberry sia \texttt{IPrasp} e quello del pc \texttt{IPpc}. 
 Adesso occorre modificare il file \texttt{.bashrc} sia su raspberry che su pc. Iniziamo da pc:
 \begin{lstlisting}[style=bashpc]
@@ -207,7 +203,7 @@ e quindi:
 	% export ROS_IP=IPrasp
 \end{lstlisting}
 
-A questo punto ravviare le shell dei terminali che si vogliono utilizzare, e sar\`a possibile utilizzare lanciare i nodi, installati su pc, da pc ma sfruttando il master su raspberry.
+A questo punto, è sufficiente riavviare le shell dei terminali che si vogliono utilizzare: sarà possibile in essi lanciare i nodi, installati su pc, direttamente dal pc, ma sfruttando il master su raspberry.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{RPlidar}
