@@ -91,8 +91,8 @@ tag_f_yaw	= tagspos2yaw(tag0_f_pos, tag1_f_pos); % Non mi torna questo - !!
 [tag0_vicon, tag1_vicon] = tag_vicon(charlie_vicon_pos, charlie_vicon_or);
 
 % calcolo errore
-[err0_array, err0_norm] = errore_tag(tag0_pos, tag0_vicon);
-[err1_array, err1_norm] = errore_tag(tag1_pos, tag1_vicon);
+[err0_array, err0_norm] = errore_tag(tag0_f_pos, tag0_vicon);
+[err1_array, err1_norm] = errore_tag(tag1_f_pos, tag1_vicon);
 
 %% plot check del sistema vicon
 % figure(200)

@@ -9,11 +9,11 @@ time		= charlie_vicon_or(:, 1);	% copio i timestamp
 vicon_yaw	= quat2yaw_array(charlie_vicon_or(:, 2:5)); % calcolo lo yaw [rad]
 
 % vettori in frame body
-tag0_vett = [l/2; d; 0];
-tag1_vett = [-l/2; d; 0];
+tag0_vett = [l/2;	d; 0];
+tag1_vett = [-l/2;	d; 0];
 
 % vettori in frame uwb
-tag0_vicon = zeros(length(time),4); % init tag frontale		nsamples x 4 (1 timestampp, 3 pos)
+tag0_vicon = zeros(length(time),4);	% init tag frontale		nsamples x 4 (1 timestampp, 3 pos)
 tag1_vicon = zeros(length(time),4);	% init tag posteriore	nsamples x 4 (1 timestampp, 3 pos)
 
 for i = 1:length(time)

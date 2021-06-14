@@ -36,6 +36,7 @@ for i = 1:length(time)
 	
 	% calcolo
 	err_now			= pos2_now - pos1_now;
+	err_now(3)		= 0;
 	err_norm_now	= norm(err_now,2);
 	
 	% assegno
