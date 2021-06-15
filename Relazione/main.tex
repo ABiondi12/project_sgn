@@ -53,9 +53,9 @@ e mini organizzazione \textbf{FARE ALLA FINE QUANDO PRESENTIAMO IL CODICE}
 \newpage
 \section{Descrizione Hardware}
 
-Il veicolo, per gli amici e i lettori Charlie, \`e basato su un Crawler RC, una piattaforma meccanica radio--comandata,  su cui sono stati installati dei sensori e delle schede elettroniche. 
+Il veicolo, per gli amici e i lettori Charlie, è basato su un Crawler RC, una piattaforma meccanica radio--comandata,  su cui sono stati installati dei sensori e delle schede elettroniche. 
 
-A bordo si trovano quindi due unit\`a centrali:
+A bordo si trovano quindi due unità centrali:
 \begin{itemize}
 	\item un Raspberry Pi 4 (8Gb Ram), con sistema operativo Linux 18.04 su cui viene eseguito Robot Operating System (ROS)
 	\item una scheda STM32F407 connessa ad una pcb Icaro su cui è implementato il sistema di guida e alcuni filtraggi
@@ -106,11 +106,11 @@ Il robot è dotato di due batterie:
 
 I vari convertitori di tensione sono tutti installati su una PCB, posizionata all’interno di un box metallico.
 
-Altro componente fondamentale \`e il convertitore usb-seriale ``TTL-232R-PCB'' prodotto da 
+Altro componente fondamentale è il convertitore usb-seriale ``TTL-232R-PCB'' prodotto da 
 ``Future Technology Devices International Ltd''. 
 Questo consente di avere una linea di comunicazione seriale con la STM, attraverso la quale trasmettere informazioni necessarie all'algoritmo di navigazione.
-Per conoscere quali informazioni vengono trasmesse, rifarsi alla sez.~\ref{sez:L'esperimento}, mentre per sapere la funzione dei vari pin, si consiglia di consultare il datasheet o, pi\`u comodamente, di rifarsi alla fig.~\ref{fig: pinout usbserial}. 
-Per migliorare la semplicità di utilizzo ed evitare di incorrere in errori legati alle comunicazioni seriali, \`e stato associato al dispositivo ``TTL-232R-PCB'' il symlink \texttt{ttyUSBserial}, in modo tale che l’ordine di inizializzazione delle porte usb della raspberry non influenzi in alcun modo il nome del collegamento (per esempio: \texttt{ttyUSB0} oppure  \texttt{ttyUSB1})
+Per conoscere quali informazioni vengono trasmesse, rifarsi alla sez.~\ref{sez:L'esperimento}, mentre per sapere la funzione dei vari pin, si consiglia di consultare il datasheet o, più comodamente, di rifarsi alla fig.~\ref{fig: pinout usbserial}. 
+Per migliorare la semplicità di utilizzo ed evitare di incorrere in errori legati alle comunicazioni seriali, è stato associato al dispositivo ``TTL-232R-PCB'' il symlink \texttt{ttyUSBserial}, in modo tale che l’ordine di inizializzazione delle porte usb della raspberry non influenzi in alcun modo il nome del collegamento (per esempio: \texttt{ttyUSB0} oppure  \texttt{ttyUSB1})
 Per conoscere i passaggi necessari alla realizzazione di tale symlink, si riporta la procedura dentro il file \texttt{/Info/renaming\_ttyUSB.txt}, fornito insieme al codice.
 
 
@@ -136,8 +136,8 @@ Lo schema completo è mostrato in fig.~\ref{fig:schema_completo}.
 \subsection{Primo collegamento a Raspberry}
 \label{sez: primo collegamento a raspberry}
 
-Per iniziare a lavorare sulla raspberry in ssh, modalit\`a richiesta per gli esperimenti, \`e necessario impostare le connessioni WiFi a cui la raspberry si
-connette automaticamente all'avvio. Per comodit\`a di utilizzo, suggeriamo di collegare la raspberry ad un monitor tramite un cavo microHDMI-HDMI e una tastiera/mouse usb.
+Per iniziare a lavorare sulla raspberry in ssh, modalità richiesta per gli esperimenti, è necessario impostare le connessioni WiFi a cui la raspberry si
+connette automaticamente all'avvio. Per comodità di utilizzo, suggeriamo di collegare la raspberry ad un monitor tramite un cavo microHDMI-HDMI e una tastiera/mouse usb.
 
 Tutto il necessario da sapere riguardo i passaggi per il primo collegamento a raspberry si trovano nel file: \texttt{Info/README\_wifi\_settings.txt}, dei quali riportiamo qui un breve riassunto.
 Come prima cosa è va impostato il WiFi: il file con le varie impostazioni WiFi, chiamato \texttt{interfaces}, si trova in \texttt{/etc/network/}. Per editarlo:
@@ -174,7 +174,7 @@ Dato che è già in atto la connessione tramite lo schermo, che permette di visu
 \subsection{Ros master/slave}
 \label{sez: Ros master/slave}
 Al fine di non sovraccaricare la raspberry e di avere un'interazione fluida con rviz e altri tool grafici di ros, è fortemente consigliato l'utilizzo di ros su altri computer in parallelo, delegando loro l'esecuzione dei task più costosi a livello computazionale (come appunto quelli grafici). 
-Sono riportati di seguito i passaggi utilizzati da noi per impostare l'intero sistema, al fine di facilitare i nuovi utenti; per saperne di pi\`u consultare la \href{https://wiki.ros.org/ROS/Tutorials/MultipleMachines}{guida ufficiale}. 
+Sono riportati di seguito i passaggi utilizzati da noi per impostare l'intero sistema, al fine di facilitare i nuovi utenti; per saperne di più consultare la \href{https://wiki.ros.org/ROS/Tutorials/MultipleMachines}{guida ufficiale}. 
 
 Dopo svariate prove, siamo giunti alla conclusione che, per arrivare ad avere una interfaccia per utente sufficientemente fluida ed efficace, quello che dovevamo fare era avere il RosMaster su raspberry e utilizzare invece il pc per i tool grafici, esempio rviz o rqt. 
 Per farlo, dobbiamo ottenere l'ip dei nostri dispositivi: è possibile farlo attraverso vari comandi (come \texttt{ifconfig} o \texttt{ip address}) e generalmente risulterà essere qulcosa del tipo: \verb|192.168.43.247|. 
@@ -286,19 +286,12 @@ Affinché il sistema funzioni, è infatti necessario che ogni ancora abbia cosci
 Per informazioni inerenti alla procedura adottata, vedere app.~\ref{sez:Autocalibrazione}. Per come è stati scritto l'algoritmo in questione, l'ancora 0 è quella la cui posizione fornisce l'origine del frame UWB che verrà costruito. 
 L'ancora 1 indica invece la direzione dell'asse y, ovvero le sue coordinate finali saranno \verb|(0, y1, 0)|, così come l'ancora 2 quella dell'asse x. La quarta ancora, posizionata a una altezza diversa dalle altre 3 (che devono invece essece complanari), evidenzia infine la direzione dell'asse z.
 
-
-
-
 infine, è importante verificare che siano assenti eventuali interferenze elettromagnetiche tra i dispositivi, le quali, specialmente se interposte tra le ancore, possono rendere difficile la comunicazione tra i dispositivi della rete.
-********
 
-* tag
-* anchors, come disporre le ancore \\
-* autocalibrazione
-* come gestire flash memory dei device
-* warning: remote\_id 
-		problematiche relative al doPositioning veloce (servono le pause)
-		pacchetto ros custom descrivere in breve cosa fanno i file dentro charlie\_pozyx
+Per quanto riguarda la componente software, sono stati utilizzati nodi custom basati sul modulo Python di PyPozyx, rispetto ai quali abbiamo apportato modifiche per adattarli al nostro sistema. Per maggiori dettagli, vedere nella cartella \verb|...\Workspace\src\charlie_pozyx\src\scripts\my_pozyx|, dove all'interno di ciascun nodo è presente una breve descrizione del suo funzionamento e della sua utilità.
+
+Focalizzandoci su uno di questi nodi, ovvero il \verb|pos_pub_2_tag.py|, descriviamo un errore che abbiamo riscontrato e che, plausibilmente, è stato una causa di errori nelle esecuzioni precedenti. Prima di tutto, questo nodo si occupa di pubblicare la posa delle due tag (posizione + quaternione) e sfrutta al suo interno la funzione, sempre custom, \verb|doPos_pubtf|, all'interno della quale è fatto girare l'algoritmo \verb|doPositioning|. Questo, a sua volta, ricava la posizione delle tag pozyx connesse in seriale. Come spiegato in \cite{ctesconistudio}, l'algoritmo \verb|doPositioning| viene eseguito utilizzando la modalità \verb|POZYX_RANGE_PROTOCOL_PRECISION| e questa richiede l'utilizzo di molti sample. Per questo motivo, dato che il \verb|doPositioning| deve essere eseguito in modo sequenziale prima sulla tag0, poi sulla tag1, poi nuovamente sulla tag0 e così via, si rende necessario l'inserimento di una pausa tra una esecuzione e la successiva, per permettere all'algoritmo di terminare prima di essere lanciato nuovamente. In assenza di tali pause temporali, abbiamo infatti notato che i risultati venivano corrotti: dopo l'aggiunta di tali intervalli, invece, le esecuzioni successive non si influenzano più a vicenda, come voluto.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Sistema Vicon}
@@ -353,12 +346,16 @@ albero tf\\
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Prove?}
-Per quanto riguarda l'impostazione di prove pensate per una verifica del buon funzionamento delle procedure di fix di posa e dell'algoritmo di navigazione, anche su più stanze, dato che non sono state apportate modifiche alla loro struttura durante il nostro lavoro, rimandiamo ai risultati riportati nella relazione precedente, ovvero (cita).
+Per quanto riguarda l'impostazione di prove pensate per una verifica del buon funzionamento delle procedure di fix di posa e dell'algoritmo di navigazione, anche su più stanze, dato che non sono state apportate modifiche alla loro struttura durante il nostro lavoro, rimandiamo ai risultati riportati nella relazione precedente, ovvero \cite{ptvlocalizzazione}.
 Nel nostro caso, abbiamo deciso di orientarci più verso due obiettivi specifici: il primo è stato quello di effettuare una analisi più dettagliata degli errori compiuti dal sistema durante la navigazione con UWB, Lidar e AMCL. Per farlo, abbiamo utilizzato come ground-truth il sistema Vicon, disponibile però solo nella stanza del volo e, per questo motivo, di limitata ripetibilità pratica. Abbiamo deciso comunque di riportarne almeno i risultati in modo da fornire un riferimento affidabile di quelli che sono gli errori compiuti, per i quali ci aspettiamo una somiglianza in tutte le configurazioni simili a quella ricreabile nella stanza del volo stessa (ambiente chiuso, presenza di finestre, estensione non troppo elevata, assenza di ostacoli all'interno dell'area di moto). Come secondo obiettivo, viste le modifiche effettuate sul sistema UWB per quanto concerne la procedura di salvataggio delle pose delle ancore a fine autocalibrazione e il loro successivo utilizzo da parte della tag connessa in seriale durante la navigazione di Charlie, abbiamo predisposto due prove in esterno: qua il sistema UWB si trova in un ambiente favorevole rispetto a quanto succede quando si lavora indoor. In particolar modo, come prima prova in esterno andremo a testarne il funzionamento in un cortile interno al polo A di Ingegneria, dove ci aspettiamo diversi disturbi per le UWB, legati alla presenza di molti oggetti e strutture metalliche e di finestre poste in line of sight con le ancore stesse. Il secondo scenario scelto, sempre nei pressi del polo A di Ingegneria, è un grande prato esterno, dove il sistema UWB dovrebbe essere meno disturbato, nel quale poter valutare il raggio di azione di questo sistema e, di controparte, la difficoltà che può riscontrare il lidar quando si trova in assenza di riferimenti fissi, come pareti, per l'acquisizione dei suoi dati.
 
 \subsection{Confronto Vicon}
-La prima prova, come accennato, è stata eseguita all'interno della stanza del volo del polo A, in quanto questa è munita di un sistema Vicon funzionante che permette di effettuare un motion capture estremamente preciso e affidabile degli oggetti contrassegnati con gli appositi marker. Come prima cosa, è necessario posizionare i marker sul veicolo in modo asimmetrico, nel nostro caso sono stati posizionati COMEEEEEEE E SE C'è METTEREI ANCHE UNA FIGURINA, affinché il sistema Vicon riesca con essi a costruire un oggetto virtuale corrispondente a Charlie senza che possano crearsi ambiguità di orientazione a causa di simmetrie. Una volta costruito tale oggetto, per vedere come riferirsi al \ref{sez:Sistema Vicon_oggetto}, si può procedere con l'esperimento vero e proprio. In questo caso, per i comandi di spostamento è stato utilizzato il radiocomando, così da avere maggiore manovrabilità. L'esperimento di per sé è molto semplice: una volta avviato l'esperimento standard, come descritto in \ref{sez: Guida breve all'esperimento}, e il sistema di acquisizione dati del Vicon, vedere \ref{sez:Sistema Vicon}, e aver aggiunto i topic relativi al Vicon nella lista dei topic da salvare nella bag, si procede semplicemente spostando Charlie nella stanza, raccogliendo così le informazioni in due modi distinti, uno (il Vicon) considerato corretto e, quindi, privo di errori e l'altro, quello implementato nel sistema per la navigazione, affetto da vari errori, che verranno appunto evidenziati attraverso un successivo confronto.
-Si procede, infatti, all'analisi dei dati raccolti attraverso Matlab, dove in particolar modo si vanno ad evidenziare le posizioni e le orientazioni associate a Charlie dal Vicon, le medesime ma ricavate dal sistema integrato sul veicolo e, di particolare interesse nel nostro caso, gli errori che quest'ultimo metodo di localizzazione presenta rispetto al Vicon. Interessante andare a distinguere le varie fasi di moto di Charlie, ovvero i punti in cui sta fermo, quelli in cui procede in linea retta e quelli dove, invece, compie traiettorie rettilinee, ed associare ad essi i pattern seguiti dai vari errori: come ci aspettiamo, la fase in cui l'errore si riduce maggiormente coincide con quella in cui Charlie sta fermo (da \verb|50 s| a \verb|60 s|).
+La prima prova, come accennato, è stata eseguita all'interno della stanza del volo del polo A, in quanto questa è munita di un sistema Vicon funzionante che permette di effettuare un motion capture estremamente preciso e affidabile degli oggetti contrassegnati con gli appositi marker. Come prima cosa, è necessario posizionare i marker sul veicolo in modo asimmetrico. Nel nostro caso sono stati posizionati come in fig.~(FAI RIF), dove vediamo 4 marker: uno nella parte frontale e centrato, due laterali a circa metà della struttura e un quarto nella parte posteriore, spostato verso destra per ottenere l'asimmetria necessaria ad evitare ambiguità. Il sistema Vicon riesce con essi a costruire un oggetto virtuale corrispondente a Charlie senza ambiguità di orientazione. Una volta costruito tale oggetto, per vedere come riferirsi al \ref{sez:Sistema Vicon_oggetto}, si può procedere con l'esperimento vero e proprio. In questo caso, per i comandi di spostamento è stato utilizzato il radiocomando, così da avere maggiore manovrabilità. L'esperimento di per sé è molto semplice: una volta avviato l'esperimento standard, come descritto in \ref{sez: Guida breve all'esperimento}, e il sistema di acquisizione dati del Vicon, vedere \ref{sez:Sistema Vicon}, e aver aggiunto i topic relativi al Vicon nella lista dei topic da salvare nella bag, si procede semplicemente spostando Charlie nella stanza, raccogliendo così le informazioni in due modi distinti, uno (il Vicon) considerato corretto e, quindi, privo di errori e l'altro, quello implementato nel sistema per la navigazione, affetto da vari errori, che verranno appunto evidenziati attraverso un successivo confronto.
+Si procede, infatti, all'analisi dei dati raccolti attraverso Matlab, dove in particolar modo si vanno ad evidenziare le posizioni e le orientazioni associate a Charlie dal Vicon, le medesime ricavate dal sistema integrato sul veicolo e, di particolare interesse nel nostro caso, gli errori che quest'ultimo metodo di localizzazione presenta rispetto al Vicon. Interessante andare a distinguere le varie fasi di moto di Charlie, ovvero i punti in cui sta fermo, quelli in cui procede in linea retta e quelli dove, invece, compie traiettorie curvilinee, ed associare ad essi i pattern seguiti dai vari errori: come ci aspettiamo, la fase in cui l'errore si riduce maggiormente coincide con quella in cui Charlie sta fermo (da \verb|50 s| a \verb|60 s|).
+
+valutazione dei risultati di questa prima prova con i vari grafici
+
+Dai risultati ottenuti, abbiamo riscontrato un'errore sbilanciato verso la parte negativa, che aumenta soprattutto nelle fasi di moto. Per valutare se la colpa sia dell'autocalibrazione e del modo in cui sono state posizionate le ancore nell'ambiente, abbiamo deciso di ripetere un secondo esperimento uguale al precedente, ma posizionando le ancore con una differenza di altezza maggiore, che ci consentisse di distanziare maggiormente la quarta ancora dall'origine senza che ciò generi errori nella creazione del frame UWB.
 
 FINIREEEEEEE E ANALIZZARE I GRAFICI E RIPORTARLI 
 \subsection{Esperimento nel cortile}
