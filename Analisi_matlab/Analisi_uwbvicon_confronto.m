@@ -85,7 +85,14 @@ tag_f_yaw	= tagspos2yaw(tag0_f_pos, tag1_f_pos); % Non mi torna questo - !!
 
 % calcolo errore
 [err0_array, err0_norm] = errore_tag(tag0_f_pos, tag0_vicon);
+err0_arr_normato = err0_array; % cosi` da copiare il tempo
+err0_arr_normato(:,2:4) = err0_array(:,2:4)./err0_norm(:,2);
+[pos_quiver_sync0, delta_quiver_sync0] = sync_vicon_tag(tag0_vicon, tag0_pos);
+
 [err1_array, err1_norm] = errore_tag(tag1_f_pos, tag1_vicon);
+err1_arr_normato = err1_array; % cosi` da copiare il tempo
+err1_arr_normato(:,2:4) = err1_array(:,2:4)./err1_norm(:,2);
+[pos_quiver_sync1, delta_quiver_sync1] = sync_vicon_tag(tag1_vicon, tag1_pos);
 
 %% plot check del sistema vicon
 % figure(200)
@@ -212,62 +219,129 @@ legend
 title('Errori su tag1')
 
 
-
 % confronto orientazione vicon e stm
 figure(5)
 clf
-plot(stm_or(:,1),	unwrap(-stm_or(:,2))+2*pi, 'DisplayName', 'stm_{yaw}')
+plot(stm_or(:,1),	(unwrap(-stm_or(:,2))+2*pi) * 180/pi, 'Linewidth', 1, 'DisplayName', 'stm')
 hold on
-plot(vicon_yaw(:,1), unwrap(vicon_yaw(:,2))+2*pi, 'DisplayName', 'vicon_{yaw}')
-plot(tag_f_yaw(:,1), unwrap(tag_f_yaw(:,2))+2*pi, 'DisplayName', 'tag_{yaw}')
+plot(vicon_yaw(:,1), (unwrap(vicon_yaw(:,2))+2*pi) * 180/pi, 'Linewidth', 1, 'DisplayName', 'vicon')
+plot(tag_f_yaw(:,1), (unwrap(tag_f_yaw(:,2))+2*pi) * 180/pi, 'Linewidth', 1, 'DisplayName', 'atan2 tag')
 axis tight
 hold off
 grid on
 xlabel('Time [s]')
-ylabel('Yaw [rad]')
+ylabel('Yaw [deg]')
 legend
-title('Confronto yaw')
+title('Confronto heading')
 
 
-%% Plot map
-% 
-% % plot3D
-% figure(4)
-% clf
-% plot3(tag0_f_pos(:,2), tag0_f_pos(:,3), tag0_f_pos(:,4),  'DisplayName', 'tag0_f', 'Linewidth', 0.8)
-% hold on
-% plot3(tag1_f_pos(:,2), tag1_f_pos(:,3), tag1_f_pos(:,4),  'DisplayName', 'tag1_f', 'Linewidth', 0.8)
-% plot3(charlie_vicon_pos(:,2), charlie_vicon_pos(:,3), charlie_vicon_pos(:,4),  ...
-%     'DisplayName', 'tag0_f', 'Linewidth', 0.8)
-% axis tight
-% hold off
-% grid on
-% xlabel('x [m]')
-% ylabel('y [m]')
-% zlabel('z [m]')
+%% Plot errore map
 
-% plot3D e asse z = 0
-time_init = 1; % non ha senso dato che vado di sample e non di tempo!!!
-time_stop = 500;
-figure(100)
+% tag0
+figure(300)
 clf
-plot(tag0_f_pos(time_init:time_stop,2), tag0_f_pos(time_init:time_stop,3), 'DisplayName', 'tag0_f', 'Linewidth', 0.8)
+plot(err0_array(:,2), err0_array(:,3), 'r*','DisplayName', 'tag0')
 hold on
-plot(tag1_f_pos(time_init:time_stop,2), tag1_f_pos(time_init:time_stop,3), 'DisplayName', 'tag1_f', 'Linewidth', 0.8)
-plot(charlie_vicon_pos(time_init:time_stop,2), charlie_vicon_pos(time_init:time_stop,3),  ...
-    'DisplayName', 'vicon', 'Linewidth', 0.8)
-% axis tight
+circ_temp = circle([mean(err0_array(:,2)),mean(err0_array(:,3))], mean(err0_norm(:,2)), 500  );
+plot(circ_temp(1,:), circ_temp(2,:), 'k--')
 axis equal
 hold off
 grid on
 xlabel('x [m]')
 ylabel('y [m]')
-zlabel('z [m]')
 legend
-title('Map')
+title('Errore su tag0')
+
+% tag0 normato
+figure(301)
+clf
+plot((err0_arr_normato(:,2)) , err0_arr_normato(:,3), 'r*','DisplayName', 'tag0')
+hold on
+circ_temp = circle([0,0], 1, 500  );
+plot(circ_temp(1,:), circ_temp(2,:), 'k--', 'DisplayName', 'Circ. Unitaria')
+axis equal
+hold off
+grid on
+xlabel('x [m]')
+ylabel('y [m]')
+legend
+title('Errore normato su tag0')
+
+% tag1
+figure(302)
+clf
+plot(err1_array(:,2), err1_array(:,3), 'b*','DisplayName', 'tag1')
+hold on
+circ_temp = circle([mean(err1_array(:,2)),mean(err1_array(:,3))], mean(err1_norm(:,2)), 500  );
+plot(circ_temp(1,:), circ_temp(2,:), 'k--')
+axis equal
+hold off
+grid on
+xlabel('x [m]')
+ylabel('y [m]')
+legend
+title('Errore su tag1')
+
+% tag1 normato
+figure(303)
+clf
+plot((err0_arr_normato(:,2)) , err0_arr_normato(:,3), 'b*','DisplayName', 'tag1')
+hold on
+circ_temp = circle([0,0], 1, 500  );
+plot(circ_temp(1,:), circ_temp(2,:), 'k--', 'DisplayName', 'Circ. Unitaria')
+axis equal
+hold off
+grid on
+xlabel('x [m]')
+ylabel('y [m]')
+legend
+title('Errore normato su tag1')
+
+% plot(err1_array(:,2), err1_array(:,3), 'b*','DisplayName', 'tag1')
+
+
+%% plot errore quiver
+% tag0
+figure(400)
+clf
+quiver(	pos_quiver_sync0(:,2),		pos_quiver_sync0(:,3), ...
+		delta_quiver_sync0(:,2),	delta_quiver_sync0(:,3) , 'b')
+axis equal
+hold off
+grid on
+xlabel('x [m]')
+ylabel('y [m]')
+title('Quiver su tag0')
+
+% tag1
+figure(401)
+clf
+quiver(	pos_quiver_sync1(:,2),		pos_quiver_sync1(:,3), ...
+		delta_quiver_sync1(:,2),	delta_quiver_sync1(:,3) , 'r')
+axis equal
+hold off
+grid on
+xlabel('x [m]')
+ylabel('y [m]')
+title('Quiver su tag1')
+
+% tag1
+figure(402)
+clf
+quiver(	pos_quiver_sync0(:,2),		pos_quiver_sync0(:,3), ...
+		delta_quiver_sync0(:,2),	delta_quiver_sync0(:,3) , 'b','DisplayName', 'tag0')
+hold on
+quiver(	pos_quiver_sync1(:,2),		pos_quiver_sync1(:,3), ...
+		delta_quiver_sync1(:,2),	delta_quiver_sync1(:,3) , 'r', 'DisplayName', 'tag1')
+axis equal
+hold off
+grid on
+xlabel('x [m]')
+ylabel('y [m]')
+title('Quiver sui tag')
 
 
 %% Animazione
-
-
+% tutto l'animazione si trova in animate_charlie, scommentare per eseguire:
+% animate_charlie
 
