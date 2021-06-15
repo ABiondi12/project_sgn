@@ -20,51 +20,44 @@ else
 	% tag0
 	temp_bag = select(bag,'Time',...
 		[bag.StartTime bag.EndTime],'Topic','/tag0_pose');
-	tag0_pos = temp_bag.timeseries.Data(:,[1,4:6]);
-	% Aggiungo i nanosecondi e sottraggo lo starttime
-	tag0_pos(:,1) = tag0_pos(:,1) + temp_bag.timeseries.Data(:,2)/1e9 - bag.StartTime; 
-
+	tag0_pos = [temp_bag.timeseries.Time, temp_bag.timeseries.Data(:,4:6)];
+	tag0_pos(:,1) = tag0_pos(:,1) - bag.StartTime; 
 
 	% tag0_f
 	temp_bag = select(bag,'Time',...
 		[bag.StartTime bag.EndTime],'Topic','/tag0_pose_f');
-	tag0_f_pos = temp_bag.timeseries.Data(:,[1,4:6]);
-	tag0_f_pos(:,1) = tag0_f_pos(:,1) + temp_bag.timeseries.Data(:,2)/1e9 - bag.StartTime; 
-
+	tag0_f_pos = [temp_bag.timeseries.Time, temp_bag.timeseries.Data(:,4:6)];
+	tag0_f_pos(:,1) = tag0_f_pos(:,1) - bag.StartTime; 
 
 	% tag1
 	temp_bag = select(bag,'Time',...
 		[bag.StartTime bag.EndTime],'Topic','/tag1_pose');
-	tag1_pos = temp_bag.timeseries.Data(:,[1,4:6]);
-	tag1_pos(:,1) = tag1_pos(:,1) + temp_bag.timeseries.Data(:,2)/1e9 - bag.StartTime; 
-
+	tag1_pos = [temp_bag.timeseries.Time, temp_bag.timeseries.Data(:,4:6)];
+	tag1_pos(:,1) = tag1_pos(:,1) - bag.StartTime; 
 
 	% tag1_f
 	temp_bag = select(bag,'Time',...
 		[bag.StartTime bag.EndTime],'Topic','/tag1_pose_f');
-	tag1_f_pos = temp_bag.timeseries.Data(:,[1,4:6]);
-	tag1_f_pos(:,1) = tag1_f_pos(:,1) + temp_bag.timeseries.Data(:,2)/1e9 - bag.StartTime; 
-
+	tag1_f_pos = [temp_bag.timeseries.Time, temp_bag.timeseries.Data(:,4:6)];
+	tag1_f_pos(:,1) = tag1_f_pos(:,1) - bag.StartTime; 
 
 	% charlie_vicon_pos
 	temp_bag = select(bag,'Time',...
 		[bag.StartTime bag.EndTime],'Topic','/charlie_vicon_uwb');
-	charlie_vicon_pos = temp_bag.timeseries.Data(:,[1,4:6]);
-	charlie_vicon_pos(:,1) = charlie_vicon_pos(:,1) + temp_bag.timeseries.Data(:,2)/1e9 - bag.StartTime; 
-
+	charlie_vicon_pos = [temp_bag.timeseries.Time, temp_bag.timeseries.Data(:,4:6)];
+	charlie_vicon_pos(:,1) = charlie_vicon_pos(:,1) - bag.StartTime; 
 
 	% charlie_vicon_or (quaternione)
 	temp_bag = select(bag,'Time',...
 		[bag.StartTime bag.EndTime],'Topic','/charlie_vicon_uwb');
-	charlie_vicon_or = temp_bag.timeseries.Data(:,[1,7:10]);
-	charlie_vicon_or(:,1) = charlie_vicon_or(:,1) + temp_bag.timeseries.Data(:,2)/1e9 - bag.StartTime; 
-
+	charlie_vicon_or = [temp_bag.timeseries.Time, temp_bag.timeseries.Data(:,7:10)];
+	charlie_vicon_or(:,1) = charlie_vicon_or(:,1) - bag.StartTime; 
 
 	% stm_or
 	temp_bag = select(bag,'Time',...
 		[bag.StartTime bag.EndTime],'Topic','/orientation');
 	stm_or = [temp_bag.timeseries.Time, temp_bag.timeseries.Data(:,3)];
-	stm_or(:,1) = stm_or(:,1) + temp_bag.timeseries.Data(:,2)/1e9 - bag.StartTime; 
+	stm_or(:,1) = stm_or(:,1) - bag.StartTime; 
 	
 	% time
 	time_end = bag.EndTime - bag.StartTime;
