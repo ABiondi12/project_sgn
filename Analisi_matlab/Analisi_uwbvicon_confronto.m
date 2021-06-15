@@ -235,13 +235,15 @@ title('Confronto heading')
 
 
 %% Plot errore map
+% circonferenza di rif con centro nella media dell'errore e avente raggio
+% pari a 3 sigma (3*deviazione standard) della norma dell'errore
 
 % tag0
 figure(300)
 clf
 plot(err0_array(:,2), err0_array(:,3), 'r*','DisplayName', 'tag0')
 hold on
-circ_temp = circle([mean(err0_array(:,2)),mean(err0_array(:,3))], mean(err0_norm(:,2)), 500  );
+circ_temp = circle([mean(err0_array(:,2)),mean(err0_array(:,3))], 3*std(err0_norm(:,2)), 500  );
 plot(circ_temp(1,:), circ_temp(2,:), 'k--')
 axis equal
 hold off
@@ -271,7 +273,7 @@ figure(302)
 clf
 plot(err1_array(:,2), err1_array(:,3), 'b*','DisplayName', 'tag1')
 hold on
-circ_temp = circle([mean(err1_array(:,2)),mean(err1_array(:,3))], mean(err1_norm(:,2)), 500  );
+circ_temp = circle([mean(err1_array(:,2)),mean(err1_array(:,3))], 3*std(err1_norm(:,2)), 500  );
 plot(circ_temp(1,:), circ_temp(2,:), 'k--')
 axis equal
 hold off
