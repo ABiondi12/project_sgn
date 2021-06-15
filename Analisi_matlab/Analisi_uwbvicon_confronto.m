@@ -131,7 +131,6 @@ err1_arr_normato(:,2:4) = err1_array(:,2:4)./err1_norm(:,2);
 % legend
 % title('Map tutto vicon')
 
-
 %% Qualche plot
 % 
 % % plot di tag0
