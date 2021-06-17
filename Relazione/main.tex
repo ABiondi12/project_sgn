@@ -364,14 +364,39 @@ Essendo l'estensione del cortile maggiore rispetto a quella della stanza del vol
 
 La prima prova che abbiamo deciso di effettuare è stata quella volta alla valutazione dell'affidabilità della procedura di autocalibrazione delle ancore del sistema Pozyx. Durante il nostro lavoro, infatti, erano state riscontrate alcune anomalie, corrette andando a modificare la gestione degli ID nell'esecuzione di alcune funzioni di \verb|positioning| del sistema Pozyx, dove è necessario porre attenzione affinché chi è demandato di eseguirle, tra gli elementi del sistema, abbia al suo interno effettivamente tutte le informazioni corrette e aggiornate di cui necessita. Per questo motivo, abbiamo agito sulla procedura di salvataggio facendo in modo che sia garantita la presenza all'interno della memoria dei chip delle ancore l'informazione della propria posizione a valle dell'ultima autocalibrazione. 
 Per validare la bontà dell'autocalibrazione, che viene eseguita seguendo la procedura descritta in sez.~\ref{sez:Autocalibrazione}, si sfrutta come ground truth il Vicon, in questo caso affiancato alla Wand, una sorta di struttura a forma di croce, sulla quale sono fissati dei marker con configurazione asimmetrica e il cui rispettivo oggetto virtuale è già preimpostato sul sw per la gestione del Vicon. 
-Quest'ultimo sarà necessario per andare ad individuara la posizione delle ancore, prive di marker riconoscibili dal Vicon, così come le individua il Vicon stesso. Tali misure, da considerarsi prive di errori legati allo strumento, ma affette da errori dovuti al posizionamento della Wand sulle ancore stesse (errore umano di esecuzione), verranno confrontati con quelli ottenuti a valle del procedimento di autocalibrazione, dove in uscita ogni ancora è a conoscenza della sua posizione relativa rispetto al sistema di riferimento costruito su di esse (\verb|UWB frame|).
+Quest'ultimo sarà necessario per andare ad individuare la posizione delle ancore, prive di marker riconoscibili dal Vicon. Tali misure, da considerarsi prive di errori legati allo strumento, ma affette da errori dovuti al posizionamento della Wand sulle ancore stesse (errore umano di esecuzione), verranno confrontati con quelli ottenuti a valle del procedimento di autocalibrazione, dove in uscita ogni ancora è a conoscienza della propria posizione espressa rispetto al sistema di riferimento costruito su di esse (\verb|UWB frame|).
 
-file da lanciare--> autocalibrazione
-				--> roba con la wand
-				
-confronto dei risultati: file .txt
-fai dei grafici e analizza
+Le ancore sono state poste in una configurazione che a nostro avviso, dopo aver fatto varie prove, è quella che permette di ottenere una autocalibrazione più corretta: troviamo le prime tre ancore alla stessa altezza e messe in modo da delimitare gli assi x, y e l'origine, mentre la quarta ancora è alzata molto lungo la verticale e posta nei pressi dell'origine (riferirsi alla fig.~\ref{fig: disposizione ancore}). Nel caso in cui questa venga allontanata troppo, l'algoritmo di autocalibrazione fallisce (si hanno problemi di radici di numeri negativi nella parte algebrica).
 
+Come descritto in \ref{sez: Guida breve all'esperimento}, per questo primo test andremo a:
+\begin{itemize}
+	\item Avviare i dialoghi tra ros e il sistema Vicon, eseguendo da pc il file di lancio \verb|vicon_charlie.launch|.
+	\item Salvare la trasformazione tra Vicon e UWB eseguendo il file \verb|vicon2uwb_tf.py|. In questa fase, sarà richiesto di posizionare sequenzialmente la Wand in corrispondenza dell'ancora 0, poi dell'ancora 1 e così via. Per ciascun posizionamento, premendo \verb|Enter| da tastiera si andrà a salvare la posizione, in frame Vicon, della Wand in quell'istante, coincidente con quella dell'ancora sulla quale è posizionata. In questo modo, vengono salvate le coordinate delle 4 ancore in frame \verb|Vicon frame|.
+	\item Sempre all'interno di \verb|vicon2uwb_tf.py|, tali posizioni vengono riportate ad essere espresse nel sistema di riferimento UWB, ovvero \verb|UWB frame|, in quanto la loro posizione a seguito dell'autocalibrazione è nota nel sistema di riferimento \verb|UWB|.
+\end{itemize}
+
+Sono riportate di seguito le due misure:
+
+Ancore misurate con UWB (a seguito della procedura di autocalibrazione), riportate in \verb|[m]|
+\begin{itemize}
+	\item Anchor 0, 0x6902 $\rightarrow$ X: 0.0, 	Y: 0.0, 	Z: 0.0
+	\item Anchor 1, 0x6e7a $\rightarrow$ X: 0.0, 	Y: 2.997, 	Z: 0.0
+	\item Anchor 2, 0x6e44 $\rightarrow$ X: 5.121, Y: -0.527, 	Z: 0.0
+	\item Anchor 3, 0x6e6c $\rightarrow$ X: 0.875,	Y: 1.165, 	Z: 1.295
+\end{itemize}
+
+Ancore misurate con Vicon (riportate in \verb|UWB frame|) espresse in \verb|[m]|
+\begin{itemize}
+	\item Anchor 0, 0x6902 $\rightarrow$ X: 0.000000,	Y: 0.000000,	Z: 0.000000
+	\item Anchor 1, 0x6e7a $\rightarrow$ X: 0.000000,	Y: 3.168643,	Z: 0.032111
+	\item Anchor 2, 0x6e44 $\rightarrow$ X: 5.378095,	Y: -0.063190,	Z: -0.047064
+	\item Anchor 3, 0x6e6c $\rightarrow$ X: 0.826354,	Y: 1.129845,	Z: 1.239518
+\end{itemize}
+
+
+Come possiamo osservare dai risultati ottenuti, troviamo un errore di almeno 20 \verb|[cm]| sulle coordinate delle varie ancore, che però sembra non raggiungere valori troppo elevati, se non nel caso della coordinata Y della terza ancora, dove l'errore è di 45 \verb|[cm]|. Siamo piuttosto soddisfatti di questo risultato in quanto anche dai precedenti esperimenti era nota la presenza di un errore sistematico legato alle UWB, dovuto probabilmente a limiti del metodo stesso più che ad errori nell'algoritmo scritto: l'ambiente indoor e l'utilizzo di sole 4 ancore non permette di ottenere misure precise nello spazio 3D, dove dalla documentazione ufficiale della Pozyx si legge che sarebbero necessarie almeno 6 ancore poste ad altezze diverse tra di loro per raggiungere migliori performance in termini di riduzione dell'errore.
+
+PLOT DI QUALCOSA? HA SENSO?
 
 \subsection{Confronto Vicon: navigazione}
 
