@@ -1,0 +1,11 @@
+Ancore misurate con uwb
+ANCHOR 0 , 0x6902, X: 0.0, Y: 0.0, Z: 0.0
+ANCHOR 1 , 0x6e7a, X: 0.0, Y: 2997.0, Z: 0.0
+ANCHOR 2 , 0x6e44, X: 5121.0, Y: -527.0, Z: 0.0
+ANCHOR 3 , 0x6e6c, X: 875.0, Y: 1165.0, Z: 1295.0
+
+Ancore misurate con vicon
+Anchor0: (0.000000, 0.000000, 0.000000)
+Anchor1: (0.000000, 3.168643, 0.032111)
+Anchor2: (5.378095, -0.063190, -0.047064)
+Anchor3: (0.826354, 1.129845, 1.239518)
