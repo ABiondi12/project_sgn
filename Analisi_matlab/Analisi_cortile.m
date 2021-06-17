@@ -9,7 +9,6 @@ filename = 'cortile_6_15_primo.mat';
 % filename = 'cortile_6_15_secondo.mat';
 % filename = 'cortile_6_15_terzo.mat';
 
-
 %% Estrazione variabili
 if exist(filename) == 2
 	
@@ -104,8 +103,8 @@ clf
 show(map)
 hold on
 % plot(robot_pos(:,2), robot_pos(:,3), 'b', 'DisplayName', 'stima')
-plot(amcl_pose_pos(:,2),	amcl_pose_pos(:,3),		'r',	'DisplayName', 'amcl')
-plot(tag_center_pos(:,2),	tag_center_pos(:,3),	'b--',	'DisplayName', 'tag center')
+plot(amcl_pose_pos(:,2),	amcl_pose_pos(:,3),		'r', 	'DisplayName', 'amcl')
+plot(tag_center_pos(:,2),	tag_center_pos(:,3),	'b--', 	'DisplayName', 'tag center')
 plot(initialpose_pos(:,2),	initialpose_pos(:,3),	'k*',	'DisplayName', 'initialpose')
 
 hold off
