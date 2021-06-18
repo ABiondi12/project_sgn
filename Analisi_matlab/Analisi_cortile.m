@@ -4,6 +4,9 @@ clear
 % close all
 clc
 
+addpath('functions')
+addpath('files_bag_mat')
+
 %% scegliere quale file analizzare:
 % filename = 'cortile_6_15_primo.mat';
 % filename = 'cortile_6_15_secondo.mat';

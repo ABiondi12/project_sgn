@@ -4,6 +4,9 @@ clear
 close all
 clc
 
+addpath('functions')
+addpath('files_bag_mat')
+
 %% scegliere quale file analizzare:
 
 % filename = 'uwbvicon_confronto0611.mat';
