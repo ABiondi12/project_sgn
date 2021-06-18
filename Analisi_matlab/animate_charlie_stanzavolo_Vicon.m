@@ -1,4 +1,4 @@
-%% Questo script esegue l'animazione di charlie nel cortile
+%% Questo script esegue l'animazione di charlie nella stanza del volo con il sistema Vicon in funzione
 
 
 ris_t		= 0.2;				%time step dell'animazione.
@@ -10,25 +10,39 @@ show(map)
 
 flag_tag_center = 0;	% flag diventa 1 appena si ha il primo disegno di un tag_center
 flag_amcl		= 0;	% flag diventa 1 appena si ha il primo disegno di un amcl
+flag_vicon		= 0;	% flag diventa 1 appena si ha il primo disegno di un Vicon_pos
 
 for i = 1:length(time_anim)
 	
 	%start stuff
 	time_now = time_anim(i);
 	
-	% initialpose
-	col_initialpose = [0, 0, 0];
-	index_initialpose = floor(mean(find(abs(initialpose_pos(:,1) - time_now) < ris_t)));
-	if ~(isempty(index_initialpose) || isnan(index_initialpose))
+	% vicon
+	col_vicon = [0,0,0];
+	index_vicon = floor(mean(find(abs(charlie_vicon_pos(:,1) - time_now) < ris_t)));
+	if ~(isempty(index_vicon) || isnan(index_vicon))
+		if flag_vicon == 1
+			delete(box_vicon)
+			delete(dot_vicon)
+			delete(tags_vicon)
+		else
+			flag_vicon = 1;
+		end
+		
 		hold on
-		draw_charlie(	initialpose_pos(index_initialpose,2:end),...
-						initialpose_heading(index_initialpose,2),...
-						col_initialpose);
+		trail_handl = plot(	charlie_vicon_pos(1:index_vicon, 2), charlie_vicon_pos(1:index_vicon, 3),...
+							'c--');
+		hold on
+		[box_vicon, dot_vicon, tags_vicon] =	draw_charlie(	...
+													charlie_vicon_pos(index_vicon, 2:4), ...
+													vicon_yaw(index_vicon,2), ...
+													col_vicon);
 	end
 	
 	% amcl
 	col_amcl = [1,0,0];
-	index_amcl = floor(mean(find(abs(amcl_pose_pos(:,1) - time_now) < ris_t)));
+% 	index_amcl = floor(mean(find(abs(amcl_pose_pos(:,1) - time_now) < ris_t)));
+	index_amcl = floor(mean(find(abs(robot_pos(:,1) - time_now) < ris_t)));
 	if ~(isempty(index_amcl) || isnan(index_amcl))
 		if flag_amcl == 1
 			delete(box_amcl)
@@ -39,10 +53,14 @@ for i = 1:length(time_anim)
 		end
 		
 		hold on
-		[box_amcl, dot_amcl, tags_amcl] = draw_charlie(		amcl_pose_pos(index_amcl,2:end),...
-															amcl_heading(index_amcl,2),...
+% 		[box_amcl, dot_amcl, tags_amcl] = draw_charlie(		amcl_pose_pos(index_amcl,2:end),...
+% 															amcl_heading(index_amcl,2),...
+% 															col_amcl);
+		
+		[box_amcl, dot_amcl, tags_amcl] = draw_charlie(		[robot_pos(index_amcl,2), robot_pos(index_amcl,3), 0],...
+															robot_or(index_amcl,2),...
 															col_amcl);
-															
+		
 	end
 	
 	%tag_center
@@ -66,15 +84,14 @@ for i = 1:length(time_anim)
 																col_tag_center);
 															
 	end
-	
-	
-	
+
 	%end stuff
 	hold off
 	
+	
 	axis equal
-	axis_lim_zoom = [-3, 6, -1, 4];			% per vedere solo il tracciato
-	axis_lim_full = [-10, 13, -12, 13];		% per vedere tutta la mappa
+	axis_lim_zoom = [-2, 3, -2, 3];		% per vedere solo il tracciato
+	axis_lim_full = [-4, 6, -3, 3];		% per vedere tutta la mappa
 	axis(axis_lim_full)
 	
 	grid on

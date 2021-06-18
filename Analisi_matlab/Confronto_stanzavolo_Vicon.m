@@ -62,7 +62,6 @@ else
 	robot_pos	= [temp_bag.timeseries.Time - bag.StartTime, temp_bag.timeseries.Data(:,1:2) ];
 	robot_or	= [temp_bag.timeseries.Time - bag.StartTime, temp_bag.timeseries.Data(:,3) ];
 	
-	
 	% tag_center
 	temp_bag = select(bag,'Time',...
 		[bag.StartTime bag.EndTime],'Topic','/tag_center');
@@ -90,6 +89,7 @@ else
 end
 
 %% Calcoli
+
 tag_center_heading = tag_center_quat(:,1:2); % cosi` mi copio il vettore tempo
 tag_center_heading(:,2) = quat2yaw_array(tag_center_quat(:,2:end));
 
@@ -114,9 +114,9 @@ err_arr_normato(:,2:4) = err_array(:,2:4)./err_norm(:,2);
 
 %% tracciato
 
-axis_lim_full = [-10, 13, -12, 13];		% per vedere tutta la mappa
-axis_lim_zoom = [-3, 6, -1, 4];			% per vedere solo il tracciato
-
+axis_lim_zoom = [-2, 3, -2, 3];		% per vedere solo il tracciato
+axis_lim_full = [-4, 6, -3, 3];		% per vedere tutta la mappa
+	
 % tracciato
 figure(10)
 clf
@@ -186,11 +186,7 @@ ylabel('heading [deg]')
 legend('Location', 'Best')
 title('Orientazione')
 
-%% animation
-
-%% cose copiate
- 
-	%% plot di tag_center_pos
+%% plot di tag_center_pos
 figure(1)
 clf
 plot(tag_center_pos(:,1), tag_center_pos(:,2))
@@ -204,7 +200,7 @@ xlabel('Time [s]')
 ylabel('Posizione centro delle tag [m]')
 title('Dati raw di tag centre')
 
-	%% confronto tag_center_pos e charlie_vicon_pos (su x e y)
+%% confronto tag_center_pos e charlie_vicon_pos (su x e y)
 figure(2)
 clf
 plot(tag_center_pos(:,1),		tag_center_pos(:,2), 'DisplayName', 'x raw', 'Linewidth', 0.2)
@@ -221,7 +217,7 @@ ylabel('Posizioni [m]')
 legend
 title('Confronto tag centre')
 
-	%% errore su tag centre
+%% errore su tag centre
 figure(3)
 clf
 plot(err_array(:,1),		err_array(:,2), 'DisplayName', 'x', 'Linewidth', 0.5)
@@ -236,7 +232,7 @@ ylabel('Errore vicon - uwb [m]')
 legend
 title('Errori su tag centre')
 
-	%% confronto orientazione vicon e stm
+%% confronto orientazione vicon e stm
 figure(4)
 clf
 plot(stm_or(:,1),	(unwrap(-stm_or(:,2))) * 180/pi, 'Linewidth', 1, 'DisplayName', 'stm')
@@ -251,7 +247,7 @@ ylabel('Yaw [deg]')
 legend
 title('Confronto heading') 
 
-	%% Plot errore map tag centre
+%% Plot errore map tag centre
 % circonferenza di rif con centro nella media dell'errore e avente raggio
 % pari a 3 sigma (3*deviazione standard) della norma dell'errore
 figure(300)
@@ -268,7 +264,7 @@ ylabel('y [m]')
 legend
 title('Errore su tag centre')
 
-	%% tag centre normato
+%% tag centre normato
 figure(301)
 clf
 plot((err_arr_normato(:,2)) , err_arr_normato(:,3), 'r*','DisplayName', 'tag0')
@@ -285,7 +281,7 @@ title('Errore normato su tag centre')
 
 % plot(err1_array(:,2), err1_array(:,3), 'b*','DisplayName', 'tag1')
 
-	%% plot errore quiver
+%% plot errore quiver
 % tag0
 figure(400)
 clf
@@ -298,4 +294,7 @@ xlabel('x [m]')
 ylabel('y [m]')
 title('Quiver su tag centre')
 
+%% animation
+% animate_charlie_stanzavolo_Vicon
+ 
 

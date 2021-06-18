@@ -1,22 +1,35 @@
 % Questo script esegue l'analisi di uwbvicon_confronto.bag
 
 clear
-% close all
+close all
 clc
+
+%% scegliere quale file analizzare:
+
+% filename = 'uwbvicon_confronto0611.mat';
+filename = 'uwbvicon_confronto0615.mat';
 
 %% Estrazione variabili
 
-if exist('uwbvicon_confronto.mat') == 2
+if exist(filename) == 2
 	
 	% estrazione dalla bag gia` avvenuta, carico il save
-	load('uwbvicon_confronto.mat')
+	load(filename)
 	
 else
 	% load
-	rosbag info 'uwbvicon_confronto.bag'    % print info della bag
-	bag = rosbag('uwbvicon_confronto.bag');
-
+	
+	filename_bag = [filename(1:(end-3)), 'bag']; % cambio estensione del file
+	bag = rosbag(filename_bag);
+	
+	% decommenta quella che vuoi vedere
+	%	rosbag info uwbvicon_confronto0611    % print info della bag
+	% 	rosbag info uwbvicon_confronto0615    % print info della bag
+	
 	% prima colonna tempo [s]
+	% time
+	time_end = bag.EndTime - bag.StartTime;
+	
 	% tag0
 	temp_bag = select(bag,'Time',...
 		[bag.StartTime bag.EndTime],'Topic','/tag0_pose');
@@ -244,7 +257,7 @@ clf
 plot(err0_array(:,2), err0_array(:,3), 'r*','DisplayName', 'tag0')
 hold on
 circ_temp = circle([mean(err0_array(:,2)),mean(err0_array(:,3))], 3*std(err0_norm(:,2)), 500  );
-plot(circ_temp(1,:), circ_temp(2,:), 'k--')
+plot(circ_temp(1,:), circ_temp(2,:), 'k--', 'DisplayName', '3 \sigma')
 axis equal
 hold off
 grid on
@@ -274,7 +287,7 @@ clf
 plot(err1_array(:,2), err1_array(:,3), 'b*','DisplayName', 'tag1')
 hold on
 circ_temp = circle([mean(err1_array(:,2)),mean(err1_array(:,3))], 3*std(err1_norm(:,2)), 500  );
-plot(circ_temp(1,:), circ_temp(2,:), 'k--')
+plot(circ_temp(1,:), circ_temp(2,:), 'k--', 'DisplayName', '3 \sigma')
 axis equal
 hold off
 grid on
@@ -306,10 +319,11 @@ title('Errore normato su tag1')
 figure(400)
 clf
 quiver(	pos_quiver_sync0(:,2),		pos_quiver_sync0(:,3), ...
-		delta_quiver_sync0(:,2),	delta_quiver_sync0(:,3) , 'b', 'Linewidth', 1)
+		delta_quiver_sync0(:,2),	delta_quiver_sync0(:,3) , 'b', 'Linewidth', 1, 'DisplayName', 'err tag0 orient')
 axis equal
 hold off
 grid on
+legend
 xlabel('x [m]')
 ylabel('y [m]')
 title('Quiver su tag0')
@@ -318,10 +332,11 @@ title('Quiver su tag0')
 figure(401)
 clf
 quiver(	pos_quiver_sync1(:,2),		pos_quiver_sync1(:,3), ...
-		delta_quiver_sync1(:,2),	delta_quiver_sync1(:,3) , 'r', 'Linewidth', 1)
+		delta_quiver_sync1(:,2),	delta_quiver_sync1(:,3) , 'r', 'Linewidth', 1, 'DisplayName', 'err tag1 orient')
 axis equal
 hold off
 grid on
+legend
 xlabel('x [m]')
 ylabel('y [m]')
 title('Quiver su tag1')
@@ -330,13 +345,14 @@ title('Quiver su tag1')
 figure(402)
 clf
 quiver(	pos_quiver_sync0(:,2),		pos_quiver_sync0(:,3), ...
-		delta_quiver_sync0(:,2),	delta_quiver_sync0(:,3) , 'b', 'Linewidth', 1, 'DisplayName', 'tag0')
+		delta_quiver_sync0(:,2),	delta_quiver_sync0(:,3) , 'b', 'Linewidth', 1, 'DisplayName', 'err tag0 orient')
 hold on
 quiver(	pos_quiver_sync1(:,2),		pos_quiver_sync1(:,3), ...
-		delta_quiver_sync1(:,2),	delta_quiver_sync1(:,3) , 'r', 'Linewidth', 1, 'DisplayName', 'tag1')
+		delta_quiver_sync1(:,2),	delta_quiver_sync1(:,3) , 'r', 'Linewidth', 1, 'DisplayName', 'err tag1 orient')
 axis equal
 hold off
 grid on
+legend
 xlabel('x [m]')
 ylabel('y [m]')
 title('Quiver sui tag')

@@ -83,10 +83,10 @@ else
 end
 
 %% Calcoli
-tag_center_heading = tag_center_quat(:,1:2); % cosi` mi copio il vettore tempo
+tag_center_heading = tag_center_quat(:,1:2);	% cosi` mi copio il vettore tempo
 tag_center_heading(:,2) = quat2yaw_array(tag_center_quat(:,2:end));
 
-amcl_heading = amcl_pose_quat(:,1:2);  % cosi` mi copio il vettore tempo
+amcl_heading = amcl_pose_quat(:,1:2);			% cosi` mi copio il vettore tempo
 amcl_heading(:,2) = quat2yaw_array(amcl_pose_quat(:,2:end));
 
 initialpose_heading = initialpose_quat(:,1:2);  % cosi` mi copio il vettore tempo
@@ -167,5 +167,5 @@ legend('Location', 'Best')
 title('Orientazione')
 
 %% animation
-
+% animate_charlie_cortile
 

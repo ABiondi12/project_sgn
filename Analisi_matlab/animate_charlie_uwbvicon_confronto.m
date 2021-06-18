@@ -1,7 +1,7 @@
 %% Questo script esegue l'animazione di charlie 
 
 
-ris_t		= 0.2;	%time step dell'animazione.
+ris_t		= 0.2;				%time step dell'animazione.
 time_anim	= 0:ris_t:time_end;	% vettore temporale per l'animazione
 
 figure(1000)
