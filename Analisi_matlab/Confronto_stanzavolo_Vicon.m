@@ -118,7 +118,7 @@ axis_lim_full = [-10, 13, -12, 13];		% per vedere tutta la mappa
 axis_lim_zoom = [-3, 6, -1, 4];			% per vedere solo il tracciato
 
 % tracciato
-figure(1)
+figure(10)
 clf
 show(map)
 hold on
@@ -136,7 +136,7 @@ title('Traiettoria')
 
 %% x 
 
-figure(10)
+figure(11)
 clf
 plot(amcl_pose_pos(:,1),	amcl_pose_pos(:,2),		'r',	'DisplayName', 'amcl')
 hold on
@@ -176,7 +176,7 @@ clf
 plot(stm_or(:,1),	-stm_or(:,2) * 180/pi,		'c',	'DisplayName', 'stm')
 hold on
 plot(tag_center_heading(:,1),	unwrap(tag_center_heading(:,2))* 180/pi,	'b',	'DisplayName', 'tag center')
-plot(amcl_heading(:,1), unwrap(amcl_heading(:,2) -2*pi)* 180/pi, 'r', 'DisplayName', 'amcl')
+plot(amcl_heading(:,1), unwrap(amcl_heading(:,2))* 180/pi, 'r', 'DisplayName', 'amcl')
 
 hold off
 axis tight
@@ -189,10 +189,8 @@ title('Orientazione')
 %% animation
 
 %% cose copiate
-
-	%% Qualche plot
  
-		%% plot di tag_center_pos
+	%% plot di tag_center_pos
 figure(1)
 clf
 plot(tag_center_pos(:,1), tag_center_pos(:,2))
@@ -206,7 +204,7 @@ xlabel('Time [s]')
 ylabel('Posizione centro delle tag [m]')
 title('Dati raw di tag centre')
 
-		%% confronto tag_center_pos e charlie_vicon_pos (su x e y)
+	%% confronto tag_center_pos e charlie_vicon_pos (su x e y)
 figure(2)
 clf
 plot(tag_center_pos(:,1),		tag_center_pos(:,2), 'DisplayName', 'x raw', 'Linewidth', 0.2)
@@ -223,7 +221,7 @@ ylabel('Posizioni [m]')
 legend
 title('Confronto tag centre')
 
-		%% errore su tag centre
+	%% errore su tag centre
 figure(3)
 clf
 plot(err_array(:,1),		err_array(:,2), 'DisplayName', 'x', 'Linewidth', 0.5)
@@ -238,26 +236,24 @@ ylabel('Errore vicon - uwb [m]')
 legend
 title('Errori su tag centre')
 
-		%% confronto orientazione vicon e stm
+	%% confronto orientazione vicon e stm
 figure(4)
 clf
-plot(stm_or(:,1),	(unwrap(-stm_or(:,2))+2*pi) * 180/pi, 'Linewidth', 1, 'DisplayName', 'stm')
+plot(stm_or(:,1),	(unwrap(-stm_or(:,2))) * 180/pi, 'Linewidth', 1, 'DisplayName', 'stm')
 hold on
-plot(vicon_yaw(:,1), (unwrap(vicon_yaw(:,2))+2*pi) * 180/pi, 'Linewidth', 1, 'DisplayName', 'vicon')
-plot(tag_center_heading(:,1), (unwrap(tag_center_heading(:,2))+2*pi) * 180/pi, 'Linewidth', 1, 'DisplayName', 'atan2 tag')
+plot(vicon_yaw(:,1), (unwrap(vicon_yaw(:,2))) * 180/pi, 'Linewidth', 1, 'DisplayName', 'vicon')
+plot(tag_center_heading(:,1), (unwrap(tag_center_heading(:,2))) * 180/pi, 'Linewidth', 1, 'DisplayName', 'atan2 tag')
 axis tight
 hold off
 grid on
 xlabel('Time [s]')
 ylabel('Yaw [deg]')
 legend
-title('Confronto heading')
+title('Confronto heading') 
 
-		%% Plot errore map
+	%% Plot errore map tag centre
 % circonferenza di rif con centro nella media dell'errore e avente raggio
 % pari a 3 sigma (3*deviazione standard) della norma dell'errore
-
-		%% tag centre
 figure(300)
 clf
 plot(err_array(:,2), err_array(:,3), 'r*','DisplayName', 'tag0')
@@ -272,7 +268,7 @@ ylabel('y [m]')
 legend
 title('Errore su tag centre')
 
-		%% tag centre normato
+	%% tag centre normato
 figure(301)
 clf
 plot((err_arr_normato(:,2)) , err_arr_normato(:,3), 'r*','DisplayName', 'tag0')
@@ -288,7 +284,8 @@ legend
 title('Errore normato su tag centre')
 
 % plot(err1_array(:,2), err1_array(:,3), 'b*','DisplayName', 'tag1')
-		%% plot errore quiver
+
+	%% plot errore quiver
 % tag0
 figure(400)
 clf
