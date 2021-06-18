@@ -306,7 +306,7 @@ title('Errore normato su tag1')
 figure(400)
 clf
 quiver(	pos_quiver_sync0(:,2),		pos_quiver_sync0(:,3), ...
-		delta_quiver_sync0(:,2),	delta_quiver_sync0(:,3) , 'b')
+		delta_quiver_sync0(:,2),	delta_quiver_sync0(:,3) , 'b', 'Linewidth', 1)
 axis equal
 hold off
 grid on
@@ -318,7 +318,7 @@ title('Quiver su tag0')
 figure(401)
 clf
 quiver(	pos_quiver_sync1(:,2),		pos_quiver_sync1(:,3), ...
-		delta_quiver_sync1(:,2),	delta_quiver_sync1(:,3) , 'r')
+		delta_quiver_sync1(:,2),	delta_quiver_sync1(:,3) , 'r', 'Linewidth', 1)
 axis equal
 hold off
 grid on
@@ -330,10 +330,10 @@ title('Quiver su tag1')
 figure(402)
 clf
 quiver(	pos_quiver_sync0(:,2),		pos_quiver_sync0(:,3), ...
-		delta_quiver_sync0(:,2),	delta_quiver_sync0(:,3) , 'b','DisplayName', 'tag0')
+		delta_quiver_sync0(:,2),	delta_quiver_sync0(:,3) , 'b', 'Linewidth', 1, 'DisplayName', 'tag0')
 hold on
 quiver(	pos_quiver_sync1(:,2),		pos_quiver_sync1(:,3), ...
-		delta_quiver_sync1(:,2),	delta_quiver_sync1(:,3) , 'r', 'DisplayName', 'tag1')
+		delta_quiver_sync1(:,2),	delta_quiver_sync1(:,3) , 'r', 'Linewidth', 1, 'DisplayName', 'tag1')
 axis equal
 hold off
 grid on

@@ -5,9 +5,9 @@ clear
 clc
 
 %% scegliere quale file analizzare:
-filename = 'cortile_6_15_primo.mat';
+% filename = 'cortile_6_15_primo.mat';
 % filename = 'cortile_6_15_secondo.mat';
-% filename = 'cortile_6_15_terzo.mat';
+filename = 'cortile_6_15_terzo.mat';
 
 %% Estrazione variabili
 if exist(filename) == 2
