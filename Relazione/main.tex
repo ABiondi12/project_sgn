@@ -439,8 +439,16 @@ Nella stanza del volo del DII, il sistema di riferimento più usato è rappresen
 \label{sez:Ambiente ROS creato}
 scrivi du cazzate
 
+
+
 \subsection{Sistema di riferimento body}
-\textbf{FARE FIGURINAAAAAAAAAAAAAAAAA}
+
+\begin{figure}[] 
+	\centering    
+	\includegraphics[height=.4\textheight]{charlie_vista_alto.pdf}
+	\caption{charlie body frame}
+	\label{fig: charlie body frame}
+\end{figure}
 
 \subsection{ambiente}
 albero nodi\\
@@ -580,7 +588,7 @@ renderci conto se esiste una significativa direzionalità di questo errore o se,
 circonferenza di riferimento: possiamo subito notare che, per entrambe le tag, l'errore si distribuisce molto di più nei quadranti negativi della circonderenza,
 mentre in quelli positivi si contano solo pochi campioni isolati.
 
-PLOT QUIVER DIRe
+\textbf{PLOT QUIVER DIRE}
 
 Similmente, considerando che dalla posizione delle due tag su Charlie è possibile ricavare l'heading del veicolo, abbiamo deciso di confrontare l'heading calcolato
 come \verb|atan2| tra le posizioni ricavate con UWB, con quello fornitoci direttamente dal Vicon (ritenuto il ground truth) e con quello che esce fuori dall'STM 
@@ -606,7 +614,7 @@ le powerbank utilizzate per alimentarle: fino ad ora queste erano appoggiate esa
 però, si incorre nel rischio di creare forti disturbi al sistema, in quanto l'antenna presente sulle ancore punta proprio verso l'alto, dove si trova la powerbank. 
 Per cercare di limitare i disturbi, abbiamo deciso di fissarle al di sotto della struttura e di ripetere la prova in questa nuova configurazione.
 
-FINIREEEEEEE E ANALIZZARE I GRAFICI E RIPORTARLI 
+\textbf{FINIREEEEEEE E ANALIZZARE I GRAFICI E RIPORTARLI }
 
 \subsection{Navigazione Charlie con AMCL e Vicon come ground truth}
 
@@ -616,8 +624,8 @@ nell'ambiente sfruttando l'algoritmo di AMCL. In questo modo, a differenza di qu
 fornire un idea di quello che effettivamente è l'errore di navigazione compiuto dal sistema e, nel caso appaiano errori sistematici, di individuarli e poterne 
 indagare la causa.
 
-IMPOSTA SU MATLAB LA ROBA PER LE ANALISI
-FAI ANALISI QUA
+\textbf{IMPOSTA SU MATLAB LA ROBA PER LE ANALISI
+FAI ANALISI QUA}
 
 
 \subsection{Navigazione con AMCL nel cortile}
@@ -635,7 +643,7 @@ posizioni definitive delle ancore, abbiamo proceduto proprio con l'effettuare l'
 affinché avessimo un termine di confronto attendibile, anche se soggetto a errori. Da qua l'esperimento procede standard, come in \ref{sez: Guida breve all'esperimento}. 
 Dopo la costruzione della nuova mappa, si lancia il file \verb|localization.launch| e si registra il tutto in una bag.
 
-FAI ANALISI QUA
+\textbf{FAI ANALISI QUA, bozza sotto}
 
 
 prima prova: inizio stai praticamente fermo, si vede che a un certo punto abbiamo un offset tra valore di UWB e valore di AMCL. Offset rimane durante il moto successivo, che 
