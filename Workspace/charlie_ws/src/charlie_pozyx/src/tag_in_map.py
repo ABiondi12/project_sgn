@@ -103,7 +103,7 @@ def pozyx_tag_center_pub():
 
 	# Lettura file contenente UWB2MAP
 	# MODIFICARE CON IL FILEPATH GIUSTO!! CONTROLLARE SAVE_MAP_ORIGIN
-	f = open("/home/pi/charlie_ws/src/charlie_pozyx/src/scripts/my_pozyx/UWB2map_TF.txt","r") # accedi al file in lettura
+	f = open("/home/pi/charlie_ws/src/charlie_pozyx/src/UWB2map_TF.txt","r") # accedi al file in lettura
 	# map_pose conterra' i dati della tf tra UWB e mappa
 	map_pose.pose.position.x = float(f.readline()[:-2])
 	rospy.loginfo('x: %f',map_pose.pose.position.x)

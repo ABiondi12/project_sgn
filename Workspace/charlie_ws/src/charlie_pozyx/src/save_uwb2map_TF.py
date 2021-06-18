@@ -41,7 +41,7 @@ n_samples = 100
 remote_id = None
 
 # percorso al file in cui vogliamo salvare la trasformazione
-TF_filename = "/home/pi/charlie_ws/src/charlie_pozyx/src/scripts/my_pozyx/UWB2map_TF.txt"
+TF_filename = "/home/pi/charlie_ws/src/charlie_pozyx/src/UWB2map_TF.txt"
 status = 'collecting_data'
 
 # Callbacks ---------------------------------------------------------------------------
