@@ -308,32 +308,53 @@ Per quanto riguarda l'utilizzo del lidar, non è stato necessario alcun sviluppo
 	\label{fig: disposizione ancore}
 \end{figure}
 
+Pozyx is a hardware/software RTLS solution that provides accurate positioning and motion information with sub-meter accuracy (10 cm).
+With the use of ultra-wideband (UWB) technology, smart algorithms and machine learning we achieve a much higher accuracy than traditional positioning systems like WiFi, bluetooth, RFID or GPS.
 
-Il Pozyx è un sistema di localizzazione alternativo al GPS, basato sulla tecnologia ultra-wideband
-(UWB). In breve, si tratta di una tecnica per la trasmissione e la ricezione di segnali sviluppata in modo tale che vengano sfruttati impulsi di energia 
-a radiofrequenza aventi durata temporale molto ridotta (nanosecondi), con conseguente banda spettrale ampia.
-Nel sistema Pozyx si possono distinguere due entità, ciascuna con le proprie peculiarità: le ancore e le tag.
-La configurazione base prevede l'utilizzo 4 ancore, che fungono da dispositivi fissi, e una tag, che rappresenta il dispositivo mobile.
-Grazie all'utilizzo di un algoritmo di triangolazione, la tag si può localizzare rispetto alle ancore. Teoricamente, la localizzazione tramite tecnologia 
-ultra-wideband permette di ottenere un posizionamento con una accuratezza al centimetro anche
-in ambienti indoor e in presenza di ostacoli di natura non metallica, condizioni sfavorevoli per il sistema (che presenta 
-migliori performance in ambienti aperti ed ampi, privi di oggetti metallici e ostacoli sui quali possano verificarsi fenomeni di scatterning 
-del segnale inviato). 
-Sia all'interno delle tag che delle ancore è presente un microcontrollore, nel quale vengono eseguiti la maggior parte dei task richiesti,
-come gli algoritmi di triangolazione e autocalibrazione. A lui è demandata anche la gestione dell’interfaccia con dispositivi esterni
-(come Arduino).
-Solo nel caso delle tag, che per questo sono utilizzate come dispositivi mobili, sono presenti i seguenti sensori: un magnetometro, un giroscopio, un
-accelerometro e un sensore di pressione (altimetro). I dati dei sensori vengono utilizzati dal microcontrollore
-per la triangolazione e sono disponibili all’utente.
-Per quanto riguarda l'utilizzo di tale sistema di posizionamento, è necessario prima di tutto predisporre l'ambiente di lavoro.
-La prima cosa da fare è posizionare le ancore in modo tale che delimitino uno spazio entro il quale il sistema di localizzazione
-funzioni correttamente. Il miglior modo di disporle è quello di metterle in alto e sulla line-of-sight dell’utente: questo tipo di scelta
-aumenta la possibilità di ricevere un buon segnale, in quanto permette di limitare la presenza di possibili ostacoli. 
-Per un buon funzionamento e per ridurre il più possibile l'errore di posizionamento, è consigliato inoltre distribuire le ancore affinché tutte le 
-direzioni siano coperte.
-Nel caso, infatti, in cui gli ancoraggi si trovino su una linea retta, l'errore di posizionamento risultante sarebbe molto grande e potrebbero
-verificarsi ambiguità di posizione legate alla simmetria della configurazione.
-Per un buon funzionamento del sistema, è infine importante disporre le ancore verticalmente e con l’antenna UWB rivolta verso l’alto.
+Il sistema Pozyx \`e un \textit{Real Time Location System} (RTLS) che fornisce informazioni sulla posizione con una discreta accuratezza (circa \SI{20}{\centi \meter}) basato sulla tecnologia Ultra-Wideband (UWB).
+In breve, si tratta di una tecnica per la trasmissione e la ricezione di segnali sviluppata in modo tale che vengano sfruttati impulsi di energia 
+a radiofrequenza aventi durata temporale molto ridotta (nanosecondi), con conseguente banda spettrale ampia. 
+Teoricamente, la localizzazione tramite tecnologia UWB permette di ottenere un posizionamento con una accuratezza al centimetro anche
+in ambienti indoor e in presenza di ostacoli di natura non metallica, condizioni sfavorevoli per il sistema (che presenta  migliori performance in ambienti aperti ed ampi, privi di oggetti metallici e ostacoli sui quali possano verificarsi fenomeni di scattering  del segnale inviato). 
+
+Nel sistema Pozyx si possono distinguere due tipi di dispositivi: ancore e tag. 
+La principale differenza tra ancore e tag \`e la presenza su questi ultimi di sensori ulteriori per facilitarne la localizzazione, infatti ci troviamo: 
+un magnetometro, un giroscopio, un accelerometro e un sensore di pressione (altimetro).
+La configurazione pi\`u semplice prevede l'utilizzo 4 ancore, che fungono da dispositivi fissi, e una tag, che rappresenta il dispositivo mobile.
+Grazie all'utilizzo di un algoritmo di triangolazione, la tag si può localizzare rispetto alle ancore. 
+Risulta quindi di fondamentale importanza predisporre in modo accurato l'ambiente di lavoro, ossia posizionare in modo opportuno il sistema di ancore.
+Alcune accortezze possono essere:
+\begin{itemize}
+	\item metterle in alto e sulla line-of-sight dell’utente per limitare la presenza di ostacoli
+	
+	\item distribuire le ancore nello spazio di lavoro affinché tutte le direzioni siano coperte
+	
+	\item disporre le ancore verticalmente e con l’antenna UWB rivolta verso l’alto per migliorare ricezione e trasmissione dei segnali
+		
+\end{itemize}
+Inoltre una volta deciso che tipo di algoritmo utilizzare per la calibrazione del sistema \`e importante disporre di conseguenza le ancore.
+Riferendosi a fig.~\ref{fig: disposizione ancore}, la procedura utilizzata in questo lavoro prevede:
+\begin{enumerate}
+	\item posizionare la prima ancora (anchor0) dove si vuole l'origine del sistema di riferimento UWB
+	
+	\item posizionando la seconda ancora (anchor1) con stessa altezza dal pavimento della prima si definisce l'asse y
+	
+	\item la terza ancora (anchor2), alla stessa altezza, va posizionato in prossimit\`a dell'asse x alla stessa altezza delle prime due
+	
+	\item la quarta e ultima ancora (anchor3)  posizionata ``vicina'' all'origine ma ad un'altezza diversa definendo cos\`i senza ambiguit\`a la direzione
+	dell'asse z
+\end{enumerate}
+
+
+%Per quanto riguarda l'utilizzo di tale sistema di posizionamento, è necessario prima di tutto predisporre l'ambiente di lavoro.
+%La prima cosa da fare è posizionare le ancore in modo tale che delimitino uno spazio entro il quale il sistema di localizzazione
+%funzioni correttamente. Il miglior modo di disporle è quello di metterle in alto e sulla line-of-sight dell’utente: questo tipo di scelta
+%aumenta la possibilità di ricevere un buon segnale, in quanto permette di limitare la presenza di possibili ostacoli. 
+%Per un buon funzionamento e per ridurre il più possibile l'errore di posizionamento, è consigliato inoltre distribuire le ancore affinché tutte le 
+%direzioni siano coperte.
+%Nel caso, infatti, in cui gli ancoraggi si trovino su una linea retta, l'errore di posizionamento risultante sarebbe molto grande e potrebbero
+%verificarsi ambiguità di posizione legate alla simmetria della configurazione.
+%Per un buon funzionamento del sistema, è infine importante disporre le ancore verticalmente e con l’antenna UWB rivolta verso l’alto.
 
 Una volta predisposto l'ambiente di lavoro, si passa alla parte di comunicazione tra i vari agenti in gioco. Per tutte le operazioni che vengono richieste 
 tra le ancore e le tag, è necessario specificare tra quali dispositivi lavorare. 
@@ -343,30 +364,26 @@ Presa ad esempio la funzione doRanging(destination, \verb|device_range|, \verb|r
 i cui identificativi sono \verb|remote_id| e destination. Lasciando il valore di default per \verb|remote_id|, cioè \verb|None|, la distanza viene automaticamente
 valutata tra il dispositivo connesso alla seriale del PC e il dispositivo il cui identificativo è destination. 
 Se si desidera, invece, che il ranging venga effettuato tra due diversi dispositivi della rete, basterà inserire l’opportuno valore di \verb|remote_id|.
-
 Nel nostro caso, questo aspetto risulta essere fondamentale nel momento in cui vengono prelevate le posizioni relative delle ancore nella configurazione corrente. 
 
 Con \verb|remote_id=None|, chiediamo di fatto alla tag connessa in seriale ad Arduino di fornirci le informazioni delle ancore, ovvero leggiamo sul suo chip i valori 
 relativi all'ancora richiesta (posizione, id...).
 Per questo motivo, ad ogni nuovo avvio del sistema è necessario salvare all'interno delle tag i valori di posizione più recenti delle ancore, ovvero gli ultimi 
 salvati all'interno delle ancore stesse al termine del processo di autocalibrazione.
-Affinché il sistema funzioni, è infatti necessario che ogni ancora abbia coscienza della propria posizione rispetto alle altre ancore: la procedura di 
+Affinché il sistema funzioni, è infatti necessario che ogni ancora abbia conoscenza della propria posizione rispetto alle altre ancore: la procedura di 
 autocalibrazione è quella utilizzata a tale scopo.
-Per informazioni inerenti alla procedura adottata, vedere app.~\ref{sez:Autocalibrazione}. Per come è stati scritto l'algoritmo in questione, l'ancora 0 è quella 
-la cui posizione fornisce l'origine del frame UWB che verrà costruito. 
-L'ancora 1 indica invece la direzione dell'asse y, ovvero le sue coordinate finali saranno \verb|(0, y1, 0)|, così come l'ancora 2 quella dell'asse x. La quarta 
-ancora, posizionata a una altezza diversa dalle altre 3 (che devono invece essece complanari), evidenzia infine la direzione dell'asse z.
-
+Per informazioni inerenti alla procedura adottata, vedere sez.~\ref{sez:Autocalibrazione}. 
 Infine, è importante verificare che siano assenti eventuali interferenze elettromagnetiche tra i dispositivi, le quali, specialmente se interposte tra le ancore, 
 possono rendere difficile la comunicazione tra i dispositivi della rete.
 
 Per quanto riguarda la componente software, sono stati utilizzati nodi custom basati sul modulo Python di PyPozyx, rispetto ai quali abbiamo apportato modifiche 
 per adattarli al nostro sistema. Per maggiori dettagli, vedere nella cartella:
 \begin{verbatim}
-	...\Workspace\src\charlie_pozyx\src\scripts\my_pozyx 
+	...\Workspace\src\charlie_pozyx\src
 \end{verbatim}
 dove all'interno di ciascun nodo è presente una breve descrizione del suo funzionamento e della sua utilità.
 
+\vspace{0.5 cm}
 Focalizzandoci su uno di questi nodi, ovvero il \verb|pos_pub_2_tag.py|, descriviamo un errore che abbiamo riscontrato e che, plausibilmente, è stato una causa
 di errori nelle esecuzioni precedenti. Prima di tutto, questo nodo si occupa di pubblicare la posa delle due tag (posizione + quaternione) e sfrutta al suo interno 
 la funzione, sempre custom, \verb|doPos_pubtf|, all'interno della quale è fatto girare l'algoritmo \verb|doPositioning|. Questo, a sua volta, ricava la posizione
@@ -375,6 +392,41 @@ delle tag pozyx connesse in seriale. Come spiegato in \cite{ctesconistudio}, l'a
 in modo sequenziale prima sulla tag0, poi sulla tag1, poi nuovamente sulla tag0 e così via, si rende necessario l'inserimento di una pausa tra una esecuzione 
 e la successiva, per permettere all'algoritmo di terminare prima di essere lanciato nuovamente. In assenza di tali pause temporali, abbiamo infatti notato che 
 i risultati venivano corrotti: dopo l'aggiunta di tali intervalli, invece, le esecuzioni successive non si influenzano più a vicenda, come voluto.
+
+
+\subsection{Autocalibrazione ancore Pozyx}
+\label{sez:Autocalibrazione}
+L'autocalibrazione si basa sullo script \texttt{python3} ``autocalibration\_ransac.py''. 
+Affinché possa funzionare, occorre per prima cosa avere quattro ancore correttamente alimentate ed un dispositivo Pozyx connesso, il quale servirà da comunicazione 
+seriale tra la rete Pozyx e l’utente. 
+Il dispositivo seriale può, a discrezione dell’utente, essere un’ancora o un tag. 
+É possibile, se si desidera, effettuare una calibrazione manuale delle ancore, andando a settare la variabile \verb|autoCal| a \verb|True|. 
+In tal caso, si dovrà innanzitutto utilizzare un metro col quale misurare la distanza relativa tra le coppie di ancore della rete. Queste misure andranno poi 
+inserite manualmente  nelle opportune variabili \texttt{r01}, \texttt{r02}, \texttt{r03}, \texttt{r12}, \texttt{r13} ed \texttt{r23}, che rappresentano per l'appunto 
+le distanze tra le rispettive antenne.
+Per quanto riguarda invece la calibrazione automatica, lo script prevede una prima fase nella quale si ha l'acquisizione dei dati necessari, seguita dall'esecuzione 
+l’algoritmo ransac. Infine, viene utilizzato l’algoritmo algebrico per determinare le coordinate effettive delle ancore. 
+L’algoritmo ransac permette di rimuovere eventuali outliers dalle misurazioni delle distanze relative tra le antenne e fornisce, quindi, una stima della distanza 
+tra ciascuna coppia di ancore basata sui dati senza outliers.
+Nel corso della procedura di autocalibrazione vengono stampati sul terminale vari dati, tra cui i fondamentali sono:
+\begin{itemize}
+	\item Le coordinate dei dispositivi all’accensione del sistema, prima che sia effettuata la nuova calibrazione.
+	
+	\item Il risultato del settaggio dei parametri UWB della rete.
+	
+	\item Il risultato dell’algoritmo ransac per la distanza tra le ancore senza outliers.
+	
+	\item Il risultato dell'algoritmo algebrico per determinare le coordinate delle ancore: in caso di fallimento dell'algoritmo, è mostrato a terminale l'errore.
+\end{itemize}
+
+Una volta terminata la calibrazione, sia questa stata manuale o automatica, ciascuna ancora avrà
+salvato nella propria lista dei dispositivi le proprie coordinate, ossia potremmo dire che conoscerà le proprie coordinate. 
+Questi dati sono salvati permanentemente nella memoria flash.
+In una successiva fase di positioning è quindi buona norma che il dispositivo che si deve localiz-
+zare interroghi le ancore per conoscere la loro posizione e crei quindi, con queste informazioni, una propria lista interna dei
+dispositivi della rete.
+
+Per maggiori approfondimenti, fare riferimento al dettagliato lavoro~\cite{ctesconistudio}.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -446,13 +498,33 @@ scrivi du cazzate
 \begin{figure}[] 
 	\centering    
 	\includegraphics[height=.4\textheight]{charlie_vista_alto.pdf}
-	\caption{charlie body frame}
+	\caption{Charlie body frame}
 	\label{fig: charlie body frame}
 \end{figure}
 
 \subsection{ambiente}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\linewidth]{tf_tree.pdf}
+	\caption{Albero delle trasformazioni}
+	\label{fig: rqt_tf_tree}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\linewidth]{nodes_tree.pdf}
+	\caption{Albero dei nodi}
+	\label{fig: rqt_graph}
+\end{figure}
+
+
+
+
 albero nodi\\
 albero tf\\
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Esperimenti}
 
@@ -793,40 +865,6 @@ e da raspberry (modificando il nome della mappa da utilizzare all'interno del fi
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \appendix
-\section{Autocalibrazione ancore Pozyx}
-\label{sez:Autocalibrazione}
-L'autocalibrazione si basa sullo script \texttt{python3} ``autocalibration\_ransac.py''. 
-Affinché possa funzionare, occorre per prima cosa avere quattro ancore correttamente alimentate ed un dispositivo Pozyx connesso, il quale servirà da comunicazione 
-seriale tra la rete Pozyx e l’utente. 
-Il dispositivo seriale può, a discrezione dell’utente, essere un’ancora o un tag. 
-É possibile, se si desidera, effettuare una calibrazione manuale delle ancore, andando a settare la variabile \verb|autoCal| a \verb|True|. 
-In tal caso, si dovrà innanzitutto utilizzare un metro col quale misurare la distanza relativa tra le coppie di ancore della rete. Queste misure andranno poi 
-inserite manualmente  nelle opportune variabili \texttt{r01}, \texttt{r02}, \texttt{r03}, \texttt{r12}, \texttt{r13} ed \texttt{r23}, che rappresentano per l'appunto 
-le distanze tra le rispettive antenne.
-Per quanto riguarda invece la calibrazione automatica, lo script prevede una prima fase nella quale si ha l'acquisizione dei dati necessari, seguita dall'esecuzione 
-l’algoritmo ransac. Infine, viene utilizzato l’algoritmo algebrico per determinare le coordinate effettive delle ancore. 
-L’algoritmo ransac permette di rimuovere eventuali outliers dalle misurazioni delle distanze relative tra le antenne e fornisce, quindi, una stima della distanza 
-tra ciascuna coppia di ancore basata sui dati senza outliers.
-Nel corso della procedura di autocalibrazione vengono stampati sul terminale vari dati, tra cui i fondamentali sono:
-\begin{itemize}
-	\item Le coordinate dei dispositivi all’accensione del sistema, prima che sia effettuata la nuova calibrazione.
-	
-	\item Il risultato del settaggio dei parametri UWB della rete.
-	
-	\item Il risultato dell’algoritmo ransac per la distanza tra le ancore senza outliers.
-	
-	\item Il risultato dell'algoritmo algebrico per determinare le coordinate delle ancore: in caso di fallimento dell'algoritmo, è mostrato a terminale l'errore.
-\end{itemize}
-
-Una volta terminata la calibrazione, sia questa stata manuale o automatica, ciascuna ancora avrà
-salvato nella propria lista dei dispositivi le proprie coordinate, ossia potremmo dire che conoscerà le proprie coordinate. 
-Questi dati sono salvati permanentemente nella memoria flash.
-In una successiva fase di positioning è quindi buona norma che il dispositivo che si deve localiz-
-zare interroghi le ancore per conoscere la loro posizione e crei quindi, con queste informazioni, una propria lista interna dei
-dispositivi della rete.
-
-
-Per maggiori approfondimenti, fare riferimento al dettagliato lavoro~\cite{ctesconistudio}.
 
 % Bibliography
 \newpage
