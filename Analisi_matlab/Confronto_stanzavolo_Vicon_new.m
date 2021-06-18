@@ -125,7 +125,7 @@ hold on
 % plot(robot_pos(:,2), robot_pos(:,3), 'b', 'DisplayName', 'stima')
 plot(amcl_pose_pos(:,2),	amcl_pose_pos(:,3),		'r', 	'DisplayName', 'amcl')
 plot(tag_center_pos(:,2),	tag_center_pos(:,3),	'b--', 	'DisplayName', 'tag center')
-% plot(initialpose_pos(:,2),	initialpose_pos(:,3),	'k*',	'DisplayName', 'initialpose')
+plot(charlie_vicon_pos(:,2),	charlie_vicon_pos(:,3),	'k',	'DisplayName', 'vicon')
 
 hold off
 grid on
@@ -138,11 +138,11 @@ title('Traiettoria')
 
 figure(11)
 clf
-plot(amcl_pose_pos(:,1),	amcl_pose_pos(:,2),		'r',	'DisplayName', 'amcl')
+plot(amcl_pose_pos(:,1),	amcl_pose_pos(:,2),		'r', 'Linewidth', 1,	'DisplayName', 'amcl')
 hold on
-plot(robot_pos(:,1),		robot_pos(:,2),			'r --',	'DisplayName', 'robot pos')
-plot(tag_center_pos(:,1),	tag_center_pos(:,2),	'b--',	'DisplayName', 'tag center')
-% plot(initialpose_pos(:,1),	initialpose_pos(:,2),	'k*',	'DisplayName', 'initialpose')
+plot(robot_pos(:,1),		robot_pos(:,2),			'r --', 'Linewidth', 1,	'DisplayName', 'robot pos')
+plot(tag_center_pos(:,1),	tag_center_pos(:,2),	'b--', 'Linewidth', 1,	'DisplayName', 'tag center')
+plot(charlie_vicon_pos(:,1),	charlie_vicon_pos(:,2),	'k--', 'Linewidth', 1,	'DisplayName', 'Vicon')
 hold off
 axis tight
 grid on
@@ -155,11 +155,11 @@ title('Andamento su asse x')
 %% y
 figure(20)
 clf
-plot(amcl_pose_pos(:,1),	amcl_pose_pos(:,3),		'r',	'DisplayName', 'amcl')
+plot(amcl_pose_pos(:,1),	amcl_pose_pos(:,3),		'r', 'Linewidth', 1,	'DisplayName', 'amcl')
 hold on
-plot(robot_pos(:,1),		robot_pos(:,3),			'r --',	'DisplayName', 'robot pos')
-plot(tag_center_pos(:,1),	tag_center_pos(:,3),	'b--',	'DisplayName', 'tag center')
-% plot(initialpose_pos(:,1),	initialpose_pos(:,3),	'k*',	'DisplayName', 'initialpose')
+plot(robot_pos(:,1),		robot_pos(:,3),			'r --', 'Linewidth', 1,	'DisplayName', 'robot pos')
+plot(tag_center_pos(:,1),	tag_center_pos(:,3),	'b--', 'Linewidth', 1,	'DisplayName', 'tag center')
+plot(charlie_vicon_pos(:,1),	charlie_vicon_pos(:,3),	'k--', 'Linewidth', 1,	'DisplayName', 'Vicon')
 
 hold off
 axis tight
@@ -286,10 +286,11 @@ title('Errore normato su tag centre')
 figure(400)
 clf
 quiver(	pos_quiver_sync(:,2),		pos_quiver_sync(:,3), ...
-		delta_quiver_sync(:,2),	delta_quiver_sync(:,3) , 'b', 'Linewidth', 1)
+		delta_quiver_sync(:,2),	delta_quiver_sync(:,3) , 'b', 'Linewidth', 1, 'DisplayName', 'tag centre error')
 axis equal
 hold off
 grid on
+legend
 xlabel('x [m]')
 ylabel('y [m]')
 title('Quiver su tag centre')
