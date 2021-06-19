@@ -485,7 +485,7 @@ I pacchetti utilizzati sono riportati in tab.~\ref{tab: pacchetti charlie}.
 
 \begin{table}[h]
 	\centering
-	\begin{tabular}{l|c|p{0.5\linewidth}}
+	\begin{tabular}{lcp{0.5\linewidth}}
 		\textit{Nome} 	& \textit{Origine} & \textit{Descrizione} \\
 		\hline
 		charlie\_launch				& Custom	& File di lancio per l'esperimento.\\
@@ -509,7 +509,7 @@ I pacchetti utilizzati sono riportati in tab.~\ref{tab: pacchetti charlie}.
 Da PC, remoto insomma, abbiamo utilizzato gli strumenti grafici non necessari all'esperimento ma utili come ad esempio \verb|rviz|. I pacchetti utilizati sono riportati in tab.~\ref{tab: pacchetti remoto}
 \begin{table}[h]
 	\centering
-	\begin{tabular}{l|c|p{0.5\linewidth}}
+	\begin{tabular}{lcp{0.5\linewidth}}
 		\textit{Nome} 	& \textit{Origine} & \textit{Descrizione} \\
 		\hline
 		charlie\_remote			& Custom	& File di lancio per tool grafici dell'esperimento e nodi di trasformazione dal frame Vicon.\\
@@ -521,25 +521,140 @@ Da PC, remoto insomma, abbiamo utilizzato gli strumenti grafici non necessari al
 \FloatBarrier
 
 	
-\subsection{Nodi utilizzati}
+\subsection{Nodi e topic utilizzati}
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=\linewidth]{nodes_tree.pdf}
+	\includegraphics[width=\linewidth]{nodes_withtf_tree.pdf}
 	\caption{Albero dei nodi}
 	\label{fig: rqt_graph}
 \end{figure}
 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\linewidth]{nodes_tree.pdf}
+	\caption{Albero dei nodi, senza il topic \texttt{/tf}.}
+	\label{fig: rqt_graph no tf}
+\end{figure}
 
-\subsection{Sistemi di riferimento}
 
-Z = up, stm Z = down
-\begin{figure}[] 
-	\centering    
-	\includegraphics[height=.4\textheight]{charlie_vista_alto.pdf}
-	\caption{charlie body frame}
+
+Seguendo fig.~\ref{fig: rqt_graph} da sinistra a destra e dall'alto verso il basso, adesso parleremo dei nodi (gli ellissi) e dei topic (i rettangoli) essenziali all'esperimento.
+Per una maggiore immediatezza \`e possibile seguire il grafico di fig.~\ref{fig: rqt_graph no tf} in cui \`e stato omesso il topic \verb|/tf| ma questa non ha lo stesso ordine con cui stiamo per scrivere.
+
+\vspace{0.5mm}
+Il nodo \verb|/map_server| legge la mappa precedentemente acquisita e salvata con i comandi esposti in sez.~\ref{sez: nuova mappa} e la pubblica nell'omonimo topic: \verb|/map|.
+
+Il cuore pulsante del sistema Pozyx \`e sicuramente racchiuso in \verb|/pose_pub_2_tag|. In questo si avvia la comunicazione con le due tag connesse via usb alla Raspberry, si salvano le coordinate delle ancore e quindi si esegue il posizionamento. 
+Una volta fatto ci\`o si trasmettono le trasformazioni dei due tag sul topic \verb|/tf| e si pubblicano le loro pose sui rispetti topic: \verb|/tag0_pose| e \verb|/tag1_pose|.
+Questi topic sono letti dai nodi \verb|/tag_0_filter| e \verb|/tag_1_filter| che ne fanno una media mobile a 10 campioni e la pubblicano su \verb|/tag0_pose_f| e su \verb|/tag1_pose_f|.
+
+\vspace{0.5mm}
+Facente parte dello stack di navigazione troviamo anche il topic \verb|/move_base_simple/goal| che rappresenta la posa desiderata in cui vogliamo che Charlie arrivi. 
+Tale posa viene tradotta da \verb|/navgoal| in un messaggio \textit{Point} contenente $[x_{des}, y_{des}, \psi_{des}]$, in cui $\psi$ rappresenta l'heading angle desiderato, e pubblicato sul topic \verb|/waypoint_publisher|.
+
+\vspace{0.5mm}
+Di fondamentale importanza \`e il nodo \verb|/serial|. Questo infatti si occupa di comunicare alla STM la posizione filtrata dei tag, della posa attuale del robot (\verb|/robot_pose|) e l'avvio dei motori (\verb|/start_and_stop|). 
+Inoltre dalla STM riceve l'angolo heading, ottenuto filtrando ulteriormente la posizione dei due tag, e lo pubblica in \verb|/orientation|.
+
+Pi\`u nel dettaglio, l'STM32 sulla base dei dati ricevuti, calcola il controllo da dare ai motori per raggiungere l’obiettivo impostato; parallelamente a ciò calcola l'heading del veicolo tramite la posizione ricevuta dei due tag (\textit{attenzione}: il modello Simulink caricato sulla STM32 ha asse $Z$ rivolto verso il basso!).
+I dati scambiati sono riassunti nelle tabelle~\ref{tab: comunicazione_seriale2stm}~e~\ref{tab: comunicazione_stm2seriale}.
+
+\begin{table}[h]
+		\centering
+		\label{tab: comunicazione_seriale2stm}
+		\begin{tabular}{lll}
+			Nome                 & Descrizione                                & Dimensione\\
+			\hline
+			\verb!HEADER_A!      & 0x1A                                       & 1 Byte\\
+			\verb!HEADER_B!      & 0x1B                                       & 1 Byte\\
+			\verb!PAYLOAD!       & 0x2C                                       & 1 Byte\\
+			\hline
+			\verb!pos_x_f!       & tag $0$ - coordinata $x$ - frame UWB       & 4 Byte\\
+			\verb!pos_y_f!       & tag $0$ - coordinata $y$ - frame UWB       & 4 Byte\\
+			\verb!pos_z_f!       & tag $0$ - coordinata $z$ - frame UWB       & 4 Byte\\
+			\hline
+			\verb!pos_x_b!       & tag $1$ - coordinata $x$                   & 4 Byte\\
+			\verb!pos_y_b!       & tag $1$ - coordinata $y$                   & 4 Byte\\
+			\verb!pos_z_b!       & tag $1$ - coordinata $z$                   & 4 Byte\\
+			\hline
+			\verb!way_x!         & waypoint - coordinata $x$ - frame map    & 4 Byte\\
+			\verb!way_y!         & waypoint - coordinata $y$ - frame map    & 4 Byte\\
+			\verb!way_z!         & waypoint - $\psi$  - frame map            & 4 Byte\\
+			\hline
+			\verb!start_stop!    & $0$ = \textit{disabilita motori} $| 1$ =\textit{ abilita motori }      & 4 Byte\\
+			\hline
+			\verb!robot_pose_x!  & posa stimata da AMCL - coordinata x - frame map   & 4 Byte\\
+			\verb!robot_pose_y!  & posa stimata da AMCL - coordinata y - frame map   & 4 Byte\\
+			\verb!robot_pose_z!  & posa stimata da AMCL - $\psi$ - frame map            & 4 Byte\\
+		\end{tabular}
+		\caption{Comunicazione seriale \texttt{ttyUSBserial} Raspberry $\rightarrow$ STM32}
+\end{table}
+
+
+I primi tre elementi sono header che codificano il tipo di messaggio, mentre i restanti sono informazioni utili che verranno lette ed interpretate. 
+
+In dettaglio, le coordinate delle due tag vengono utilizzate dall'STM per misurare l'heading del veicolo\footnote{L'angolo è misurato rispetto all'asse $x$ del frame \texttt{UWB}, riportandolo poi in un sistema di riferimento $z-down$}, che insieme alla posa stimata da AMCL, ed al waypoint impostato, sono sfruttate per determinare il controllo dei motori. Infine l'elemento \verb!start_stop! (booleano) li abilita o disabilita.
+Il valore di $\psi$ è inviato dall'STM in un pacchetto come quello mostrato in Tabella~\ref{tab: comunicazione_stm2seriale}.
+
+\begin{table}[h]
+	\centering
+	\label{tab: comunicazione_stm2seriale}
+	\begin{tabular}{lll}
+		\hline
+		Nome                     & Descrizione   & Dimensione\\
+		\hline
+		\verb!HEADER_A!          & 0x1A          & 1 Byte\\
+		\verb!HEADER_B!          & 0x1B          & 1 Byte\\
+		\verb!PAYLOAD_POSE!      & 0x2C          & 1 Byte\\
+		\hline
+		\verb!heading!           & $\psi$         & 4 Byte\\
+		\hline
+	\end{tabular}
+	\caption{Comunicazione STM32 $\rightarrow$ \texttt{ttyUSBserial} Raspberry}
+\end{table}
+
+\vspace{0.5mm}
+Riprendendo fig.~\ref{fig: rqt_graph} con il nodo \verb|/tag_in_map| questo \`e incaricato di tradurre la posa dei tag e di restituirla in coordinate espresse in map--frame. 
+Di fatto effettua una media della posizione dei due tag, ci somma un vettore costante in frame body (ovvero l'offset tra centro e lato del veicolo) ruotato dell'angolo $\psi$ letto dal topic \verb|/orientation|.
+Infine pubblica la trasformazione corrispondente in \verb|/tf| e in \verb|/tag_center|.
+
+\vspace{0.5mm}
+Il nodo \verb|/rplidarNode| creato da Slamtec si interfaccia, appunto, con il Lidar Slamtec. 
+\`E in grado quindi di avviare o interrompere il motore del lidar, di comunicare via seriale le scansioni e infine di pubblicarle nel relativo topic \verb|/scan|.
+
+\vspace{0.5mm}
+Il blocco ad alto livello della localizzazione di Charlie \`e costituito principalmente dai nodi che si interfacciano con il topic \verb|/tf|, ossia: \verb|/scan_matcher|, \verb|/amcl| e \verb|/amcl2robot_pose_PY|.
+I primi due confrontando la scansione pi\`u recente del lidar con le precedente e soprattutto con la mappa nota riescono a fornire una stima di odometria. Il terzo, \verb|/amcl2robot_pose_PY|, si occupa di fornire la posa stimata ad una maggiore frequenza rendendola cos\`i disponibile all'algoritmo di guida caricato sull'STM32.
+
+\vspace{0.5mm}
+Infine, parallelamente ai nodi descritti finora si inserisce il sistema Vicon, utilizzato solamente come ground-truth all'algoritmo di localizzazione. 
+Questo \`e composto da \verb|/vrpn_client_node| che comunicando con il server Vicon pubblica le pose degli oggetti selezionati (rifarsi a sez.~\ref{sez:Sistema Vicon}) sul topic corrispondente. 
+La posa di Charlie, espressa in Vicon-frame viene tradotta sottoscrivendosi al topic \verb|/tf| nel frame \verb|/map| cos\`i da avere un rapido confronto a posteriori.
+
+
+\subsubsection{Sistemi di riferimento}
+\begin{figure}[h]
+	\centering
+	\includegraphics[height=0.3\textheight]{charlie_vista_alto.pdf}
+	\caption{Charlie body frame.}
 	\label{fig: charlie body frame}
 \end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[height=0.25\textheight]{coordsystems_hector.png}
+	\caption{Frame utilizzati dal navigation stack.}
+	\label{fig: hector frames}
+\end{figure}
+
+I sistemi di riferimenti utilizzati sono quelli riportati nell'albero in fig.~\ref{fig: rqt_tf_tree}. 
+Oltre a quelli gi\`a riportati nelle sezioni precedenti, c'\`e da sottolineare com'\`e stato scelto il sistema di riferimento body di Charlie e come i diversi sistemi di riferimento da \verb|base\_link| a \verb|laser| interagiscono.
+
+Il primo ha l'asse $x$ nella direzione di avanzamento e l'asse $z$ \`e stato scelto coerente con gli assi $z$ del frame UWB e Vicon: con $z$ rivolto verso l'alto. Attenzione che l'STM32 utilizza la convezione $z$-down. Per quanto riguarda l'origine, come in fig.~\ref{fig: charlie body frame}, questa si trova nel centro del veicolo.
+
+I vari frame utilizzati da \texttt{hector\_slam} e dal navigation stack sono visibili in fig.~\ref{fig: hector frames}. Per il nostro scopo i frame \texttt{odom}, \texttt{base\_footprint}, \texttt{base\_link} e \texttt{laser} sono tutti coincidenti.
+
 
 \begin{figure}[]
 	\centering
@@ -548,19 +663,10 @@ Z = up, stm Z = down
 	\label{fig: rqt_tf_tree}
 \end{figure}
 
+\FloatBarrier
 
-
-
-
-
-
-
-
-
-
-albero nodi\\
-albero tf\\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
 \section{Esperimenti}
 
 Una volta terminato il porting del sistema sulla scheda RaspberryPi4, corredate da modifiche nel codice pre esistente (dove necessario),
@@ -794,7 +900,8 @@ con \href{https://terminator-gtk3.readthedocs.io/en/latest/}{terminator}):
 	roslaunch charlie_launch start_serial.launch	# avvia seriale con stm
 \end{lstlisting}
 
-\subsection*{Nuova Mappa}
+\subsection{Nuova Mappa}
+\label{sez: nuova mappa}
 Una nuova mappa è necessaria quando si cambia posizionamento alle ancore o banalmente si cambia luogo. Consigliamo di muovere Charlie attraverso il radiocomando 
 in questa fase, per averne un maggiore controllo, soprattutto in termini di limitarne la velocità di avanzamento, che in questa fase di acquisizione della mappa 
 è bene che sia molto bassa.
@@ -809,7 +916,7 @@ Una volta soddisfatti del risultato, salvare la mappa all'interno di una cartell
 	rosrun map_server map_saver -f NOME_MAPPA
 \end{lstlisting}
 
-\subsection*{Localizzazione}
+\subsection{Localizzazione}
 Prima di procedere, è necessario sostituire il nome della mappa che si vuole utilizzare all'interno del file:
 
 \verb|/home/pi/charlie_ws/src/charlie_launch/launch/localization.launch|:
@@ -834,7 +941,7 @@ problema, dopo aver configurato pc e raspberry come descritto in sez.~\ref{sez: 
 Così da aprire rviz da pc, ma sfruttando il master su raspberry.
 In questo momento l'esperimento è iniziato!
 
-\subsection*{Waypoints}
+\subsection{Waypoints}
 \`E possibile indicare una posa-goal tramite il comando \texttt{2DNavgoal} direttamente da rviz (tenere premuto per assegnare l'orientazione).
 Per attivare i motori e permettere al robot di spostarsi, pubblicare il seguente messaggio sul topic \verb|start\_and\_stop|:
 
@@ -848,7 +955,7 @@ Per fermarli, similmente, è sufficiente pubblicare il messaggio complementare, 
 	rostopic pub /start_and_stop std_msgs/Float64 "data: 0.0"
 \end{lstlisting}
 
-\subsection*{Sistema Vicon}
+\subsection{Sistema Vicon}
 Ovviamente, per poter utilizzare il sistema Vicon è necessario trovarsi nella stanza del volo del DII. 
 Per quanto concerne l'installazione, rifarsi a sez.~\ref{sez:Sistema Vicon}. 
 Una volta che il sistema è in funzione, avviare l'applicazione ``Vicon Tracker 3.7.0 x64'' e selezionare nella lista oggetti: \texttt{Charlie} e 
@@ -875,7 +982,7 @@ e, infine, lanciare il nodo che pubblica la posizione di Charlie in frame map:
 \end{lstlisting}
 
 
-\subsection*{Rosbag}
+\subsection{Rosbag}
 Per registrare i dati attraverso una rosbag suggeriamo di non sottoscriversi a tutti i topic, in quanto verrebbero salvati molti elementi non necessari 
 al nostro esperimento. Si consiglia quindi di lanciare il seguente comando da pc (dopo essersi spostati nella cartella desiderata nella quale salvare i 
 file \verb|.bag|), contenente la selezione da noi fatta in merito ai topic ai quali sottoscriversi per ottenere tutti e soli i dati di nostro interesse:
