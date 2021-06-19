@@ -308,53 +308,32 @@ Per quanto riguarda l'utilizzo del lidar, non è stato necessario alcun sviluppo
 	\label{fig: disposizione ancore}
 \end{figure}
 
-Pozyx is a hardware/software RTLS solution that provides accurate positioning and motion information with sub-meter accuracy (10 cm).
-With the use of ultra-wideband (UWB) technology, smart algorithms and machine learning we achieve a much higher accuracy than traditional positioning systems like WiFi, bluetooth, RFID or GPS.
 
-Il sistema Pozyx \`e un \textit{Real Time Location System} (RTLS) che fornisce informazioni sulla posizione con una discreta accuratezza (circa \SI{20}{\centi \meter}) basato sulla tecnologia Ultra-Wideband (UWB).
-In breve, si tratta di una tecnica per la trasmissione e la ricezione di segnali sviluppata in modo tale che vengano sfruttati impulsi di energia 
-a radiofrequenza aventi durata temporale molto ridotta (nanosecondi), con conseguente banda spettrale ampia. 
-Teoricamente, la localizzazione tramite tecnologia UWB permette di ottenere un posizionamento con una accuratezza al centimetro anche
-in ambienti indoor e in presenza di ostacoli di natura non metallica, condizioni sfavorevoli per il sistema (che presenta  migliori performance in ambienti aperti ed ampi, privi di oggetti metallici e ostacoli sui quali possano verificarsi fenomeni di scattering  del segnale inviato). 
-
-Nel sistema Pozyx si possono distinguere due tipi di dispositivi: ancore e tag. 
-La principale differenza tra ancore e tag \`e la presenza su questi ultimi di sensori ulteriori per facilitarne la localizzazione, infatti ci troviamo: 
-un magnetometro, un giroscopio, un accelerometro e un sensore di pressione (altimetro).
-La configurazione pi\`u semplice prevede l'utilizzo 4 ancore, che fungono da dispositivi fissi, e una tag, che rappresenta il dispositivo mobile.
-Grazie all'utilizzo di un algoritmo di triangolazione, la tag si può localizzare rispetto alle ancore. 
-Risulta quindi di fondamentale importanza predisporre in modo accurato l'ambiente di lavoro, ossia posizionare in modo opportuno il sistema di ancore.
-Alcune accortezze possono essere:
-\begin{itemize}
-	\item metterle in alto e sulla line-of-sight dell’utente per limitare la presenza di ostacoli
-	
-	\item distribuire le ancore nello spazio di lavoro affinché tutte le direzioni siano coperte
-	
-	\item disporre le ancore verticalmente e con l’antenna UWB rivolta verso l’alto per migliorare ricezione e trasmissione dei segnali
-		
-\end{itemize}
-Inoltre una volta deciso che tipo di algoritmo utilizzare per la calibrazione del sistema \`e importante disporre di conseguenza le ancore.
-Riferendosi a fig.~\ref{fig: disposizione ancore}, la procedura utilizzata in questo lavoro prevede:
-\begin{enumerate}
-	\item posizionare la prima ancora (anchor0) dove si vuole l'origine del sistema di riferimento UWB
-	
-	\item posizionando la seconda ancora (anchor1) con stessa altezza dal pavimento della prima si definisce l'asse y
-	
-	\item la terza ancora (anchor2), alla stessa altezza, va posizionato in prossimit\`a dell'asse x alla stessa altezza delle prime due
-	
-	\item la quarta e ultima ancora (anchor3)  posizionata ``vicina'' all'origine ma ad un'altezza diversa definendo cos\`i senza ambiguit\`a la direzione
-	dell'asse z
-\end{enumerate}
-
-
-%Per quanto riguarda l'utilizzo di tale sistema di posizionamento, è necessario prima di tutto predisporre l'ambiente di lavoro.
-%La prima cosa da fare è posizionare le ancore in modo tale che delimitino uno spazio entro il quale il sistema di localizzazione
-%funzioni correttamente. Il miglior modo di disporle è quello di metterle in alto e sulla line-of-sight dell’utente: questo tipo di scelta
-%aumenta la possibilità di ricevere un buon segnale, in quanto permette di limitare la presenza di possibili ostacoli. 
-%Per un buon funzionamento e per ridurre il più possibile l'errore di posizionamento, è consigliato inoltre distribuire le ancore affinché tutte le 
-%direzioni siano coperte.
-%Nel caso, infatti, in cui gli ancoraggi si trovino su una linea retta, l'errore di posizionamento risultante sarebbe molto grande e potrebbero
-%verificarsi ambiguità di posizione legate alla simmetria della configurazione.
-%Per un buon funzionamento del sistema, è infine importante disporre le ancore verticalmente e con l’antenna UWB rivolta verso l’alto.
+Il Pozyx è un sistema di localizzazione alternativo al GPS, basato sulla tecnologia ultra-wideband
+(UWB). In breve, si tratta di una tecnica per la trasmissione e la ricezione di segnali sviluppata in modo tale che vengano sfruttati impulsi di energia 
+a radiofrequenza aventi durata temporale molto ridotta (nanosecondi), con conseguente banda spettrale ampia.
+Nel sistema Pozyx si possono distinguere due entità, ciascuna con le proprie peculiarità: le ancore e le tag.
+La configurazione base prevede l'utilizzo 4 ancore, che fungono da dispositivi fissi, e una tag, che rappresenta il dispositivo mobile.
+Grazie all'utilizzo di un algoritmo di triangolazione, la tag si può localizzare rispetto alle ancore. Teoricamente, la localizzazione tramite tecnologia 
+ultra-wideband permette di ottenere un posizionamento con una accuratezza al centimetro anche
+in ambienti indoor e in presenza di ostacoli di natura non metallica, condizioni sfavorevoli per il sistema (che presenta 
+migliori performance in ambienti aperti ed ampi, privi di oggetti metallici e ostacoli sui quali possano verificarsi fenomeni di scatterning 
+del segnale inviato). 
+Sia all'interno delle tag che delle ancore è presente un microcontrollore, nel quale vengono eseguiti la maggior parte dei task richiesti,
+come gli algoritmi di triangolazione e autocalibrazione. A lui è demandata anche la gestione dell’interfaccia con dispositivi esterni
+(come Arduino).
+Solo nel caso delle tag, che per questo sono utilizzate come dispositivi mobili, sono presenti i seguenti sensori: un magnetometro, un giroscopio, un
+accelerometro e un sensore di pressione (altimetro). I dati dei sensori vengono utilizzati dal microcontrollore
+per la triangolazione e sono disponibili all’utente.
+Per quanto riguarda l'utilizzo di tale sistema di posizionamento, è necessario prima di tutto predisporre l'ambiente di lavoro.
+La prima cosa da fare è posizionare le ancore in modo tale che delimitino uno spazio entro il quale il sistema di localizzazione
+funzioni correttamente. Il miglior modo di disporle è quello di metterle in alto e sulla line-of-sight dell’utente: questo tipo di scelta
+aumenta la possibilità di ricevere un buon segnale, in quanto permette di limitare la presenza di possibili ostacoli. 
+Per un buon funzionamento e per ridurre il più possibile l'errore di posizionamento, è consigliato inoltre distribuire le ancore affinché tutte le 
+direzioni siano coperte.
+Nel caso, infatti, in cui gli ancoraggi si trovino su una linea retta, l'errore di posizionamento risultante sarebbe molto grande e potrebbero
+verificarsi ambiguità di posizione legate alla simmetria della configurazione.
+Per un buon funzionamento del sistema, è infine importante disporre le ancore verticalmente e con l’antenna UWB rivolta verso l’alto.
 
 Una volta predisposto l'ambiente di lavoro, si passa alla parte di comunicazione tra i vari agenti in gioco. Per tutte le operazioni che vengono richieste 
 tra le ancore e le tag, è necessario specificare tra quali dispositivi lavorare. 
@@ -364,27 +343,32 @@ Presa ad esempio la funzione doRanging(destination, \verb|device_range|, \verb|r
 i cui identificativi sono \verb|remote_id| e destination. Lasciando il valore di default per \verb|remote_id|, cioè \verb|None|, la distanza viene automaticamente
 valutata tra il dispositivo connesso alla seriale del PC e il dispositivo il cui identificativo è destination. 
 Se si desidera, invece, che il ranging venga effettuato tra due diversi dispositivi della rete, basterà inserire l’opportuno valore di \verb|remote_id|.
+
 Nel nostro caso, questo aspetto risulta essere fondamentale nel momento in cui vengono prelevate le posizioni relative delle ancore nella configurazione corrente. 
 
 Con \verb|remote_id=None|, chiediamo di fatto alla tag connessa in seriale ad Arduino di fornirci le informazioni delle ancore, ovvero leggiamo sul suo chip i valori 
 relativi all'ancora richiesta (posizione, id...).
 Per questo motivo, ad ogni nuovo avvio del sistema è necessario salvare all'interno delle tag i valori di posizione più recenti delle ancore, ovvero gli ultimi 
 salvati all'interno delle ancore stesse al termine del processo di autocalibrazione.
-Affinché il sistema funzioni, è infatti necessario che ogni ancora abbia conoscenza della propria posizione rispetto alle altre ancore: la procedura di 
+Affinché il sistema funzioni, è infatti necessario che ogni ancora abbia coscienza della propria posizione rispetto alle altre ancore: la procedura di 
 autocalibrazione è quella utilizzata a tale scopo.
-Per informazioni inerenti alla procedura adottata, vedere sez.~\ref{sez:Autocalibrazione}. 
+Per informazioni inerenti alla procedura adottata, vedere app.~\ref{sez:Autocalibrazione}. Per come è stati scritto l'algoritmo in questione, l'ancora 0 è quella 
+la cui posizione fornisce l'origine del frame UWB che verrà costruito. 
+L'ancora 1 indica invece la direzione dell'asse y, ovvero le sue coordinate finali saranno \verb|(0, y1, 0)|, così come l'ancora 2 quella dell'asse x. La quarta 
+ancora, posizionata a una altezza diversa dalle altre 3 (che devono invece essece complanari), evidenzia infine la direzione dell'asse z.
+
 Infine, è importante verificare che siano assenti eventuali interferenze elettromagnetiche tra i dispositivi, le quali, specialmente se interposte tra le ancore, 
 possono rendere difficile la comunicazione tra i dispositivi della rete.
 
 Per quanto riguarda la componente software, sono stati utilizzati nodi custom basati sul modulo Python di PyPozyx, rispetto ai quali abbiamo apportato modifiche 
 per adattarli al nostro sistema. Per maggiori dettagli, vedere nella cartella:
 \begin{verbatim}
-	...\Workspace\src\charlie_pozyx\src
+	...\Workspace\src\charlie_pozyx\src\scripts\my_pozyx 
 \end{verbatim}
 dove all'interno di ciascun nodo è presente una breve descrizione del suo funzionamento e della sua utilità.
 
 \vspace{0.5 cm}
-Focalizzandoci su uno di questi nodi, ovvero il \verb|pos_pub_2_tag.py|, descriviamo un errore che abbiamo riscontrato e che, plausibilmente, è stato una causa
+su uno di questi nodi, ovvero il \verb|pos_pub_2_tag.py|, descriviamo un errore che abbiamo riscontrato e che, plausibilmente, è stato una causa
 di errori nelle esecuzioni precedenti. Prima di tutto, questo nodo si occupa di pubblicare la posa delle due tag (posizione + quaternione) e sfrutta al suo interno 
 la funzione, sempre custom, \verb|doPos_pubtf|, all'interno della quale è fatto girare l'algoritmo \verb|doPositioning|. Questo, a sua volta, ricava la posizione
 delle tag pozyx connesse in seriale. Come spiegato in \cite{ctesconistudio}, l'algoritmo \verb|doPositioning| viene eseguito utilizzando la modalità 
@@ -392,7 +376,6 @@ delle tag pozyx connesse in seriale. Come spiegato in \cite{ctesconistudio}, l'a
 in modo sequenziale prima sulla tag0, poi sulla tag1, poi nuovamente sulla tag0 e così via, si rende necessario l'inserimento di una pausa tra una esecuzione 
 e la successiva, per permettere all'algoritmo di terminare prima di essere lanciato nuovamente. In assenza di tali pause temporali, abbiamo infatti notato che 
 i risultati venivano corrotti: dopo l'aggiunta di tali intervalli, invece, le esecuzioni successive non si influenzano più a vicenda, come voluto.
-
 
 \subsection{Autocalibrazione ancore Pozyx}
 \label{sez:Autocalibrazione}
@@ -426,10 +409,10 @@ In una successiva fase di positioning è quindi buona norma che il dispositivo c
 zare interroghi le ancore per conoscere la loro posizione e crei quindi, con queste informazioni, una propria lista interna dei
 dispositivi della rete.
 
+
 Per maggiori approfondimenti, fare riferimento al dettagliato lavoro~\cite{ctesconistudio}.
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Sistema Vicon}
 \label{sez:Sistema Vicon}
 
@@ -462,7 +445,7 @@ Sinteticamente è necessario procedere come segue:
 	
 	\item Premere di nuovo il pulsante di pausa e verificare che il tracciamento stia funzionando.
 \end{enumerate}
-
+           
 \subsubsection*{Calibrazione}
 Per effettuare una calibrazione del sistema, necessaria di tanto in tanto affiché il motion capture non accumuli errori dovuti a cambiamenti delle condizioni 
 dell'ambiente o a piccoli spostamenti delle camere, è necessario utilizzare la wand. 
@@ -489,42 +472,56 @@ Nella stanza del volo del DII, il sistema di riferimento più usato è rappresen
 \newpage
 \section{Ambiente ROS creato}
 \label{sez:Ambiente ROS creato}
-scrivi du cazzate
+Riportiamo in questa sezione quello che dovrebbe essere l'ambiente ros una volta eseguiti correttamente tutti i nodi 
+richiesti al buon funzionamento del sistema di localizzazione e registrazione dati. Nel caso in cui sia presente anche il 
+Vicon, appariranno nodi e topic collegati ai messaggi che esso manda riguardo la posa degli oggetti selezionati.
+Nel caso in cui sia presente una forte discordanza tra l'ambiente presentato e quello risultante dalla vostra esecuzione, consigliamo
+di ripetere la procedura da capo seguendo i passi indicati in \ref{sez: Guida breve all'esperimento}, al termine dei quali i nodi attivi
+e i topic sui quali questi si scambiano messaggi dovrebbero coincidere con quanto riportato in fig.~\ref{fig: albero nodi}. 
+Per visualizzare l'albero dei nodi attivi, eseguire da terminale:
+\begin{lstlisting}[style=bash]
+	rosrun rqt_graph rqt_graph
+\end{lstlisting}
+Abbiamo deciso di includere, come ulteriore mezzo per verificare la correttezza dell'ambiente ros ricreato nelle future esecuzioni, l'albero delle \verb|tf| presenti durante il funzionamento del sistema (per approfondimenti su cosa sia una \verb|tf| nell'ambiente ros, fare riferimento a \href{http://wiki.ros.org/tf}{Wiki ROS})
 
 
+\begin{figure} 
+	\centering    
+	\includegraphics[height=.4\textheight]{nodes_tree.pdf}
+	\caption{albero nodi}
+	\label{fig: albero nodi}
+\end{figure}
+
+\begin{figure}
+	\centering    
+	\includegraphics[height=.4\textheight]{nodes_withtf_tree.pdf}
+	\caption{albero nodi e tf}
+	\label{fig: albero nodi e tf}
+\end{figure}
+
+\begin{figure}
+	\centering    
+	\includegraphics[height=.4\textheight]{tf_tree.pdf}
+	\caption{albero tf}
+	\label{fig: albero tf}
+\end{figure}
 
 \subsection{Sistema di riferimento body}
-
+Riportiamo qua in breve qual è stata la scelta per il sistema di riferimento body di Charlie. Vediamo che l'asse x è
+preso nella direzione longitudinale alla sua struttura, con verso positivo nella direzione positiva di marcia, contrassegnata
+da un cerchio bianco fissato alla superficie piana (riferirsi alla fig.~\ref{fig: charlie body frame}). L'asse z viene considerato 
+positivo verso l'alto, di conseguenza l'asse y è scelto nella direzione trasversale e con verso positivo verso sinistra, in modo tale
+da ottenere una terna destrorsa.
 \begin{figure}[] 
 	\centering    
 	\includegraphics[height=.4\textheight]{charlie_vista_alto.pdf}
-	\caption{Charlie body frame}
+	\caption{charlie body frame}
 	\label{fig: charlie body frame}
 \end{figure}
 
 \subsection{ambiente}
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=\linewidth]{tf_tree.pdf}
-	\caption{Albero delle trasformazioni}
-	\label{fig: rqt_tf_tree}
-\end{figure}
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=\linewidth]{nodes_tree.pdf}
-	\caption{Albero dei nodi}
-	\label{fig: rqt_graph}
-\end{figure}
-
-
-
-
 albero nodi\\
 albero tf\\
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Esperimenti}
 
@@ -620,7 +617,7 @@ Come possiamo osservare dai risultati ottenuti, graficati in fig.~\ref{fig: anco
 \SI{45}{\centi \metre}. Siamo piuttosto soddisfatti di questo risultato in quanto anche dai precedenti esperimenti era nota la presenza di un errore sistematico legato alle 
 UWB, dovuto probabilmente a limiti del metodo stesso più che ad errori nell'algoritmo scritto: l'ambiente indoor e l'utilizzo di sole 4 ancore non permette di ottenere
 misure precise nello spazio 3D, dove dalla documentazione ufficiale della Pozyx si legge che sarebbero necessarie almeno 6 ancore poste ad altezze diverse tra di loro 
-per raggiungere migliori performance in termini di riduzione dell'errore.
+per raggiungere migliori performance in termini di riduzione dell'errore.                                                  
 
 \subsection{Confronto UWB e Vicon: Charlie}
 
@@ -632,9 +629,7 @@ Una volta costruito tale oggetto, per il procedimento riferirsi al \ref{sez:Sist
 per i comandi di spostamento è stato utilizzato il radiocomando, così da avere maggiore manovrabilità.
 
 Dato che, in questa prova, il nostro interesse principale verte sulla valutazione della bontà del sistema UWB per la localizzazione, non andiamo ad utilizzare il file
-di lancio adibito alla navigazione con Lidar e AMCL (\verb|localization.launch|), dove UWB entra in gioco solo nel momento in cui la posa data dal Lidar con 
-l'algoritmo AMCL differisce di più di \SI{1.5}{\metre}| da quella data dal sistema UWB, come descritto e analizzato in \cite{ptvlocalizzazione} nei primi due 
-esperimenti riportati.
+di lancio adibito alla navigazione con Lidar e AMCL (\verb|localization.launch|), dove UWB entra in gioco solo nel momento in cui la posa data dal Lidar con AMCL differisce di più di \SI{1.5}{\metre}| da quella data dal sistema UWB, come descritto e analizzato in \cite{ptvlocalizzazione} nei primi due esperimenti riportati. 
  
 Abbiamo deciso quindi di limitarci alla localizzazione effettuata con le UWB: per farlo, sarà sufficiente avviare la localizzazione delle tag con il sistema di 
 ancore tramite il comando:
@@ -673,11 +668,10 @@ quelli dove, invece, compie traiettorie curvilinee, ed associare ad essi i patte
 maggiormente coincide con quella in cui Charlie sta fermo (da \SI{50}{\second} a \SI{60}{\second}). Questo non accade però, come già accennato, per quanto riguarda l'heading, 
 dove a causa di un offset iniziale pare esserci un maggiore errore quando l'angolo non varia rispetto ai momenti in cui si riorienta.
 
-valutazione dei risultati di questa prima prova con i vari grafici
+\textbf{valutazione dei risultati di questa prima prova con i vari grafici}
 
-Dai risultati ottenuti, abbiamo riscontrato un'errore sbilanciato verso la parte negativa, che aumenta soprattutto nelle fasi di moto. Per valutare se la colpa
-sia dell'autocalibrazione e del modo in cui sono state posizionate le ancore nell'ambiente, abbiamo deciso di ripetere un secondo esperimento uguale al 
-precedente, ma cambiando l'assetto del sistema. Abbiamo per prima cosa posizionato le ancore con una differenza di altezza maggiore, in modo da consentirci 
+Dai risultati ottenuti, abbiamo riscontrato un'errore sbilanciato verso la parte negativa, che aumenta soprattutto nelle fasi di moto. Per valutare se c'è un'influenza 
+dell'autocalibrazione e del modo in cui sono state posizionate le ancore, abbiamo deciso di ripetere un secondo esperimento cambiando l'assetto del sistema. La prima modifica è stata quella di posizionare le ancore con una differenza di altezza maggiore, in modo da consentirci 
 di distanziare maggiormente la quarta ancora dall'origine senza che ciò generi errori nella creazione del frame UWB (durante la procedura di autocalibrazione, 
 descritta in \ref{sez:Autocalibrazione}). Per ricreare una configurazione il più possibile favorevole per l'ottenimento un buon setting, abbiamo messo le ancore 
 a formare una figura che si avvicini ad un tetraedro, configurazione più adatta per ottenere una buona autocalibrazione.
@@ -690,11 +684,11 @@ Per cercare di limitare i disturbi, abbiamo deciso di fissarle al di sotto della
 
 \subsection{Navigazione Charlie con AMCL e Vicon come ground truth}
 
-Qua si tratta semplicemente di un esperimento classico (vedere \ref{sez: Guida breve all'esperimento}), dove in parallelo è stato attivato anche il tracciamento 
-di Charlie attraverso il sistema Vicon. Ciò permette di avere un ground truth sulla posizione e orientazione del veicolo durante il suo moto quando naviga 
-nell'ambiente sfruttando l'algoritmo di AMCL. In questo modo, a differenza di quanto avvenuto nelle analisi portate dai gruppi precedenti, siamo in grado di 
-fornire un idea di quello che effettivamente è l'errore di navigazione compiuto dal sistema e, nel caso appaiano errori sistematici, di individuarli e poterne 
-indagare la causa.
+Qua si tratta di un esperimento standard (vedere \ref{sez: Guida breve all'esperimento}), dove in parallelo alla navigazione gestita attraverso l'algoritmo AMCL, viene attivato anche il ``motion capture''
+di Charlie attraverso il sistema Vicon. Questo permette di avere un ground truth sulla posizione e l'orientazione del veicolo durante la navigazione compiuta
+nell'ambiente sfruttando l'algoritmo di AMCL. In questo modo, siamo in grado di fornire un riferimento di quello che effettivamente è l'errore di navigazione compiuto dal sistema e, nel caso appaiano errori sistematici, di individuarli e poterne indagare la causa.
+
+
 
 \textbf{IMPOSTA SU MATLAB LA ROBA PER LE ANALISI
 FAI ANALISI QUA}
@@ -863,8 +857,7 @@ e da raspberry (modificando il nome della mappa da utilizzare all'interno del fi
 \end{lstlisting}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\newpage
-\appendix
+
 
 % Bibliography
 \newpage
