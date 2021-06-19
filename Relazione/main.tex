@@ -472,46 +472,68 @@ Nella stanza del volo del DII, il sistema di riferimento più usato è rappresen
 \newpage
 \section{Ambiente ROS creato}
 \label{sez:Ambiente ROS creato}
-Riportiamo in questa sezione quello che dovrebbe essere l'ambiente ros una volta eseguiti correttamente tutti i nodi 
-richiesti al buon funzionamento del sistema di localizzazione e registrazione dati. Nel caso in cui sia presente anche il 
-Vicon, appariranno nodi e topic collegati ai messaggi che esso manda riguardo la posa degli oggetti selezionati.
-Nel caso in cui sia presente una forte discordanza tra l'ambiente presentato e quello risultante dalla vostra esecuzione, consigliamo
-di ripetere la procedura da capo seguendo i passi indicati in \ref{sez: Guida breve all'esperimento}, al termine dei quali i nodi attivi
-e i topic sui quali questi si scambiano messaggi dovrebbero coincidere con quanto riportato in fig.~\ref{fig: albero nodi}. 
-Per visualizzare l'albero dei nodi attivi, eseguire da terminale:
-\begin{lstlisting}[style=bash]
-	rosrun rqt_graph rqt_graph
-\end{lstlisting}
-Abbiamo deciso di includere, come ulteriore mezzo per verificare la correttezza dell'ambiente ros ricreato nelle future esecuzioni, l'albero delle \verb|tf| presenti durante il funzionamento del sistema (per approfondimenti su cosa sia una \verb|tf| nell'ambiente ros, fare riferimento a \href{http://wiki.ros.org/tf}{Wiki ROS})
+In questa sezione delineiamo l'ambiente ros realizzato. 
+Vista la naturale confusione che si era accumulata nei passaggi di testimone da gruppo a gruppo, abbiamo deciso di ricostruire l'ambiente ros da capo aggiornandolo da ros kinetic a ros melodic; questa scelta \`e venuta spontanea dall'aver cambiato di processore, da intel Joule con Ubuntu 16.04 a Raspberry Pi 4 con Ubuntu 18.04.
+Facendo attenzione ai singoli pacchetti utilizzati e controllando ogni nodo utilizzato siamo stati in grado di individuare codice superflue e alcuni piccoli ma decisivi errori.
 
+\subsection{Pacchetti utilizzati}
+Passiamo adesso a descrivere i singoli packages utilizzati.
+ulteriori informazioni  sui pacchetti, sulle loro dipendenze e come installarli sono riportate in \verb|Info/Pacchetti.ods| e in \verb|readme_packages.txt|.
+\subsubsection*{Ambiente charlie\_ws}
+Questo ambiente \verb|catkin| \`e caricato sulla raspberry e ha lo scopo di localizzare il veicolo.
+I pacchetti utilizzati sono riportati in tab.~\ref{tab: pacchetti charlie}.
 
-\begin{figure} 
-	\centering    
-	\includegraphics[height=.4\textheight]{nodes_tree.pdf}
-	\caption{albero nodi}
-	\label{fig: albero nodi}
+\begin{table}[h]
+	\centering
+	\begin{tabular}{l|c|p{0.5\linewidth}}
+		\textit{Nome} 	& \textit{Origine} & \textit{Descrizione} \\
+		\hline
+		charlie\_launch				& Custom	& File di lancio per l'esperimento.\\
+		geometry2-melodic-devel		& Ros		& Stack ROS legato a tf2.\\
+		hector\_slam				& Ros		& Stack ROS per fare SLAM, utilizzato da noi per creare la mappa.\\
+		navigation					& Ros		& Stack di navigazione. Contiene \verb|amcl|.\\
+		navigation\_msgs			& Ros		& Stack ROS per definire i messaggi di navigazione.\\
+		pcl\_msgs-indigo-devel		& Ros		& Messaggi legati a PCL ROS.\\
+		perception\_pcl				& Ros		& Point Cloud Library, collezione di algoritmi per processare Point Clouds in n-Dimensioni e geometria 3D.\\ 
+		pozyx\_ros					& Custom	& Pacchetto sviluppato per comunicare con il sistema Pozyx uwb, per eseguire posizionamento e altro.\\
+		rplidar\_ros				& Ros		& Pacchetto per comunicare e pubblicare le scansioni del lidar.\\
+		scan\_tools					& Ros		& Stack ROS che contiene strumenti per manipolare \verb|sensor_msgs/LaserScan| e \verb|sensor_msgs/PointCloud|.\\
+		SerialManager				& Custom	& Pacchetto sviluppato per comunicare alla scheda STM i topic necessari all'esperimento.\\
+	\end{tabular}
+	\caption{Elenco pacchetti utilizzati}
+	\label{tab: pacchetti charlie}
+\end{table}
+\FloatBarrier
+	
+\subsubsection*{Ambiente charlie\_remote\_ws}
+Da PC, remoto insomma, abbiamo utilizzato gli strumenti grafici non necessari all'esperimento ma utili come ad esempio \verb|rviz|. I pacchetti utilizati sono riportati in tab.~\ref{tab: pacchetti remoto}
+\begin{table}[h]
+	\centering
+	\begin{tabular}{l|c|p{0.5\linewidth}}
+		\textit{Nome} 	& \textit{Origine} & \textit{Descrizione} \\
+		\hline
+		charlie\_remote			& Custom	& File di lancio per tool grafici dell'esperimento e nodi di trasformazione dal frame Vicon.\\
+		vrpn\_client\_ros		& Ros		& Pacchetto ROS che include il necessario per la comunicazione con il sistema Vicon.\\
+	\end{tabular}
+	\caption{Elenco pacchetti utilizzati da PC}
+	\label{tab: pacchetti remoto}
+\end{table}
+\FloatBarrier
+
+	
+\subsection{Nodi utilizzati}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\linewidth]{nodes_tree.pdf}
+	\caption{Albero dei nodi}
+	\label{fig: rqt_graph}
 \end{figure}
 
-\begin{figure}
-	\centering    
-	\includegraphics[height=.4\textheight]{nodes_withtf_tree.pdf}
-	\caption{albero nodi e tf}
-	\label{fig: albero nodi e tf}
-\end{figure}
 
-\begin{figure}
-	\centering    
-	\includegraphics[height=.4\textheight]{tf_tree.pdf}
-	\caption{albero tf}
-	\label{fig: albero tf}
-\end{figure}
+\subsection{Sistemi di riferimento}
 
-\subsection{Sistema di riferimento body}
-Riportiamo qua in breve qual è stata la scelta per il sistema di riferimento body di Charlie. Vediamo che l'asse x è
-preso nella direzione longitudinale alla sua struttura, con verso positivo nella direzione positiva di marcia, contrassegnata
-da un cerchio bianco fissato alla superficie piana (riferirsi alla fig.~\ref{fig: charlie body frame}). L'asse z viene considerato 
-positivo verso l'alto, di conseguenza l'asse y è scelto nella direzione trasversale e con verso positivo verso sinistra, in modo tale
-da ottenere una terna destrorsa.
+Z = up, stm Z = down
 \begin{figure}[] 
 	\centering    
 	\includegraphics[height=.4\textheight]{charlie_vista_alto.pdf}
@@ -519,7 +541,23 @@ da ottenere una terna destrorsa.
 	\label{fig: charlie body frame}
 \end{figure}
 
-\subsection{ambiente}
+\begin{figure}[]
+	\centering
+	\includegraphics[width=\linewidth]{tf_tree.pdf}
+	\caption{Albero delle trasformazioni}
+	\label{fig: rqt_tf_tree}
+\end{figure}
+
+
+
+
+
+
+
+
+
+
+
 albero nodi\\
 albero tf\\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
