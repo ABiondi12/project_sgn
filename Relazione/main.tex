@@ -669,72 +669,75 @@ I vari frame utilizzati da \texttt{hector\_slam} e dal navigation stack sono vis
 \newpage
 \section{Esperimenti}
 
-Una volta terminato il porting del sistema sulla scheda RaspberryPi4, corredate da modifiche nel codice pre esistente (dove necessario),
-abbiamo pensato alcuni scenari per testare la bontà del sistema nello stato attuale. Per quanto riguarda l'impostazione di prove pensate
-per una verifica del buon funzionamento delle procedure di fix di posa e dell'algoritmo di navigazione, anche su più stanze, rimandiamo agli 
-esperimenti e ai risultati riportati nella relazione precedente, ovvero \cite{ptvlocalizzazione}, dato che non sono state apportate modifiche
-alla loro struttura durante il nostro lavoro. 
-Nel nostro caso, la verifica della navigazione con AMCL è stata impostata sfruttando la presenza del sistema Vicon.
-Per evidenziare al meglio il nostro ruolo e contributo nello sviluppo di questo sistema, è stato deciso di orientare l'analisi verso due obiettivi
-specifici: il primo è quello di portare un'analisi più dettagliata degli errori compiuti dal sistema durante la localizzazione con UWB, dove 
-auspichiamo che alcune modifiche e accorgimenti possano portare ad una riduzione degli errori che ha presentato fino ad ora (tali da escludere il 
-sistema UWB dall'essere il mezzo primario di navigazione e circoscrivere il suo ruolo a quello del fix di posa in caso di fallimento del lidar, 
-sensore protagonista della navigazione). 
-Per farlo, abbiamo utilizzato come ground-truth il sistema Vicon, disponibile però solo nella stanza del volo e, per questo motivo, di limitata 
-ripetibilità pratica. Abbiamo deciso comunque di riportarne i risultati, in modo da fornire un riferimento affidabile di quelli che sono gli errori
-compiuti, per i quali ci aspettiamo una somiglianza in tutte le configurazioni simili a quella ricreabile nella stanza del volo stessa (ambiente
-chiuso, presenza di finestre, estensione non troppo elevata, assenza di ostacoli all'interno dell'area di moto). Tale confronto è stato fatto 
-sia in termini di posizioni statiche delle ancore, andando così a valutare la bontà della procedura di autocalibrazione, sia riguardo la posa 
-dinamica (posizione e assetto) assunta da Charlie quando si muove nello spazio e viene localizzato dal solo sistema UWB.
-Sempre sfruttando la presenza del Vicon, abbiamo successivamente deciso di effettuare un esperimento classico, vedere \ref{sez: Guida breve all'esperimento}, 
-ovvero attivando la navigazione con l'STM (AMCL e Lidar adesso sono attivi), fatta però con il Vicon acceso in modo da avere un ground truth sulla effettiva
-posa di Charlie. Per questa prova, non è stato utilizzata una guida manuale, bensì attraverso comandi dati da \verb|Rviz| attraverso il comando \verb|2DNavGoal|, 
-che permette di dire al veicolo in quale punto della mappa spostarsi e con quale orientazione.
+Una volta terminato il porting del sistema sulla scheda RaspberryPi4, corredate da modifiche nel codice pre esistente (dove necessario), abbiamo pensato alcuni scenari per testare la bontà del sistema nello stato attuale. 
 
-Viste le modifiche effettuate sul sistema UWB per quanto concerne la procedura di salvataggio delle pose delle ancore a fine autocalibrazione, 
-abbiamo predisposto una prova in esterno per valutare eventuali migliorie di funzionamento. Il sistema UWB si trova in questo caso in un ambiente 
-favorevole rispetto a quando è utilizzato indoor. In particolar modo, andremo a testarne il funzionamento in un cortile interno al polo A di 
-Ingegneria, dove ci aspettiamo diversi disturbi per le UWB, legati alla presenza di molti oggetti e strutture metalliche (tra cui la rampa di 
-scale di emergenza) e di finestre poste in line of sight con le ancore stesse.
-Essendo l'estensione del cortile maggiore rispetto a quella della stanza del volo, ciò ci consentirà anche di valutare il raggio di azione di 
-questo sistema e, di controparte, la difficoltà che può riscontrare il lidar quando si trova in assenza di riferimenti fissi abbastanza vicini, 
-come pareti, per l'acquisizione dei suoi dati.
+Per quanto riguarda l'impostazione di prove pensate per una verifica del buon funzionamento delle procedure di fix di posa e dell'algoritmo di navigazione, anche su più stanze, rimandiamo agli esperimenti e ai risultati riportati nella relazione precedente, ovvero \cite{ptvlocalizzazione}, dato che non sono state apportate modifiche alla loro struttura durante il nostro lavoro. 
 
-\subsection{Confronto UWB e Vicon: posizione antenne}
+Abbiamo ritenuto quindi pi\`u importante concentrare la nostra attenzione nell'utilizzo del sistema Vicon come ground-truth e dell'andare ad esplorare ambienti all'aperto.
+Questa parte di relazione si concentra proprio su queste prove. 
 
-\begin{figure}
+\vspace{0.5cm}
+Dato che nei progetti precedenti il sistema Pozyx aveva avuto performance non convincenti, anche dovute ad alcune inesattezze nello sviluppo dei nodi ros, la prima prova \`e stata proprio quella di cercare di capire la bont\`a di questo sistema andandolo a comparare con il sistema Vicon.
+Tale confronto è stato fatto sia in termini di posizioni statiche delle ancore, andando così a valutare la bontà della procedura di autocalibrazione, sia riguardo la posa dinamica (posizione e assetto) assunta da Charlie quando si muove nello spazio e viene localizzato dal sistema UWB (quindi senza navigazione).
+
+Successivamente, sfruttando la presenza del Vicon nella stanza del volo, abbiamo deciso di effettuare un esperimento classico, vedere sez.~\ref{sez: Guida breve all'esperimento}, in modo tale 
+
+Infine viste anche le modifiche effettuate sul sistema UWB, abbiamo predisposto un esperimento all'esterno per valutare eventuali migliorie di funzionamento.
+Tali prove sono state svolte nel cortile interno al polo A di Ingegneria, dove la presenza di strutture metalliche (tra cui le scale di emergenza) possono aver influenzato il funzionamento del sistema Pozyx. 
+Nonostante questo riteniamo questa impostazione di esperimento un buon casestudy in quanto pi\`u verosimile ad una applicazione reale rispetto ad una stanza circoscritta. 
+Infatti, essendo l'estensione del cortile maggiore rispetto a quella della stanza del volo, ciò ci consentirà anche di valutare il raggio di azione di questo sistema e, di controparte, la difficoltà che può riscontrare il lidar quando si trova in assenza di riferimenti fissi abbastanza vicini, come pareti.
+
+%Nel nostro caso, la verifica della navigazione con AMCL è stata impostata sfruttando la presenza del sistema Vicon.
+%Per evidenziare al meglio il nostro ruolo e contributo nello sviluppo di questo sistema, è stato deciso di orientare l'analisi verso due obiettivi specifici: il primo è quello di portare un'analisi più dettagliata degli errori compiuti dal sistema durante la localizzazione con UWB, dove auspichiamo che alcune modifiche e accorgimenti possano portare ad una riduzione degli errori che ha presentato fino ad ora (tali da escludere il sistema UWB dall'essere il mezzo primario di navigazione e circoscrivere il suo ruolo a quello del fix di posa in caso di fallimento del lidar, sensore protagonista della navigazione). 
+%Per farlo, abbiamo utilizzato come ground-truth il sistema Vicon, disponibile però solo nella stanza del volo e, per questo motivo, di limitata ripetibilità pratica.
+%Abbiamo deciso comunque di riportarne i risultati, in modo da fornire un riferimento affidabile di quelli che sono gli errori compiuti, per i quali ci aspettiamo una somiglianza in tutte le configurazioni simili a quella ricreabile nella stanza del volo stessa (ambiente chiuso, presenza di finestre, estensione non troppo elevata, assenza di ostacoli all'interno dell'area di moto).
+%Tale confronto è stato fatto sia in termini di posizioni statiche delle ancore, andando così a valutare la bontà della procedura di autocalibrazione, sia riguardo la posa dinamica (posizione e assetto) assunta da Charlie quando si muove nello spazio e viene localizzato dal solo sistema UWB.
+%Sempre sfruttando la presenza del Vicon, abbiamo successivamente deciso di effettuare un esperimento classico, vedere \ref{sez: Guida breve all'esperimento}, ovvero attivando la navigazione con l'STM (AMCL e Lidar adesso sono attivi), fatta però con il Vicon acceso in modo da avere un ground truth sulla effettiva posa di Charlie. 
+%%QUESTO NON E` VERO PURTROPPO :(% Per questa prova, non è stato utilizzata una guida manuale, bensì attraverso comandi dati da \verb|Rviz| attraverso il comando \verb|2DNavGoal|, che permette di dire al veicolo in quale punto della mappa spostarsi e con quale orientazione.
+%Viste le modifiche effettuate sul sistema UWB per quanto concerne la procedura di salvataggio delle pose delle ancore a fine autocalibrazione, abbiamo predisposto una prova in esterno per valutare eventuali migliorie di funzionamento. 
+%Il sistema UWB si trova in questo caso in un ambiente favorevole rispetto a quando è utilizzato indoor. 
+%In particolar modo, andremo a testarne il funzionamento in un cortile interno al polo A di Ingegneria, dove ci aspettiamo diversi disturbi per le UWB, legati alla presenza di molti oggetti e strutture metalliche (tra cui la rampa di scale di emergenza) e di finestre poste in line of sight con le ancore stesse.
+%Essendo l'estensione del cortile maggiore rispetto a quella della stanza del volo, ciò ci consentirà anche di valutare il raggio di azione di questo sistema e, di controparte, la difficoltà che può riscontrare il lidar quando si trova in assenza di riferimenti fissi abbastanza vicini, come pareti, per l'acquisizione dei suoi dati.
+
+\subsection{Confronto UWB con Vicon}
+Il primo set che andiamo a descrivere \`e quindi l'analisi del sistema Pozyx. 
+Per prima cosa quindi \`e stata analizzata la bont\`a della procedura di autocalibrazione e successivamente della localizzazione del sistema UWB.
+
+\subsubsection{Posizione Antenne}
+
+\begin{figure}[]
 	\centering
 	\includegraphics[height=0.4\textheight]{anchors_UWB_Vicon.png}
 	\caption{ancore in UWB frame: UWB vs Vicon}
 	\label{fig: ancore in UWB frame, UWB vs Vicon}
 \end{figure}
 
-La prima prova che abbiamo deciso di effettuare è stata quella volta alla valutazione dell'affidabilità della procedura di autocalibrazione delle ancore del
-sistema Pozyx. Durante il nostro lavoro, infatti, erano state riscontrate alcune anomalie, corrette andando a modificare la gestione degli ID nell'esecuzione 
-di alcune funzioni di \verb|positioning| del sistema Pozyx, dove è necessario porre attenzione affinché chi è demandato di eseguirle, tra gli elementi del sistema, 
-abbia al suo interno effettivamente tutte le informazioni corrette e aggiornate di cui necessita. Per questo motivo, abbiamo agito sulla procedura di salvataggio 
-facendo in modo che sia garantita la presenza all'interno della memoria dei chip delle ancore l'informazione della propria posizione a valle dell'ultima 
-utocalibrazione. 
-Per validare la bontà dell'autocalibrazione, che viene eseguita seguendo la procedura descritta in sez.~\ref{sez:Autocalibrazione}, si sfrutta come ground truth il 
-Vicon, in questo caso affiancato alla Wand, una sorta di struttura a forma di croce, sulla quale sono fissati dei marker con configurazione asimmetrica e il cui 
-rispettivo oggetto virtuale è già preimpostato sul sw per la gestione del Vicon. 
-Quest'ultimo sarà necessario per andare ad individuare la posizione delle ancore, prive di marker riconoscibili dal Vicon. Tali misure, da considerarsi prive di 
-errori legati allo strumento, ma affette da errori dovuti al posizionamento della Wand sulle ancore stesse (errore umano di esecuzione), verranno confrontati con 
-quelli ottenuti a valle del procedimento di autocalibrazione, dove in uscita ogni ancora è a conoscienza della propria posizione espressa rispetto al sistema di 
-riferimento costruito su di esse (\verb|UWB frame|).
+La prima prova che abbiamo deciso di effettuare è stata quella volta alla valutazione dell'affidabilità della procedura di autocalibrazione, descritta in sez.~\ref{sez:Autocalibrazione}, delle ancore del sistema Pozyx sfruttando come ground-truth il Vicon.
 
-Le ancore sono state poste in una configurazione che a nostro avviso, dopo aver fatto varie prove, è quella che permette di ottenere una autocalibrazione più corretta: 
-troviamo le prime tre ancore alla stessa altezza e messe in modo da delimitare gli assi x, y e l'origine, mentre la quarta ancora è alzata molto lungo la verticale 
-e posta nei pressi dell'origine (riferirsi alla fig.~\ref{fig: disposizione ancore}). Nel caso in cui questa venga allontanata troppo, l'algoritmo di autocalibrazione 
-fallisce (si hanno problemi di radici di numeri negativi nella parte algebrica).
+\textbf{QUESTO PARAGRAFO MAGARI LO SPOSTIAMO NELLA SEZIONE POZYX?}Durante il nostro lavoro, infatti, erano state riscontrate alcune anomalie, corrette andando a modificare la gestione degli ID nell'esecuzione di alcune funzioni di \verb|positioning| del sistema Pozyx, dove è necessario porre attenzione affinché chi è demandato di eseguirle, tra gli elementi del sistema, abbia al suo interno effettivamente tutte le informazioni corrette e aggiornate di cui necessita. 
+In parole pi\`u pratiche \`e necessario che il singolo tag abbia in memoria la posizione, in frame UWB, delle ancore da cui legge la distanza tra tag--ancora.
+Per questo motivo, abbiamo agito in due modi: \textit{il primo} \`e l'aver aggiunto alla fine dell'autocalibrazione il salvataggio della posizione di ciascuna ancora all'interno della memoria flash dell'ancora stessa; \textit{il secondo} \`e avere inserito prima del posizionamento vero e proprio una procedura per ciascuna tag in utilizzo che interroga le ancore sulla loro posizione e se le salva all'interno della propria memoria flash.
+
+Dato che le ancore non hanno, giustamente, marker riflettenti, per ottenere la posizione delle ancore nel frame Vicon \`e stato pratico l'utilizzo della wand una sorta di struttura a forma di croce, sulla quale sono fissati dei marker con configurazione asimmetrica e il cui rispettivo oggetto virtuale è già preimpostato nel software di tracking Vicon.
+Tali misure, da considerarsi prive di errori legati allo strumento, ma affette da errori dovuti al posizionamento a mano della Wand sulle ancore stesse, verranno confrontati con quelli ottenuti a valle del procedimento di autocalibrazione.
+
+%Per questo motivo, abbiamo agito sulla procedura di salvataggio facendo in modo che sia garantita la presenza all'interno della memoria dei chip delle ancore l'informazione della propria posizione a valle dell'ultima autocalibrazione. 
+%Per validare la bontà dell'autocalibrazione, che viene eseguita seguendo la procedura descritta in sez.~\ref{sez:Autocalibrazione}, si sfrutta come ground truth il Vicon, in questo caso affiancato alla Wand, una sorta di struttura a forma di croce, sulla quale sono fissati dei marker con configurazione asimmetrica e il cui rispettivo oggetto virtuale è già preimpostato sul sw per la gestione del Vicon. 
+%Quest'ultimo sarà necessario per andare ad individuare la posizione delle ancore, prive di marker riconoscibili dal Vicon. 
+%Tali misure, da considerarsi prive di errori legati allo strumento, ma affette da errori dovuti al posizionamento della Wand sulle ancore stesse (errore umano di esecuzione), verranno confrontati con 
+%quelli ottenuti a valle del procedimento di autocalibrazione, dove in uscita ogni ancora è a conoscenza della propria posizione espressa rispetto al sistema di riferimento costruito su di esse (\verb|UWB frame|).
+
+Le ancore sono state poste in una configurazione che a nostro avviso, dopo aver fatto varie prove, è quella che permette di ottenere una autocalibrazione più corretta: troviamo le prime tre ancore alla stessa altezza e messe in modo da delimitare gli assi x, y e l'origine, mentre la quarta ancora è molto pi\`u in alto lungo la verticale e posta nei pressi dell'origine (riferirsi alla fig.~\ref{fig: disposizione ancore}).
+Infatti, nel caso in cui l'ancora4 venga allontanata troppo dall'origine, l'algoritmo algebrico di autocalibrazione fallisce (si ha problemi di radici di numeri negativi).
 
 Come descritto in \ref{sez: Guida breve all'esperimento}, per questo primo test andremo a:
 \begin{itemize}
 	\item Avviare i dialoghi tra ros e il sistema Vicon, eseguendo da pc il file di lancio \verb|vicon_charlie.launch|.
-	\item Salvare la trasformazione tra Vicon e UWB eseguendo il file \verb|vicon2uwb_tf.py|. In questa fase, sarà richiesto di posizionare sequenzialmente la Wand 
-	in corrispondenza dell'ancora 0, poi dell'ancora 1 e così via. Per ciascun posizionamento, premendo \verb|Enter| da tastiera si andrà a salvare la posizione, in 
-	frame Vicon, della Wand in quell'istante, coincidente con quella dell'ancora sulla quale è posizionata. In questo modo, vengono salvate le coordinate delle 4 ancore in frame \verb|Vicon frame|.
-	\item Sempre all'interno di \verb|vicon2uwb_tf.py|, tali posizioni vengono riportate ad essere espresse nel sistema di riferimento UWB, ovvero \verb|UWB frame|, 
+	
+	\item Salvare la trasformazione tra Vicon e UWB eseguendo il file \verb|vicon2uwb_tf.py|. In questa fase, sarà richiesto di posizionare sequenzialmente la Wand in corrispondenza dell'ancora 0, poi dell'ancora 1 e così via. 
+	Per ciascun posizionamento, premendo \verb|Enter| da tastiera si andrà a salvare la posizione, in frame Vicon, della Wand in quell'istante, coincidente con quella dell'ancora sulla quale è posizionata. In questo modo, sono salvate le coordinate delle 4 ancore in frame \verb|Vicon frame|.
+	
+	\item Sempre all'interno di \verb|vicon2uwb_tf.py|, tali posizioni vengono riportate nel sistema di riferimento UWB, ovvero \verb|UWB frame|, 
 	in quanto la loro posizione a seguito dell'autocalibrazione è nota nel sistema di riferimento \verb|UWB|.
 \end{itemize}
 
@@ -758,12 +761,13 @@ Ancore misurate con Vicon (riportate in \verb|UWB frame|) espresse in \SI{}{\met
 
 
 Come possiamo osservare dai risultati ottenuti, graficati in fig.~\ref{fig: ancore in UWB frame, UWB vs Vicon}, troviamo un errore di almeno \SI{20}{\centi \metre} sulle coordinate delle varie ancore, che però sembra non raggiungere valori troppo elevati, se non nel caso della coordinata Y della terza ancora, dove l'errore è di circa 
-\SI{45}{\centi \metre}. Siamo piuttosto soddisfatti di questo risultato in quanto anche dai precedenti esperimenti era nota la presenza di un errore sistematico legato alle 
-UWB, dovuto probabilmente a limiti del metodo stesso più che ad errori nell'algoritmo scritto: l'ambiente indoor e l'utilizzo di sole 4 ancore non permette di ottenere
-misure precise nello spazio 3D, dove dalla documentazione ufficiale della Pozyx si legge che sarebbero necessarie almeno 6 ancore poste ad altezze diverse tra di loro 
-per raggiungere migliori performance in termini di riduzione dell'errore.                                                  
+\SI{45}{\centi \metre}. 
+Siamo soddisfatti di questo risultato in quanto anche dai precedenti esperimenti era nota la presenza di un errore sistematico legato alle UWB, dovuto a limiti del metodo stesso più che ad errori nell'algoritmo scritto: l'ambiente indoor e l'utilizzo di sole 4 ancore non permette di ottenere misure precise nello spazio 3D, dove dalla documentazione ufficiale della Pozyx si legge che sarebbero necessarie almeno 6 ancore poste ad altezze diverse tra di loro per raggiungere migliori performance in termini di riduzione dell'errore.
 
-\subsection{Confronto UWB e Vicon: Charlie}
+\subsubsection{Posizionamento Charlie, no navigazione}
+
+\textbf{PEPO \`E ARRIVATO QUI.}
+
 
 Come per la prima prova, anche la seconda vede l'utilizzo del Vicon come ground truth e per questo è stata eseguita all'interno della stanza del volo del polo A.
 Come prima cosa, è necessario posizionare dei marker sul veicolo in modo asimmetrico. Nel nostro caso sono stati posizionati come in fig.~(FAI RIF), dove vediamo 
