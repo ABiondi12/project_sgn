@@ -831,11 +831,144 @@ Per cercare di limitare i disturbi, abbiamo deciso di fissarle al di sotto della
 Qua si tratta di un esperimento standard (vedere \ref{sez: Guida breve all'esperimento}), dove in parallelo alla navigazione gestita attraverso l'algoritmo AMCL, viene attivato anche il ``motion capture''
 di Charlie attraverso il sistema Vicon. Questo permette di avere un ground truth sulla posizione e l'orientazione del veicolo durante la navigazione compiuta
 nell'ambiente sfruttando l'algoritmo di AMCL. In questo modo, siamo in grado di fornire un riferimento di quello che effettivamente è l'errore di navigazione compiuto dal sistema e, nel caso appaiano errori sistematici, di individuarli e poterne indagare la causa.
+La nostra preoccupazione qua non è stata, come detto nell'introduzione della sezione, quella di verificare il funzionamento del fix di posa dell'algoritmo di navigazione, bensì quello di valutare l'errore che viene fatto con AMCL e con le sole UWB rispetto ad un ground-truth affidabile, quale il Vicon, durante un esperimento standard. Per questo motivo, non sono state salvate nella bag le informazioni pubblicate nel topic \verb|\initialpose|, così come non abbiamo riportato le pose delle singole tag, bensì direttamente quella associata al centro del sistema di riferimento solidale al veicolo.
+Nello specifico, i topic salvati per questo esperimento sono:
+\begin{verbatim}
+	%	rosbag info 'Confronto_stanzavolo_Vicon.bag'
+	
+	/amcl_pose			% posa di Charlie data da AMCL e espressa in map frame 
+	/charlie_vicon_map	% posa di Charlie registrata da vicon e riportata in map frame
+	/map
+	/orientation
+	/particlecloud
+	/robot_pose			% posa di Charlie data ZOH su quella derivante da AMCL (map frame)
+	/rosout
+	/rosout_agg
+	/scan   
+	/tag_center			% posa di Charlie misurata dal sistema UWB e riportata in map frame
+	/tf     
+	
+\end{verbatim}
 
+Con questi dati, abbiamo deciso di formulare la seguente analisi.
+Come prima cosa, abbiamo verificato il tracciato registrato con 3 diversi metodi: Vicon, navigazione con AMCL e registrazione delle posizioni dal sistema Pozyx, come riportato in fig.~\ref{fig: traiettorie_vicon_charlie}
 
+\begin{figure}[] 
+	\centering    
+	\includegraphics[height=.4\textheight]{grafici_stanzavolo_vicon/figure3_charlie_vic.pdf}
+	\caption{Traiettorie registrate con Vicon, UWB e navigazione con AMCL}
+	\label{fig: traiettorie_vicon_charlie}
+\end{figure}
+
+\begin{figure}[] 
+	\centering    
+	\includegraphics[height=.3\textheight]{grafici_stanzavolo_vicon/figure2_charlie_vic.pdf}
+	\caption{Coordinate lungo l'asse x in map frame registrate con Vicon, UWB e navigazione con AMCL}
+	\label{fig: asse_x_vicon_charlie}
+\end{figure}
+
+\begin{figure}[] 
+	\centering    
+	\includegraphics[height=.3\textheight]{grafici_stanzavolo_vicon/figure21_charlie_vic.pdf}
+	\caption{Coordinate lungo l'asse y in map frame registrate con Vicon, UWB e navigazione con AMCL}
+	\label{fig: asse_y_vicon_charlie}
+\end{figure}
+
+\begin{figure}[] 
+	\centering    
+	\includegraphics[height=.3\textheight]{grafici_stanzavolo_vicon/figure12_charlie_vic.pdf}
+	\caption{Heading in map frame registrate con Vicon, UWB e navigazione con AMCL}
+	\label{fig: heading_vicon_charlie}
+\end{figure}
+
+\begin{figure}[] 
+	\centering    
+	\includegraphics[height=.3\textheight]{grafici_stanzavolo_vicon/figure16_charlie_vic.pdf}
+	\caption{Coordinate lungo x e y in map frame registrate con Vicon, UWB e navigazione con AMCL}
+	\label{fig: assixy_vicon_charlie}
+\end{figure}
+
+\begin{figure}[] 
+	\centering    
+	\includegraphics[height=.3\textheight]{grafici_stanzavolo_vicon/figure13_charlie_vic.pdf}
+	\caption{Errore tra posizione data da navigazione con AMCL e UWB}
+	\label{fig: amcluwb_err_vicon_charlie}
+\end{figure}
+
+\begin{figure}[] 
+	\centering    
+	\includegraphics[height=.3\textheight]{grafici_stanzavolo_vicon/figure14_charlie_vic.pdf}
+	\caption{Errore tra posizione data da navigazione con AMCL e Vicon (ground truth)}
+	\label{fig: amclvic_err_vicon_charlie}
+\end{figure}
+
+\begin{figure}[] 
+	\centering    
+	\includegraphics[height=.3\textheight]{grafici_stanzavolo_vicon/figure15_charlie_vic.pdf}
+	\caption{Errore tra posizione data da UWB e Vicon (ground truth)}
+	\label{fig: uwbvic_err_vicon_charlie}
+\end{figure}
+
+\begin{figure}[] 
+	\centering    
+	\includegraphics[height=.3\textheight]{grafici_stanzavolo_vicon/figure23_charlie_vic.pdf}
+	\caption{Distribuzione dell'errore tra posizione data da AMCL e dal Vicon (ground truth) }
+	\label{fig: err_amclvic_sphere_vicon_charlie}
+\end{figure}
+
+\begin{figure}[] 
+	\centering    
+	\includegraphics[height=.3\textheight]{grafici_stanzavolo_vicon/figure11_charlie_vic.pdf}
+	\caption{Distribuzione dell'errore tra posizione data da UWB e dal Vicon (ground truth)}
+	\label{fig: err_uwbvic_sphere_vicon_charlie}
+\end{figure}
+
+%\begin{figure}[] 
+%	\centering    
+%	\includegraphics[height=.2\textheight]{grafici_stanzavolo_vicon/figure10_charlie_vic.pdf}
+%	\caption{err uwbamcl sphere vicon charlie}
+%	\label{fig: err_uwbamcl_sphere_vicon_charlie}
+%\end{figure}
+
+\begin{figure}[] 
+	\centering    
+	\includegraphics[height=.3\textheight]{grafici_stanzavolo_vicon/figure8_charlie_vic.pdf}
+	\caption{Distribuzione del versore errore tra la posizione data da AMCL e quella data dal Vicon su una circonferenza unitaria}
+	\label{fig: err_norm_amclvic_sphere_vicon_charlie}
+\end{figure}
+
+\begin{figure}[] 
+	\centering    
+	\includegraphics[height=.3\textheight]{grafici_stanzavolo_vicon/figure9_charlie_vic.pdf}
+	\caption{Distribuzione del versore errore tra la posizione data da UWB e quella data dal Vicon su una circonferenza unitaria}
+	\label{fig: err_norm_uwbvic_sphere_vicon_charlie}
+\end{figure}
+
+\begin{figure}[] 
+	\centering    
+	\includegraphics[height=.3\textheight]{grafici_stanzavolo_vicon/figure1_charlie_vic.pdf}
+	\caption{Distribuzione del vettore errore tra la posizione data da AMCL e quella data dal Vicon lungo la traiettoria}
+	\label{fig: quiver_err_amclvic_vicon_charlie}
+\end{figure}
+
+\begin{figure}[] 
+	\centering    
+	\includegraphics[height=.3\textheight]{grafici_stanzavolo_vicon/figure7_charlie_vic.pdf}
+	\caption{Distribuzione del vettore errore tra la posizione data da UWB e quella data dal Vicon lungo la traiettoria}
+	\label{fig: quiver_err_uwbvic_vicon_charlie}
+\end{figure}
+
+\textbf{metti i quiver zoom}
+
+Osservando i grafici relativi all'errore proiettato su una circonferenza unitaria, possiamo vedere che esiste una certa direzione 
+preferenziale lungo la quale questo errore si presenta, sia per quanto riguarda il confronto tra la posizione in uscita dall'algoritmo AMCL e 
+quella fornita dal sistema Vicon, vedere fig.~\ref{fig: err_norm_amclvic_sphere_vicon_charlie}, sia per quello tra quest'ultimo e la posizione data dal sistema Pozyx, come si nota in fig.~\ref{fig: err_norm_uwbvic_sphere_vicon_charlie}. 
+Si può dedurre quindi la presenza di un errore sistematico, sia per quanto riguarda le misure delle ancore sia per l'algoritmo di navigazione con AMCL. Avendo però perso l'informazione relativa all'istante in cui si ha un determinato errore, non siamo in grado basandoci solo su questi grafici di tratte conclusioni esaustive sul fenomeno. Per questo motivo, abbiamo successivamente analizzato qual è l'errore, come vettore di errore, tra la posizione di AMCL o UWB rispetto a quella del nostro ground truth, vale a dire il sistema Vicon: questo è stato mostrato lungo tutta la traiettoria compiuta, in modo da poter indagare l'esistenza di errori sistematici che si verificano ogni volta che Charlie ripassa nello stesso punto della mappa ad istanti diversi. 
+Tale analisi è riportata rispettivamente in fig.~\ref{fig: quiver_err_amclvic_vicon_charlie} e in fig.~\ref{fig: quiver_err_uwbvic_vicon_charlie}, dove osserviamo i vettori errore distribuiti lungo l'intera traiettoria. Da questi risultati possiamo osservare due fenomeni: il primo è direzione preferenziale, punti passaggi multipli hanno errore sistematico?
 
 \textbf{IMPOSTA SU MATLAB LA ROBA PER LE ANALISI
-FAI ANALISI QUA}
+	FAI ANALISI QUA}
+
 
 
 \subsection{Navigazione con AMCL nel cortile}
