@@ -713,7 +713,7 @@ Il primo set che andiamo a descrivere \`e quindi l'analisi del sistema Pozyx.
 Per prima cosa quindi \`e stata analizzata la bont\`a della procedura di autocalibrazione e successivamente della localizzazione del sistema UWB.
 
 \subsubsection{Posizione Antenne}
-
+\label{confronto UWB vicon: posizione antenne}
 \begin{figure}[]
 	\centering
 	\includegraphics[height=0.4\textheight]{anchors_UWB_Vicon.png}
@@ -772,66 +772,69 @@ Siamo soddisfatti di questo risultato in quanto anche dai precedenti esperimenti
 
 \subsubsection{Posizionamento Charlie, no navigazione}
 
-\textbf{PEPO \`E ARRIVATO QUI.}
+\textbf{PEPO \`E ARRIVATO QUI (Ho riletto il testo, ma non ho salvato le immagini. Alcune le ho descritte, altre sono da analizzare ancora).}
 
+Come in sez.~\ref{confronto UWB vicon: posizione antenne}, anche questo esperimento prevede l'utilizzo del Vicon come ground--truth, motivo per cui è stato eseguito all'interno della stanza del volo del polo A. Lo scopo è sempre quello di valutare se le azioni sulla gestione del sistema, riportate nel paragrafo \ref{sez:Modifiche Pozyx}, hanno avuto influenza positiva sui risutati ottenibili con il sistema UWB, ma lo scenario scelto adesso prevede la localizzazione di un corpo in movimento e non più delle ancore fisse. Come si può ben dedurre, il nostro veicolo è il soggetto da localizzare.
 
-Come per la prima prova, anche la seconda vede l'utilizzo del Vicon come ground truth e per questo è stata eseguita all'interno della stanza del volo del polo A.
-Come prima cosa, è necessario posizionare dei marker sul veicolo in modo asimmetrico. Nel nostro caso sono stati posizionati come in fig.~(FAI RIF), dove vediamo 
-marker: uno centrato nella parte frontale, due laterali a circa metà della struttura e un quarto nella parte posteriore, spostato verso destra per ottenere 
+Dato che Charlie non ha marker riflettenti, e che seguirlo con la Wand (come fatto in \ref{confronto UWB vicon: posizione antenne}) sarebbe scomodo e creerebbe una catena di errori di misura e disturbi indesiderati, per ottenerne la posizione nel frame Vicon sono stati applicati su di esso dei marker in modo asimmetrico, posizionati come in fig.~(FAI RIF). Nello specifico, troviamo un marker centrato nella parte frontale, due laterali a circa metà della struttura e un quarto nella parte posteriore, spostato verso destra per ottenere 
 l'asimmetria necessaria ad evitare ambiguità. Il sistema Vicon riesce con essi a costruire un oggetto virtuale corrispondente a Charlie senza ambiguità di orientazione. 
-Una volta costruito tale oggetto, per il procedimento riferirsi al \ref{sez:Sistema Vicon_oggetto}, si può procedere con l'esperimento vero e proprio. In questo caso, 
-per i comandi di spostamento è stato utilizzato il radiocomando, così da avere maggiore manovrabilità.
+Una volta costruito tale oggetto, per il procedimento riferirsi al \ref{sez:Sistema Vicon_oggetto}, si può procedere con l'esperimento. In questo caso, 
+per i comandi di spostamento è stato utilizzato il radiocomando, così da avere maggiore manovrabilità e controllo.
 
-Dato che, in questa prova, il nostro interesse principale verte sulla valutazione della bontà del sistema UWB per la localizzazione, non andiamo ad utilizzare il file
-di lancio adibito alla navigazione con Lidar e AMCL (\verb|localization.launch|), dove UWB entra in gioco solo nel momento in cui la posa data dal Lidar con AMCL differisce di più di \SI{1.5}{\metre}| da quella data dal sistema UWB, come descritto e analizzato in \cite{ptvlocalizzazione} nei primi due esperimenti riportati. 
+Dato che il nostro interesse principale verte sulla valutazione della bontà del sistema UWB per la localizzazione, non andiamo ad utilizzare il file
+di lancio adibito alla navigazione con Lidar e AMCL (\verb|localization.launch|), dove UWB entra in gioco solo nel momento in cui la posa data dal Lidar con AMCL differisce di più di \SI{1.5}{\metre}| da quella data dal sistema UWB, come descritto e analizzato in \cite{ptvlocalizzazione}. 
  
-Abbiamo deciso quindi di limitarci alla localizzazione effettuata con le UWB: per farlo, sarà sufficiente avviare la localizzazione delle tag con il sistema di 
-ancore tramite il comando:
+Per appoggiarci alla localizzazione effettuata solo attraverso il sistema Pozyx, è sufficiente avviare la localizzazione delle tag con il sistema di ancore tramite il comando:
 \begin{verbatim}
 	roslaunch charlie_launch start_uwb.launch		# avvia uwb
 \end{verbatim} 
 
-Una volta fatto ciò, si passa al lancio del sistema di acquisizione dati del Vicon, vedere \ref{sez:Sistema Vicon}, dopo aver aggiunto i topic relativi al Vicon
-nella lista di quelli da registrare nella bag. 
-Avviati tutti i nodi ros necessari, si può procedere semplicemente spostando Charlie nella stanza, raccogliendo così le medesime informazioni in due modi distinti: 
-uno (il Vicon) considerato corretto e privo di errori, l'altro (il sistema UWB), affetto da errori che vogliamo individuare.
+Si passa poi all'avviamento del sistema di acquisizione dati del Vicon, vedere \ref{sez:Sistema Vicon}, non prima però di aver aggiunto nella lista di topic da registrare nella bag, quelli su cui il nodo \verb|/vrpn_client_node| pubblica la posa dell'oggetto collegato a Charlie. 
+\vspace{0.5cm}
+Avviati tutti i nodi ros necessari, si può procedere semplicemente spostando il veicolo nella stanza, raccogliendo così le medesime informazioni di posizione e orientazione in due modi distinti: 
+\begin{itemize}
+	\item con il sistema Vicon, considerato corretto e privo di errori
+	\item con il sistema Pozyx (UWB), affetto da errori che vogliamo individuare
+\end{itemize}
 
 Si procede, quindi, all'analisi dei dati attraverso Matlab. Il codice relativo si trova nel file
 \begin{verbatim}
 	...\Analisi_matlab\Analisi_uwbvicon_confronto.m
 \end{verbatim}  
-Abbiamo per prima cosa confrontato i dati grezzi delle posizioni \verb|x| e \verb|y| delle due tag (tag0 e tag1) misurate dal Vicon e dal sistema UWB, di quest'ultimo 
+
+Per prima cosa, si confrontano i dati grezzi delle posizioni \verb|x| e \verb|y| delle due tag (tag0 e tag1) misurate dal Vicon con quelle derivanti dal sistema UWB, di quest'ultimo 
 riportandone sia la misura ``raw'' sia quella filtrata con un filtro a media mobile, come vediamo in fig.~\ref{...}.
 
-In collegamento a questi ultimi, abbiamo anche graficato l'errore commesso da UWB nel restituire tali coordinate.
-Sempre riguardo all'errore per le due tag, abbiamo visualizzato il vettore errore normalizzato rispetto alla circonferenza unitaria centrata nell'origine, così da 
-renderci conto se esiste una significativa direzionalità di questo errore o se, invece, esso assume orientazioni casuali distribuendosi uniformemente sulla 
-circonferenza di riferimento: possiamo subito notare che, per entrambe le tag, l'errore si distribuisce molto di più nei quadranti negativi della circonderenza,
+Per rendere più chiaro il confronto, si riporta anche l'errore commesso nel restituire tali coordinate, lungo x e y, semplicemente sottraendo istante per istante i valori ottenuti rispetto a quelli indicati dal ground--truth, corredato dalla norma del vettore ``errore'' risultante.
+Sempre in ottica di studio dell'errore per le due tag, distintamente, abbiamo deciso di proiettare il vettore errore normalizzato (ovvero il suo versore istante per istante) lungo la circonferenza unitaria centrata nell'origine, così da 
+poter evidenziare un'eventuale significativa direzionalità di questo errore o se, contrariamente, esso assume orientazioni casuali distribuendosi uniformemente sulla 
+circonferenza di riferimento. Possiamo subito notare che, per entrambe le tag, l'errore si distribuisce molto di più nei quadranti negativi della circonderenza,
 mentre in quelli positivi si contano solo pochi campioni isolati.
 
 \textbf{PLOT QUIVER DIRE}
 
 Similmente, considerando che dalla posizione delle due tag su Charlie è possibile ricavare l'heading del veicolo, abbiamo deciso di confrontare l'heading calcolato
-come \verb|atan2| tra le posizioni ricavate con UWB, con quello fornitoci direttamente dal Vicon (ritenuto il ground truth) e con quello che esce fuori dall'STM 
-(legato alle uscite degli algoritmi di guida in esso integrati?????). Anche qua evidenziamo un errore sistematico nell'angolo, sicuramente legato anche al fatto 
-che, a differenza di quanto possiamo aspettarci, il gap tra i due diminuisce, e di conseguenza diminuisce anche l'errore in heading, mentre nei momenti in cui 
-l'assetto pare essere costante torna a vedersi in modo chiaro l'offset iniziale, che non viene mai recuperato.
+come \verb|atan2| tra le posizioni ricavate con UWB, con quello fornitoci direttamente dal Vicon e con quello in uscita dall'STM 
+(che è di fatto una versione filtrata di quello calcolato da noi con le posizioni delle tag). Anche qua si evidenzia un errore sistematico nell'angolo, sicuramente legato anche al fatto che, come si evidenzia in fig......, il suo valore parte già con un offset significativo. 
+A differenza di quanto possiamo aspettarci, nei tratti in cui il veicolo si muove il gap tra i due valori di heading diminuisce, e di conseguenza diminuisce anche l'errore nell'orientazione data da UWB, mentre nei momenti in cui 
+l'assetto pare essere costante, torna a vedersi in modo chiaro l'offset iniziale, che non viene mai recuperato.
 
-Può inoltre essere interessante andare a distinguere le varie fasi di moto di Charlie, ovvero i punti in cui sta fermo, quelli in cui procede in linea retta e 
-quelli dove, invece, compie traiettorie curvilinee, ed associare ad essi i pattern seguiti dai vari errori: come ci aspettiamo, la fase in cui l'errore si riduce 
-maggiormente coincide con quella in cui Charlie sta fermo (da \SI{50}{\second} a \SI{60}{\second}). Questo non accade però, come già accennato, per quanto riguarda l'heading, 
-dove a causa di un offset iniziale pare esserci un maggiore errore quando l'angolo non varia rispetto ai momenti in cui si riorienta.
+\vspace{0.5cm}
+Interessante, inoltre, è andare a distinguere tra le varie fasi di moto di Charlie, ovvero vedere come si comportano gli errori di posizione nei tratti in cui sta fermo, in quelli in cui procede in linea retta e in
+quelli dove, invece, compie traiettorie curvilinee: come ci aspettiamo, la fase in cui l'errore si riduce 
+maggiormente coincide con quella in cui Charlie sta fermo (da \SI{50}{\second} a \SI{60}{\second}). Questo non accade però, come già accennato, per quanto riguarda l'errore  sull'heading, 
+dove a causa di un offset iniziale pare esserci una maggiore differenza quando l'angolo non varia rispetto ai momenti in cui si riorienta.
 
 \textbf{valutazione dei risultati di questa prima prova con i vari grafici}
 
-Dai risultati ottenuti, abbiamo riscontrato un'errore sbilanciato verso la parte negativa, che aumenta soprattutto nelle fasi di moto. Per valutare se c'è un'influenza 
-dell'autocalibrazione e del modo in cui sono state posizionate le ancore, abbiamo deciso di ripetere un secondo esperimento cambiando l'assetto del sistema. La prima modifica è stata quella di posizionare le ancore con una differenza di altezza maggiore, in modo da consentirci 
+Dai risultati ottenuti, abbiamo riscontrato un'errore sbilanciato verso la parte negativa, che aumenta soprattutto nelle fasi di moto. Per valutare se c'è stata un'influenza 
+dell'autocalibrazione e del modo in cui sono state posizionate le ancore, abbiamo deciso di ripetere un secondo esperimento cambiando l'assetto del sistema Pozyx. La prima modifica è stata quella di settare le ancore con una differenza di altezza maggiore, in modo da consentirci 
 di distanziare maggiormente la quarta ancora dall'origine senza che ciò generi errori nella creazione del frame UWB (durante la procedura di autocalibrazione, 
 descritta in \ref{sez:Autocalibrazione}). Per ricreare una configurazione il più possibile favorevole per l'ottenimento un buon setting, abbiamo messo le ancore 
 a formare una figura che si avvicini ad un tetraedro, configurazione più adatta per ottenere una buona autocalibrazione.
 Parallelamente a questo cambiamento, abbiamo deciso di valutare anche la possibilità di variare la posizione relativa tra le ancore, montate sui supporti, e 
 le powerbank utilizzate per alimentarle: fino ad ora queste erano appoggiate esattamente al di sopra delle strutture delle rispettive ancore. In questo modo, 
-però, si incorre nel rischio di creare forti disturbi al sistema, in quanto l'antenna presente sulle ancore punta proprio verso l'alto, dove si trova la powerbank. 
+però, si incorre nel rischio di creare forti disturbi al sistema, in quanto l'antenna presente sulle ancore punta proprio verso l'alto, dove si trovava la powerbank fino a quel momento. 
 Per cercare di limitare i disturbi, abbiamo deciso di fissarle al di sotto della struttura e di ripetere la prova in questa nuova configurazione.
 
 \textbf{FINIREEEEEEE E ANALIZZARE I GRAFICI E RIPORTARLI }
