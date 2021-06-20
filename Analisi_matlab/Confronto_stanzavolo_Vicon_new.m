@@ -296,6 +296,7 @@ ylabel('y [m]')
 title('Quiver su tag centre')
 
 %% animation
-% animate_charlie_stanzavolo_Vicon
+% animate_charlie_stanzavolo_Vicon		% mi sa nome vecchio chiedi a Fra
  
+% animate_charlie_localization_Vicon	% mi sa nome nuovo chiedi a Fra
 
