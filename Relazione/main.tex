@@ -971,10 +971,6 @@ Si può dedurre quindi la presenza di un errore sistematico, sia per quanto rigu
 Tale analisi è riportata rispettivamente in fig.~\ref{fig: quiver_err_amclvic_vicon_charlie} e in fig.~\ref{fig: quiver_err_uwbvic_vicon_charlie}, dove osserviamo i vettori errore distribuiti lungo l'intera traiettoria. Da questi risultati possiamo osservare due fenomeni: il primo è che il vettore rappresentante l'errore tra Vicon e UWB, così come quello tra Vicon e AMCL, risulta avere una direzione preferenziale lungo la quale è molto più presente. Questo conferma di fatto quanto trovato nei grafici precedenti, ovvero dove vediamo l'errore concentrarsi su una sezione della circonferenza e non distribuirsi equamente su di essa. Inoltre, possiamo osservare che, nelle sezioni di traiettoria in cui il veicolo passa più volte dallo stesso punto, i vettori di errore sono tra loro paragonabili, nonostante quello stesso tratto sia percorso col veicolo in moto in verso opposto o con orientazione invertita di \verb|\pi|. Ciò è evidente nella sezione compresa tra \SI{0.5}{\metre} e \SI{1}{\metre}, dove osserviamo chiaramente che, sia nel caso del confronto tra Vicon e AMCL (fig.~\ref{fig: quiver_err_amclvic_vicon_charlie}) che in quello tra Vicon e UWB (fig.~\ref{fig: quiver_err_uwbvic_vicon_charlie})i vettori hanno direzione preferenziale a prescindere dal verso di Charlie.
 Questo fenomeno è sicuramente meritevole di future indagini, in quanto potrebbe essere indice di errori plausibilmente correggibili, soprattutto per quanto riguarda la scrittura dell'algoritmo di navigazione.
 
-\textbf{IMPOSTA SU MATLAB LA ROBA PER LE ANALISI
-	FAI ANALISI QUA}
-
-
 
 \subsection{Navigazione con AMCL nel cortile}
 Per l'esperimento nel cortile interno, torniamo a riferirci a \ref{sez: Guida breve all'esperimento}, dove troviamo passo passo tutti i comandi dati per 
