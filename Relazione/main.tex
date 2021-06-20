@@ -368,14 +368,23 @@ per adattarli al nostro sistema. Per maggiori dettagli, vedere nella cartella:
 dove all'interno di ciascun nodo è presente una breve descrizione del suo funzionamento e della sua utilità.
 
 \vspace{0.5 cm}
-su uno di questi nodi, ovvero il \verb|pos_pub_2_tag.py|, descriviamo un errore che abbiamo riscontrato e che, plausibilmente, è stato una causa
-di errori nelle esecuzioni precedenti. Prima di tutto, questo nodo si occupa di pubblicare la posa delle due tag (posizione + quaternione) e sfrutta al suo interno 
-la funzione, sempre custom, \verb|doPos_pubtf|, all'interno della quale è fatto girare l'algoritmo \verb|doPositioning|. Questo, a sua volta, ricava la posizione
+Su uno di questi nodi, ovvero il \verb|pos_pub_2_tag.py|, descriveremo nella sezione successiva, come abbiamo risolto un errore riscontrato e che, plausibilmente, è stato una causa
+di malfunzionamenti nelle esecuzioni precedenti. 
+
+\subsection{Modifiche al sistema Pozyx}
+\label{sez:Modifiche Pozyx}
+
+Partiamo per prima cosa parlando della risoluzione dell'errore in \verb|pos_pub_2_tag.py|. Questo nodo si occupa di pubblicare la posa delle due tag (posizione + quaternione) e sfrutta al suo interno 
+la funzione, sempre custom, \verb|doPos_pubtf|, all'interno della quale è fatto girare l'algoritmo \verb|doPositioning|. Tale algoritmo, a sua volta, ricava la posizione
 delle tag pozyx connesse in seriale. Come spiegato in \cite{ctesconistudio}, l'algoritmo \verb|doPositioning| viene eseguito utilizzando la modalità 
 \verb|POZYX_RANGE_PROTOCOL_PRECISION| e questa richiede l'utilizzo di molti sample. Per questo motivo, dato che il \verb|doPositioning| deve essere eseguito 
 in modo sequenziale prima sulla tag0, poi sulla tag1, poi nuovamente sulla tag0 e così via, si rende necessario l'inserimento di una pausa tra una esecuzione 
 e la successiva, per permettere all'algoritmo di terminare prima di essere lanciato nuovamente. In assenza di tali pause temporali, abbiamo infatti notato che 
 i risultati venivano corrotti: dopo l'aggiunta di tali intervalli, invece, le esecuzioni successive non si influenzano più a vicenda, come voluto.
+
+Durante il nostro lavoro, sono state poi riscontrate altre anomalie, corrette andando a modificare la gestione degli ID nell'esecuzione di alcune funzioni di \verb|positioning| del sistema Pozyx: qua è infatti necessario porre attenzione affinché chi è demandato di eseguirle, tra gli elementi del sistema, abbia al suo interno effettivamente tutte le informazioni corrette e aggiornate di cui necessita. 
+In parole pi\`u pratiche \`e necessario che il singolo tag abbia in memoria la posizione, in frame UWB, delle ancore da cui legge la distanza tra tag--ancora.
+Per questo motivo, abbiamo agito in due modi: \textit{il primo} \`e l'aver aggiunto alla fine dell'autocalibrazione il salvataggio della posizione di ciascuna ancora all'interno della memoria flash dell'ancora stessa; \textit{il secondo} \`e avere inserito prima del posizionamento vero e proprio una procedura per ciascuna tag in utilizzo che interroga le ancore sulla loro posizione e se le salva all'interno della propria memoria flash.
 
 \subsection{Autocalibrazione ancore Pozyx}
 \label{sez:Autocalibrazione}
@@ -522,7 +531,7 @@ Da PC, remoto insomma, abbiamo utilizzato gli strumenti grafici non necessari al
 
 	
 \subsection{Nodi e topic utilizzati}
-
+\label{sez:Ambiente ROS creato, nodi e topic}
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\linewidth]{nodes_withtf_tree.pdf}
@@ -680,7 +689,7 @@ Questa parte di relazione si concentra proprio su queste prove.
 Dato che nei progetti precedenti il sistema Pozyx aveva avuto performance non convincenti, anche dovute ad alcune inesattezze nello sviluppo dei nodi ros, la prima prova \`e stata proprio quella di cercare di capire la bont\`a di questo sistema andandolo a comparare con il sistema Vicon.
 Tale confronto è stato fatto sia in termini di posizioni statiche delle ancore, andando così a valutare la bontà della procedura di autocalibrazione, sia riguardo la posa dinamica (posizione e assetto) assunta da Charlie quando si muove nello spazio e viene localizzato dal sistema UWB (quindi senza navigazione).
 
-Successivamente, sfruttando la presenza del Vicon nella stanza del volo, abbiamo deciso di effettuare un esperimento classico, vedere sez.~\ref{sez: Guida breve all'esperimento}, in modo tale 
+Successivamente, sfruttando la presenza del Vicon nella stanza del volo, abbiamo deciso di effettuare un esperimento classico, vedere sez.~\ref{sez: Guida breve all'esperimento}, in modo tale \textbf{??????? MANCA UN PEZZO}
 
 Infine viste anche le modifiche effettuate sul sistema UWB, abbiamo predisposto un esperimento all'esterno per valutare eventuali migliorie di funzionamento.
 Tali prove sono state svolte nel cortile interno al polo A di Ingegneria, dove la presenza di strutture metalliche (tra cui le scale di emergenza) possono aver influenzato il funzionamento del sistema Pozyx. 
@@ -713,10 +722,7 @@ Per prima cosa quindi \`e stata analizzata la bont\`a della procedura di autocal
 \end{figure}
 
 La prima prova che abbiamo deciso di effettuare è stata quella volta alla valutazione dell'affidabilità della procedura di autocalibrazione, descritta in sez.~\ref{sez:Autocalibrazione}, delle ancore del sistema Pozyx sfruttando come ground-truth il Vicon.
-
-\textbf{QUESTO PARAGRAFO MAGARI LO SPOSTIAMO NELLA SEZIONE POZYX?}Durante il nostro lavoro, infatti, erano state riscontrate alcune anomalie, corrette andando a modificare la gestione degli ID nell'esecuzione di alcune funzioni di \verb|positioning| del sistema Pozyx, dove è necessario porre attenzione affinché chi è demandato di eseguirle, tra gli elementi del sistema, abbia al suo interno effettivamente tutte le informazioni corrette e aggiornate di cui necessita. 
-In parole pi\`u pratiche \`e necessario che il singolo tag abbia in memoria la posizione, in frame UWB, delle ancore da cui legge la distanza tra tag--ancora.
-Per questo motivo, abbiamo agito in due modi: \textit{il primo} \`e l'aver aggiunto alla fine dell'autocalibrazione il salvataggio della posizione di ciascuna ancora all'interno della memoria flash dell'ancora stessa; \textit{il secondo} \`e avere inserito prima del posizionamento vero e proprio una procedura per ciascuna tag in utilizzo che interroga le ancore sulla loro posizione e se le salva all'interno della propria memoria flash.
+Questa prova è di fatto volta a valutare se le azioni sulla gestione del sistema, riportate nel paragrafo \ref{sez:Modifiche Pozyx}, hanno avuto influenza positiva sui risutati ottenibili con il sistema UWB.
 
 Dato che le ancore non hanno, giustamente, marker riflettenti, per ottenere la posizione delle ancore nel frame Vicon \`e stato pratico l'utilizzo della wand una sorta di struttura a forma di croce, sulla quale sono fissati dei marker con configurazione asimmetrica e il cui rispettivo oggetto virtuale è già preimpostato nel software di tracking Vicon.
 Tali misure, da considerarsi prive di errori legati allo strumento, ma affette da errori dovuti al posizionamento a mano della Wand sulle ancore stesse, verranno confrontati con quelli ottenuti a valle del procedimento di autocalibrazione.
@@ -728,7 +734,7 @@ Tali misure, da considerarsi prive di errori legati allo strumento, ma affette d
 %quelli ottenuti a valle del procedimento di autocalibrazione, dove in uscita ogni ancora è a conoscenza della propria posizione espressa rispetto al sistema di riferimento costruito su di esse (\verb|UWB frame|).
 
 Le ancore sono state poste in una configurazione che a nostro avviso, dopo aver fatto varie prove, è quella che permette di ottenere una autocalibrazione più corretta: troviamo le prime tre ancore alla stessa altezza e messe in modo da delimitare gli assi x, y e l'origine, mentre la quarta ancora è molto pi\`u in alto lungo la verticale e posta nei pressi dell'origine (riferirsi alla fig.~\ref{fig: disposizione ancore}).
-Infatti, nel caso in cui l'ancora4 venga allontanata troppo dall'origine, l'algoritmo algebrico di autocalibrazione fallisce (si ha problemi di radici di numeri negativi).
+Infatti, nel caso in cui l'ancora 3 (la numerazione usata va da 0 a 3) venga allontanata troppo dall'origine, l'algoritmo algebrico di autocalibrazione fallisce (si hanno problemi di radici di numeri negativi).
 
 Come descritto in \ref{sez: Guida breve all'esperimento}, per questo primo test andremo a:
 \begin{itemize}
@@ -832,7 +838,7 @@ Per cercare di limitare i disturbi, abbiamo deciso di fissarle al di sotto della
 
 \subsection{Navigazione Charlie con AMCL e Vicon come ground truth}
 
-Qua si tratta di un esperimento standard (vedere \ref{sez: Guida breve all'esperimento}), dove in parallelo alla navigazione gestita attraverso l'algoritmo AMCL, viene attivato anche il ``motion capture''
+L'esperimento che andiamo a descrivere di seguito rientra tra gli esperimento standard (riferirsi alla sez.~\ref{sez: Guida breve all'esperimento}), dove in parallelo alla navigazione gestita attraverso l'algoritmo AMCL, viene attivato anche il ``motion capture''
 di Charlie attraverso il sistema Vicon. Questo permette di avere un ground truth sulla posizione e l'orientazione del veicolo durante la navigazione compiuta
 nell'ambiente sfruttando l'algoritmo di AMCL. In questo modo, siamo in grado di fornire un riferimento di quello che effettivamente è l'errore di navigazione compiuto dal sistema e, nel caso appaiano errori sistematici, di individuarli e poterne indagare la causa.
 La nostra preoccupazione qua non è stata, come detto nell'introduzione della sezione, quella di verificare il funzionamento del fix di posa dell'algoritmo di navigazione, bensì quello di valutare l'errore che viene fatto con AMCL e con le sole UWB rispetto ad un ground-truth affidabile, quale il Vicon, durante un esperimento standard. Per questo motivo, non sono state salvate nella bag le informazioni pubblicate nel topic \verb|\initialpose|, così come non abbiamo riportato le pose delle singole tag, bensì direttamente quella associata al centro del sistema di riferimento solidale al veicolo.
@@ -855,7 +861,24 @@ Nello specifico, i topic salvati per questo esperimento sono:
 \end{verbatim}
 
 Con questi dati, abbiamo deciso di formulare la seguente analisi.
-Come prima cosa, abbiamo verificato il tracciato registrato con 3 diversi metodi: Vicon, navigazione con AMCL e registrazione delle posizioni dal sistema Pozyx, come riportato in fig.~\ref{fig: traiettorie_vicon_charlie}
+Come prima cosa, abbiamo verificato il tracciato registrato con 3 diversi metodi: Vicon, navigazione con AMCL e registrazione delle posizioni dal sistema Pozyx, come riportato in fig.~\ref{fig: traiettorie_vicon_charlie}.
+Qua possiamo fare diverse considerazioni: prima di tutto, vediamo che ovviamente la traiettoria ricostruita dai dati del sistema Pozyx, non essendo questi filtrati né elaborati in alcun modo, è più rumorosa rispetto al risultato con il sistema Vicon, dove per le performance del sensore stesso gli errori sono estremamente piccoli e i segnali molto puliti e stabili. Stesso vale rispetto alla traiettoria derivante dalla navigazione con l'algoritmo AMCL, che utilizza dati filtrati e a sua volta restituisce valori filtrati in modo da ridurre il rumore presente. 
+In secondo luogo, vediamo che la traiettoria seguita davvero dal veicolo, corrispondente a quanto registrato dal sistema Vicon che noi assumiamo esente da errori, viene ricreata abbastanza fedelmente dal sistema di navigazione custom, a meno di un offset costante che vede la stima di posizione data dall'algoritmo AMCL spostata lungo l'asse y in fig.~\ref{fig: traiettorie_vicon_charlie} di circa \SI{20}{\centi \metre}. Questo errore sistematico si osserva anche nel tracciato fornito dalle ancore UWB, anche se l'offset appare leggermente inferiore.
+Importante sottolineare che la bontà di questo risultato, dove a meno di un offset di misura sistematico non si verificano altre anomalie nel tracciamento del veicolo, è strettamente influenzato dalla velocità alla quale Charlie viene fatto muovere: nello scenario mostrato, tutti gli spostamenti sono effettuati a velocità molto contenute, che permettano all'algoritmo di navigazione di convergere al risultato corretto, soprattutto nel momento in cui (eventualmente) si trovi a dover fare un fix di posa. A velocità più sostenute, mai trattate nei precedenti lavori e tralasciate anche nel nostro caso, il sistema non funziona così bene: a causa della lentezza dell'algoritmo AMCL e delle varie operazioni di stima e computazione delle pose, velocità troppo elevate portano ad accumulare errori nella stima in uscita e, alla lunga, a una totale discordanza tra posa del veicolo (registrata in modo corretto da UWB, tralasciando i rumori di misura dell'ordine delle decine di \SI{}{\centi \metre}) e la stima che AMCL fa di tale posa, che può essere sbagliata di metri.
+
+Osservando infine i tracciati, vediamo che non sono presenti punti in cui la posa stimata con AMCL viene associata improvvisamente a un punto coincidente con la traiettoria registrata dal sistema Pozyx: grazie alla lentezza dei movimenti, si conclude allora che non sono presenti eventi di fix di posa, ovvero non viene mai reinizializzata la posizione di Charlie con i valori dell UWB.
+
+\vspace{0.5cm}
+Riportiamo poi, per semplicità di analisi, quali siano stati i valori effettivamente registrati lungo l'asse x e y del \verb|frame MAP| per quanto concerne i tre tracciati mostrati. Oltre a questi valori, è presente un quarto segnale, estratto da \verb|/robot_pose|, corrispondente alla versione filtrata della stima in uscita da AMCL, che come specificato in sez.~\ref{sez:Ambiente ROS creato, nodi e topic}: il nodo \verb|/amcl2robot_pose_PY|, si occupa di fornire la posa stimata ad una maggiore frequenza, pubblicata in \verb|/robot_pose|, rendendola cos\`i disponibile all'algoritmo di guida caricato sull'STM32.
+Nello specifico, in fig.~\ref{fig: asse_x_vicon_charlie} vediamo l'andamento dei tracciati nel tempo lungo l'asse x del \verb|frame map|, in fig.~\ref{fig: asse_y_vicon_charlie} quello lungo l'asse  y e in fig.~\ref{fig: assixy_vicon_charlie} l'insieme dei due. Lungo l'asse x osserviamo che la misura ottenuta dalle ancore si avvicina maggiormente a quella del Vicon in un primo tratto, dove spesso è molto simile alla stima di AMCL, mentre nella sezione centrale del tracciato tende ad allontanarsi dai valori reali, cosa che AMCL non fa, per riavvicinarsi nella parte finale. Da ciò, si deduce che AMCL segua meglio la posizione vera. Inoltre notiamo che gli ``errori'' di misura rispetto al ground truth si trovano spesso in verso opposto nei due casi: UWB sembra tendere a dare una misura leggermente più grande, mentre la stima di AMCL sottostima leggermente il valore lungo l'asse x. La stessa cosa non accade nel tracciato lungo l'asse y: qua entrambe le uscite in analisi sovrastimano la misura effettiva fornita dal Vicon. In fig.~\ref{fig: asse_y_vicon_charlie} è infatti evidente la presenza dell'offset sistematico sopra citato, che possiamo affermare con più sicurezza aggirarsi attorno ai \SI{18/20}{\centi \metre} in condizioni statiche e a traiettoria lineare, mentre aumenta nei momenti in cui le velocità sono più sostenute e/o il percorso più complesso, come evidenziato nel tratto compreso tra \SI{50}{\second} e \SI{100}{\second} e tra \SI{125}{\second} e \SI{160}{\second}. Per di più, non è più vera nemmeno l'affermazione che la stima si avvicina maggiormente al valore reale: in un primo tratto, fino a \SI{130}{\second}, UWB è chiaramente più vicino al valore del Vicon, ma si ha una inversione nella seconda parte, dove pare che la stima data dall'algoritmo di navigazione riesca a seguire meglio quelle che sono le misure reali, coerentemente a quanto accade anche lungo l'asse x.
+
+\vspace{0.5cm}
+Sempre nell'ottica del confronto, abbiamo deciso di effettuare la stessa analisi anche per quanto riguarda l'heading, come mostrato in fig.~\ref{fig: heading_vicon_charlie}. `E evidente che, per quanto concerne l'orientazione del veicolo, il sistema Pozyx ha performance ridotte rispetto a quelle della stima con AMCL: vediamo infatti che quest'ultimo segue molto bene l'angolo fornito dal Vicon, a meno di un piccolo errore, mentre il valore derivante dalle UWB, che è ottenuto come \verb*|atan_2| tra le posizioni relative delle due tag e per questo piuttosto soggetto a errori, presenta un offset di misura maggiore lungo tutto il tracciato, il che si riflette inevitabilmente in un errore di egual misura sull'orientazione fornita all'STM per l'algoritmo di guida, calcolata con la stessa procedura di quella effettuata da noi coi valori grezzi delle posizioni delle due tag, ma utilizzando di questi ultimi le versioni filtrate con un filtro a media mobile. Nonostante un maggiore errore, notiamo comunque una coerenza nell'andamento dell'heading, segno che tale offset è più legato ad errori legati ai limiti fisici del sistema Pozyx, anche in correlazione all'ambiente indoor e ai disturbi presenti in esso, che non alle scelte di come ricavare l'heading.
+
+\vspace{0.5cm}
+Per maggiore chiarezza, riportiamo anche i grafici relativi agli errori lungo i due assi separatamente e alla norma dell'errore per tutta la durata del percorso. In fig.~\ref{fig: uwbvic_err_vicon_charlie} abbiamo l'errore tra UWB e il ground--truth, in fig.~\ref{fig: amclvic_err_vicon_charlie} quello tra la stima di navigazione e il Vicon (ground--truth) e infine in fig.~\ref{fig: amcluwb_err_vicon_charlie} abbiamo per completezza deciso di mostrare anche l'errore tra i due sistemi a confronto: UWB e AMCL. Da questi grafici è possibile osservare gli stessi fenomeni messi in luce analizzando gli andamenti lungo i vari assi. Interessante osservare quanto detto prima, ovvero la presenza di un offset costante lungo l'asse y, che è presente nella prima metà anche per il confronto tra le misure delle ancore e la stima, ma va ad attenuarsi successivamente. Questi due presentano un errore reciproco che non mostra una direzionalità precisa. Lungo l'asse y, all'inizio si trovano valori prettamente negativi e successivamente positivi: probabilmente questa inversione è legata ad un cambio di direzione di moto del veicolo lungo l'asse y, come si può verificare studiando il percorso seguito, che si rispecchia nell'inversione del segno dell'errore. Per l'asse x si ha invece una maggiore oscillazione attorno allo 0 lungo tutto il grafico.
+
+Passando invece agli errori rispetto al ground--truth fornito dal sistema Vicon, si vede nuovamente l'offset di misura, soprattutto per quanto riguarda quelle lungo l'asse y del \verb|map frame|.
 
 \begin{figure}[] 
 	\centering    
@@ -916,7 +939,7 @@ Come prima cosa, abbiamo verificato il tracciato registrato con 3 diversi metodi
 \begin{figure}[] 
 	\centering    
 	\includegraphics[height=.3\textheight]{grafici_stanzavolo_vicon/figure19.pdf}
-	\caption{Distribuzione dell'errore tra posizione data da AMCL e dal Vicon (ground truth) }
+	\caption{Distribuzione dell'errore tra posizione data da AMCL e dal Vicon (ground truth)}
 	\label{fig: err_amclvic_sphere_vicon_charlie}
 \end{figure}
 
