@@ -66,9 +66,8 @@ for i = 1:length(time_anim)
 	
 	%end stuff
 	hold off
-	xlim([0, 5])
-	ylim([0.5, 3.5])
 	axis equal
+	axis([0, 5.5, 0.5, 3.5])
 	grid on
 	title_str = sprintf("Animazione, tempo: %5.2f s di %5.2f ", time_now, time_end);
 	title(title_str)

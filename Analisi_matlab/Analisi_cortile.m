@@ -95,6 +95,30 @@ amcl_heading(:,2) = quat2yaw_array(amcl_pose_quat(:,2:end));
 initialpose_heading = initialpose_quat(:,1:2);  % cosi` mi copio il vettore tempo
 initialpose_heading(:,2) = quat2yaw_array(initialpose_quat(:,2:end));
 
+%% Ancore e distanze 
+
+anchor0_uwb = [ 0.0, 0.0,  0.0];
+anchor1_uwb = [0.0, 6.244, 0.0];
+anchor2_uwb = [15.010, -0.227, 0.0];
+anchor3_uwb = [4.3140, 3.2100, 1.302];
+
+% distanze misurate con uwb
+r01_uwb = norm(anchor1_uwb -anchor0_uwb, 2);
+r02_uwb = norm(anchor2_uwb -anchor0_uwb, 2);
+r03_uwb = norm(anchor3_uwb -anchor0_uwb, 2);
+r12_uwb = norm(anchor2_uwb -anchor1_uwb, 2);
+r13_uwb = norm(anchor3_uwb -anchor1_uwb, 2);
+r23_uwb = norm(anchor3_uwb -anchor2_uwb, 2);
+
+% distanze manuali
+r01 = 6.48;
+r02 = 15.20;
+r03 = 5.52;
+r12 = 16.52;
+r13 = 5.63;
+r23 = 11.50;
+
+
 %% tracciato
 
 axis_lim_full = [-10, 13, -12, 13];		% per vedere tutta la mappa
@@ -156,18 +180,11 @@ title('Andamento su asse y')
 %% orientation - Heading
 figure(30)
 clf
-plot(stm_or(:,1),	-stm_or(:,2) * 180/pi,		'c',	'DisplayName', 'stm')
+plot(stm_or(:,1),	(-stm_or(:,2)+pi) * 180/pi,		'c',	'DisplayName', 'stm')
 hold on
-plot(tag_center_heading(:,1),	unwrap(tag_center_heading(:,2))* 180/pi,	'b',	'DisplayName', 'tag center')
-plot(amcl_heading(:,1), unwrap(amcl_heading(:,2) -2*pi)* 180/pi, 'r', 'DisplayName', 'amcl')
-
-hold off
-axis tight
-grid on
-xlabel('Time [s]')
-ylabel('heading [deg]')
-legend('Location', 'Best')
-title('Orientazione')
+plot(tag_center_heading(:,1),	unwrap(tag_center_heading(:,2)+2*pi)* 180/pi,	'b',	'DisplayName', 'tag center')
+% plot(amcl_heading(:,1), unwrap(amcl_heading(:,2) -2*pi)* 180/pi, 'r', 'DisplayName', 'amcl')
+plot(amcl_heading(:,1), unwrap(amcl_heading(:,2))* 180/pi, 'r', 'DisplayName', 'amcl')
 
 %% animation
 % animate_charlie_cortile

@@ -9,8 +9,8 @@ addpath('files_bag_mat')
 
 %% scegliere quale file analizzare:
 
-filename = 'uwbvicon_confronto0611.mat';
-% filename = 'uwbvicon_confronto0615.mat';
+% filename = 'uwbvicon_confronto0611.mat';
+filename = 'uwbvicon_confronto0615.mat';
 
 %% Estrazione variabili
 
@@ -81,7 +81,7 @@ else
 	% rimuovo variabili temporanee
 	clear temp_bag bag
 	
-	save('uwbvicon_confronto.mat')
+	save(filename)
 	
 end
 
@@ -100,15 +100,37 @@ tag_f_yaw	= tagspos2yaw(tag0_f_pos, tag1_f_pos); % Non mi torna questo - !!
 [tag0_vicon, tag1_vicon] = tag_vicon(charlie_vicon_pos, charlie_vicon_or);
 
 % calcolo errore
-[err0_array, err0_norm] = errore_tag(tag0_f_pos, tag0_vicon);
+[err0_array, err0_norm] = errore_tag(tag0_pos, tag0_vicon);
 err0_arr_normato = err0_array; % cosi` da copiare il tempo
 err0_arr_normato(:,2:4) = err0_array(:,2:4)./err0_norm(:,2);
 [pos_quiver_sync0, delta_quiver_sync0] = sync_vicon_tag(tag0_vicon, tag0_pos);
 
-[err1_array, err1_norm] = errore_tag(tag1_f_pos, tag1_vicon);
+[err1_array, err1_norm] = errore_tag(tag1_pos, tag1_vicon);
 err1_arr_normato = err1_array; % cosi` da copiare il tempo
 err1_arr_normato(:,2:4) = err1_array(:,2:4)./err1_norm(:,2);
 [pos_quiver_sync1, delta_quiver_sync1] = sync_vicon_tag(tag1_vicon, tag1_pos);
+
+%% stats errore:
+clc
+% tag0
+fprintf(['tag0 x media:', num2str(mean(err0_array(:,2))), ... 
+	' stdcov ', num2str(std(err0_array(:,2))) , '\n']  )
+
+fprintf(['tag0 y media:', num2str(mean(err0_array(:,3))), ... 
+	' stdcov ', num2str(std(err0_array(:,3))) , '\n']  )
+
+fprintf(['tag0 norm:   ', num2str(mean(err0_norm(:,2))), ... 
+	'  stdcov ', num2str(std(err0_norm(:,2))) , '\n']  )
+
+% tag1
+fprintf(['tag1 x media:', num2str(mean(err1_array(:,2))), ... 
+	' stdcov ', num2str(std(err1_array(:,2))) , '\n']  )
+
+fprintf(['tag1 y media:', num2str(mean(err1_array(:,3))), ... 
+	' stdcov ', num2str(std(err1_array(:,3))) , '\n']  )
+
+fprintf(['tag1 norm:   ', num2str(mean(err1_norm(:,2))), ... 
+	'  stdcov ', num2str(std(err1_norm(:,2))) , '\n']  )
 
 %% plot check del sistema vicon
 % figure(200)
@@ -163,28 +185,49 @@ err1_arr_normato(:,2:4) = err1_array(:,2:4)./err1_norm(:,2);
 % ylabel('Posizione tag0 [m]')
 % title('Dati raw di tag0')
 
-% confronto tag0, tag0_f  e tag0vicon (su x e y)
+% confronto tag0, tag0_f  e tag0vicon (su x)
 figure(1)
 clf
 plot(tag0_pos(:,1),		tag0_pos(:,2), 'DisplayName', 'x raw', 'Linewidth', 0.2)
 hold on
-plot(tag0_pos(:,1),		tag0_pos(:,3), 'DisplayName', 'y raw', 'Linewidth', 0.2)
+% plot(tag0_pos(:,1),		tag0_pos(:,3), 'DisplayName', 'y raw', 'Linewidth', 0.2)
 
 plot(tag0_f_pos(:,1),	tag0_f_pos(:,2), 'DisplayName', 'x media', 'Linewidth', 1)
-plot(tag0_f_pos(:,1),	tag0_f_pos(:,3), 'DisplayName', 'y media', 'Linewidth', 1)
+% plot(tag0_f_pos(:,1),	tag0_f_pos(:,3), 'DisplayName', 'y media', 'Linewidth', 1)
 
-plot(tag0_vicon(:,1),	tag0_vicon(:,2), 'DisplayName', 'x vicon', 'Linewidth', 1.2)
-plot(tag0_vicon(:,1),	tag0_vicon(:,3), 'DisplayName', 'y vicon', 'Linewidth', 1.2)
+plot(tag0_vicon(:,1),	tag0_vicon(:,2), 'DisplayName', 'x vicon', 'Linewidth', 2)
+% plot(tag0_vicon(:,1),	tag0_vicon(:,3), 'DisplayName', 'y vicon', 'Linewidth', 1.2)
 axis tight
 hold off
 grid on
 xlabel('Time [s]')
 ylabel('Posizioni [m]')
 legend
-title('Confronto tag0')
+title('Confronto tag0 x')
 
-% errore su tag0
+% confronto tag0, tag0_f  e tag0vicon (su y)
 figure(2)
+clf
+% plot(tag0_pos(:,1),		tag0_pos(:,2), 'DisplayName', 'x raw', 'Linewidth', 0.2)
+plot(tag0_pos(:,1),		tag0_pos(:,3), 'DisplayName', 'y raw', 'Linewidth', 0.2)
+hold on
+% plot(tag0_f_pos(:,1),	tag0_f_pos(:,2), 'DisplayName', 'x media', 'Linewidth', 1)
+plot(tag0_f_pos(:,1),	tag0_f_pos(:,3), 'DisplayName', 'y media', 'Linewidth', 1)
+
+% plot(tag0_vicon(:,1),	tag0_vicon(:,2), 'DisplayName', 'x vicon', 'Linewidth', 1.2)
+plot(tag0_vicon(:,1),	tag0_vicon(:,3), 'DisplayName', 'y vicon', 'Linewidth', 2)
+axis tight
+hold off
+grid on
+xlabel('Time [s]')
+ylabel('Posizioni [m]')
+legend
+title('Confronto tag0 y')
+
+
+
+% errore su tag0 
+figure(3)
 clf
 plot(err0_array(:,1),		err0_array(:,2), 'DisplayName', 'x', 'Linewidth', 0.5)
 hold on
@@ -198,28 +241,50 @@ ylabel('Errore vicon - uwb [m]')
 legend
 title('Errori su tag0')
 
-% confronto tag1, tag1_f  e tag1vicon (su x e y)
-figure(3)
+
+
+% confronto tag1, tag1_f  e tag1vicon (su x)
+figure(4)
 clf
 plot(tag1_pos(:,1),		tag1_pos(:,2), 'DisplayName', 'x raw', 'Linewidth', 0.2)
 hold on
-plot(tag1_pos(:,1),		tag1_pos(:,3), 'DisplayName', 'y raw', 'Linewidth', 0.2)
+% plot(tag1_pos(:,1),		tag1_pos(:,3), 'DisplayName', 'y raw', 'Linewidth', 0.2)
 
 plot(tag1_f_pos(:,1),	tag1_f_pos(:,2), 'DisplayName', 'x media', 'Linewidth', 1)
-plot(tag1_f_pos(:,1),	tag1_f_pos(:,3), 'DisplayName', 'y media', 'Linewidth', 1)
+% plot(tag1_f_pos(:,1),	tag1_f_pos(:,3), 'DisplayName', 'y media', 'Linewidth', 1)
 
-plot(tag1_vicon(:,1),	tag1_vicon(:,2), 'DisplayName', 'x vicon', 'Linewidth', 1.2)
-plot(tag1_vicon(:,1),	tag1_vicon(:,3), 'DisplayName', 'y vicon', 'Linewidth', 1.2)
+plot(tag1_vicon(:,1),	tag1_vicon(:,2), 'DisplayName', 'x vicon', 'Linewidth', 2)
+% plot(tag1_vicon(:,1),	tag1_vicon(:,3), 'DisplayName', 'y vicon', 'Linewidth', 1.2)
 axis tight
 hold off
 grid on
 xlabel('Time [s]')
 ylabel('Posizioni [m]')
 legend
-title('Confronto tag1')
+title('Confronto tag1 x')
+
+% confronto tag1, tag1_f  e tag1vicon (su y)
+figure(5)
+clf
+% plot(tag1_pos(:,1),		tag1_pos(:,2), 'DisplayName', 'x raw', 'Linewidth', 0.2)
+plot(tag1_pos(:,1),		tag1_pos(:,3), 'DisplayName', 'y raw', 'Linewidth', 0.2)
+hold on
+
+% plot(tag1_f_pos(:,1),	tag1_f_pos(:,2), 'DisplayName', 'x media', 'Linewidth', 1)
+plot(tag1_f_pos(:,1),	tag1_f_pos(:,3), 'DisplayName', 'y media', 'Linewidth', 1)
+
+% plot(tag1_vicon(:,1),	tag1_vicon(:,2), 'DisplayName', 'x vicon', 'Linewidth', 1.2)
+plot(tag1_vicon(:,1),	tag1_vicon(:,3), 'DisplayName', 'y vicon', 'Linewidth', 2)
+axis tight
+hold off
+grid on
+xlabel('Time [s]')
+ylabel('Posizioni [m]')
+legend
+title('Confronto tag1 y')
 
 % errore su tag1
-figure(4)
+figure(6)
 clf
 plot(err1_array(:,1),		err1_array(:,2), 'DisplayName', 'x', 'Linewidth', 0.5)
 hold on
@@ -235,7 +300,7 @@ title('Errori su tag1')
 
 
 % confronto orientazione vicon e stm
-figure(5)
+figure(7)
 clf
 plot(stm_or(:,1),	(unwrap(-stm_or(:,2))+2*pi) * 180/pi, 'Linewidth', 1, 'DisplayName', 'stm')
 hold on
@@ -344,7 +409,7 @@ xlabel('x [m]')
 ylabel('y [m]')
 title('Quiver su tag1')
 
-% tag1
+% tag0 e tag1
 figure(402)
 clf
 quiver(	pos_quiver_sync0(:,2),		pos_quiver_sync0(:,3), ...
@@ -353,6 +418,7 @@ hold on
 quiver(	pos_quiver_sync1(:,2),		pos_quiver_sync1(:,3), ...
 		delta_quiver_sync1(:,2),	delta_quiver_sync1(:,3) , 'r', 'Linewidth', 1, 'DisplayName', 'err tag1 orient')
 axis equal
+axis([1.6,3.2,1.7,3])
 hold off
 grid on
 legend
