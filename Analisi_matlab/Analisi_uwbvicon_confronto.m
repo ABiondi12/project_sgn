@@ -9,8 +9,8 @@ addpath('files_bag_mat')
 
 %% scegliere quale file analizzare:
 
-% filename = 'uwbvicon_confronto0611.mat';
-filename = 'uwbvicon_confronto0615.mat';
+filename = 'uwbvicon_confronto0611.mat';
+% filename = 'uwbvicon_confronto0615.mat';
 
 %% Estrazione variabili
 
