@@ -1,9 +1,9 @@
-\input{structure}
+\input{structure.tex}
 \graphicspath{{./figs/}}
 
 \begin{document}
 	
-\input{titlepage}
+\input{titlepage.tex}
 
 % pagina vuota e indice
 \newpage\null\thispagestyle{empty}\newpage
@@ -26,8 +26,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % introduzione
 \section*{Introduzione}
-L'obiettivo di questo progetto \`e stato quello di migliorare lo stato del veicolo, partendo dal risolvere le molte problematiche accumulatesi nel passaggio di 
-testimone tra i gruppi precedenti.
+L'obiettivo di questo progetto \`e stato quello di migliorare lo stato del veicolo, partendo dal risolvere le molte problematiche accumulatesi nel passaggio di testimone tra i gruppi precedenti.
 Lo scopo principale dell'intero sistema, composto dal veicolo affiancato da una serie di sensori, \`e quello di riuscire a localizzarsi all'interno di una mappa 
 preacquisita e di navigare al suo interno.
 La posizione \`e ottenuta seguendo due metodologie tra loro complementari: da una parte viene sfruttato un lidar montato sul corpo del veicolo, che permette di 
@@ -36,7 +35,7 @@ invece performance migliori in ambienti esterni e privi di ostacoli, sui quali i
 \`E importante sottolineare fin da subito che, tramite il lidar, non viene effettuata una SLAM vera e propria bens\`i uno Scan Matching: infatti, l'algoritmo di 
 localizzazione in condizioni nominali prende come posa del veicolo quella ottenuta dallo scan matcher. 
 Quest'ultima viene quindi periodicamente confrontata con quella misurata dal sistema UWB, la quale non rappresenta, in condizioni standard, un indice della posizione 
-del veicolo. Solo nel momento in cui i due valori, restituiti da Lidar e UWB, differiscono di molto, allora l'ultima posa ottenuta dalle antenne viene assegnata al 
+del veicolo. Solo nel momento in cui i due valori, restituiti da lidar e UWB, differiscono di molto, allora l'ultima posa ottenuta dalle antenne viene assegnata al 
 veicolo stesso come sua posa attuale.
 In questo modo si ottiene un sistema robusto alla perdita del lidar, che pu\`o verificarsi a seguito di una rottura del sensore o nel momento in cui sono esplorati 
 ambienti dove le condizioni non permettono di avere misure affidabili.
@@ -46,11 +45,11 @@ ambienti dove le condizioni non permettono di avere misure affidabili.
 Molto sinteticamente andiamo a descrivere il funzionamento di Charlie. 
 In primis viene utilizzato il pacchetto hector-slam allo scopo di pre-acquisire e realizzare una mappa dell'ambiente nel quale il veicolo dovrà poi muoversi. 
 Solo in un secondo momento, utilizzando questa mappa, avrà luogo la fase di moto, durante la quale il sistema riesce a localizzarsi nell'ambiente attraverso 
-l'algoritmo Adaptive Monte Carlo Localization, nel quale ha luogo il confronto tra le misure acquisite dal lidar e le feature della mappa stessa. 
+l'algoritmo Adaptive Monte Carlo Localization (AMCL) nel quale ha luogo il confronto tra le misure acquisite dal lidar e le feature della mappa stessa. 
 
-Dato che questo algoritmo può convergere su una posa del veicolo non corretta a causa, per esempio, di ambiguità  tra simmetrie della mappa 
+Dato che questo algoritmo può convergere su una posa del veicolo non corretta a causa, per esempio, di ambiguità  tra simmetrie della mappa, 
 il sistema UWB fa sì che venga reinizializzato l'algoritmo AMCL. 
-In questo utilizzo quindi il sistema UWB serve solamente come check.
+In questo utilizzo quindi il sistema UWB serve solamente come check di posizione.
 
 \subsection*{Come ottenere codice}
 Il codice sviluppato è disponibile nella repository \href{https://github.com/ABiondi12/project_sgn}{github} e sul
@@ -148,11 +147,11 @@ I vari convertitori di tensione sono tutti installati su una PCB, posizionata al
 Altro componente fondamentale è il convertitore usb-seriale ``TTL-232R-PCB'' prodotto da 
 ``Future Technology Devices International Ltd''. 
 Questo consente di avere una linea di comunicazione seriale con la STM, attraverso la quale trasmettere informazioni necessarie all'algoritmo di navigazione.
-Per conoscere quali informazioni vengono trasmesse, rifarsi alla sez.~\ref{sez:L'esperimento}, mentre per sapere la funzione dei vari pin, si consiglia di 
+Per conoscere quali informazioni vengono trasmesse, rifarsi alla sez.~\ref{sez:Ambiente ROS creato}, mentre per sapere la funzione dei vari pin, si consiglia di 
 consultare il datasheet o, più comodamente, di rifarsi alla fig.~\ref{fig: pinout usbserial}. 
 Per migliorare la semplicità di utilizzo ed evitare di incorrere in errori legati alle comunicazioni seriali, è stato associato al dispositivo ``TTL-232R-PCB'' 
 il symlink \texttt{ttyUSBserial}, in modo tale che l’ordine di inizializzazione delle porte usb della raspberry non influenzi in alcun modo il nome del collegamento 
-(per esempio: \texttt{ttyUSB0} oppure  \texttt{ttyUSB1})
+(per esempio: \texttt{ttyUSB0} oppure  \texttt{ttyUSB1}).
 Per conoscere i passaggi necessari alla realizzazione di tale symlink, si riporta la procedura dentro il file \texttt{/Info/renaming\_ttyUSB.txt}, 
 fornito insieme al codice.
 
@@ -162,7 +161,8 @@ sulla quale è presente il circuito adibito allo switch di sistema di controllo 
 alternativamente alla STM, un radiocomando per il controllo di sterzo e acceleratore.
 Questa PCB, visibile in fig.~\ref{fig:pcb_controlli}, è dotata infatti di un led di stato verde che notifica quando l’alimentazione dei motori è attiva; 
 sono inoltre presenti due jumper che permettono di scegliere tra STM e radiocomando come sorgente del controllo per sterzo e acceleratore. 
-Sono sempre disponibili all’utente i contatti per potersi connettere e leggere quanto prodotto dal radiocomando.
+Sono sempre disponibili all’utente i contatti per potersi connettere e leggere quanto prodotto dal radiocomando. 
+La PCB di fig.~\ref{fig:pcb_controlli} ha quindi i seguenti componenti:
 
 \begin{enumerate}
     \item Connettore per il ricevitore del radiocomando;
@@ -183,12 +183,12 @@ Lo schema completo è mostrato in fig.~\ref{fig:schema_completo}.
 \label{sez: primo collegamento a raspberry}
 
 Per iniziare a lavorare sulla raspberry in ssh, modalità richiesta per gli esperimenti, è necessario impostare le connessioni WiFi a cui la raspberry si
-connette automaticamente all'avvio. Per comodità di utilizzo, suggeriamo di collegare la raspberry ad un monitor tramite un cavo microHDMI-HDMI e una 
-tastiera/mouse usb.
+connette automaticamente all'avvio. 
+Per comodità di utilizzo in questa prima fase, suggeriamo di collegare la raspberry ad un monitor tramite un cavo microHDMI-HDMI e una tastiera/mouse usb.
 
 Tutto il necessario da sapere riguardo i passaggi per il primo collegamento a raspberry si trovano nel file: \texttt{Info/README\_wifi\_settings.txt}, dei quali 
 riportiamo qui un breve riassunto.
-Come prima cosa è va impostato il WiFi: il file con le varie impostazioni WiFi, chiamato \texttt{interfaces}, si trova in \texttt{/etc/network/}. Per editarlo:
+Come prima cosa va impostato il WiFi: il file con le varie impostazioni WiFi, chiamato \texttt{interfaces}, si trova in \texttt{/etc/network/}. Per editarlo:
 \begin{lstlisting}[style=bash]
 	sudo nano /etc/network/interfaces
 \end{lstlisting}
@@ -224,13 +224,12 @@ monte dell'apporto di qualsiasi modifica o aggiunta, in quanto ciò consentirà 
 
 \subsection{Ros master/slave}
 \label{sez: Ros master/slave}
-Al fine di non sovraccaricare la raspberry e di avere un'interazione fluida con rviz e altri tool grafici di ros, è fortemente consigliato l'utilizzo di ros su 
+Al fine di non sovraccaricare la raspberry e di avere un'interazione fluida con rviz e altri tool grafici di ROS, è fortemente consigliato l'utilizzo di ROS su 
 altri computer in parallelo, delegando loro l'esecuzione dei task più costosi a livello computazionale (come appunto quelli grafici). 
 Sono riportati di seguito i passaggi utilizzati da noi per impostare l'intero sistema, al fine di facilitare i nuovi utenti; per saperne di più consultare la 
 \href{https://wiki.ros.org/ROS/Tutorials/MultipleMachines}{guida ufficiale}. 
 
-Dopo svariate prove, siamo giunti alla conclusione che, per arrivare ad avere una interfaccia per utente sufficientemente fluida ed efficace, quello che dovevamo 
-fare era avere il RosMaster su raspberry e utilizzare invece il pc per i tool grafici, esempio rviz o rqt. 
+Descriviamo adesso la procedura per impostare il RosMaster su raspberry e utilizzare invece il pc per i tool grafici, esempio rviz o rqt. 
 Per farlo, dobbiamo ottenere l'ip dei nostri dispositivi: è possibile farlo attraverso vari comandi (come \texttt{ifconfig} o \texttt{ip address}) e generalmente 
 risulterà essere qulcosa del tipo: \verb|192.168.43.247|. 
 Ipotizziamo quindi che l'ip della raspberry sia \texttt{IPrasp} e quello del pc \texttt{IPpc}. 
@@ -252,10 +251,10 @@ Ripetiamo l'operazione su raspberry:
 \end{lstlisting}
 e quindi:
 \begin{lstlisting}[style=xml]
-	% # ROS MASTER SU RASPBERRY, LATO RASPBERRY
-	% export ROS_MASTER_URI=http://localhost:11311/
-	% export ROS_HOSTNAME=IPrasp
-	% export ROS_IP=IPrasp
+	# ROS MASTER SU RASPBERRY, LATO RASPBERRY
+    export ROS_MASTER_URI=http://localhost:11311/
+	export ROS_HOSTNAME=IPrasp
+	export ROS_IP=IPrasp
 \end{lstlisting}
 
 A questo punto, è sufficiente riavviare le shell dei terminali che si vogliono utilizzare: sarà possibile in essi lanciare i nodi, installati su pc, 
@@ -272,13 +271,13 @@ direttamente dal pc, ma sfruttando il master su raspberry.
 
 Il lidar utilizzato su Charlie è un RPlidar A3 prodotto da Slamtec, di cui documentazione e caratteristiche sono disponibili sulla
 \href{https://www.slamtec.com/en/Lidar/A3}{pagina} del produttore.
-Per quanto riguarda il codice, abbiamo scelto di utilizzare il \href{https://wiki.ros.org/rplidar}{pacchetto} ros sviluppato proprio da Slamtec. 
+Per quanto riguarda il codice, abbiamo scelto di utilizzare il \href{https://wiki.ros.org/rplidar}{pacchetto} ROS sviluppato proprio da Slamtec. 
 Alcune accortezze hardware sono state:
 
 \begin{itemize}
 	\item utilizzare un cavo micro usb di buona qualità. Infatti, questo cavo è responsabile sia dell'alimentazione del motore brushless sia della seriale di 
 	comunicazione. Ci siamo accorti che, se il voltaggio in ingresso al lidar cala sotto i \SI{4.7}{\volt}, la comunicazione seriale si interrompe e non è più possibile 
-	sfruttare i nodi ros di RPlidar.
+	sfruttare i nodi ROS di RPlidar.
 
 	\item orientare correttamente il sistema di riferimento del lidar, in quanto le rappresentazioni nel datasheet sono invertite di $\pi$. 
 	L'asse x ($\vartheta = 0$), infatti, coincide con l'uscita del cavo dalla struttura principale, come si può vedere in fig.~\ref{fig: rplidar axis}.
@@ -288,13 +287,12 @@ Alcune accortezze hardware sono state:
 \end{itemize}
 
 Per evitare, di nuovo, che l'ordine di inizializzazione delle porte usb della raspberry possa influenzare il nome del collegamento (per esempio: 
-\texttt{ttyUSB0} oppure \texttt{ttyUSB1}) abbiamo realizzato anche per questo dispositivo il symlink \texttt{ttyUSBlidar}:ciò fa sì che la porta seriale 
-del lidar sia sempre chiamata \texttt{ttyUSBlidar}. 
+\texttt{ttyUSB0} oppure \texttt{ttyUSB1}) abbiamo creato anche per questo dispositivo un symlink: ciò fa sì che la porta seriale del lidar sia sempre chiamata \texttt{ttyUSBlidar}. 
 Per realizzare tale symlink, consultare la procedura riportata nel file \texttt{/Info/renaming\_ttyUSB.txt}.
 
-In ambiente ros viene eseguito il lidar andando a lanciare il nodo \texttt{rplidarNode}, il quale pubblica sul topic \texttt{/scan}. 
+In ambiente ROS viene eseguito il lidar andando a lanciare il nodo \texttt{rplidarNode}, il quale pubblica sul topic \texttt{/scan}. 
 \`E stato sviluppato il file di lancio \texttt{rplidar\_a3.launch} con i parametri opportuni per il nostro sistema.  
-Per quanto riguarda l'utilizzo del lidar, non è stato necessario alcun sviluppo software in quanto il pacchetto ros risulta già completo.
+Per quanto riguarda l'utilizzo del lidar, non è stato necessario alcun sviluppo software dato che il pacchetto ROS risulta già completo.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -313,6 +311,7 @@ Per quanto riguarda l'utilizzo del lidar, non è stato necessario alcun sviluppo
 Il Pozyx è un sistema di localizzazione alternativo al GPS, basato sulla tecnologia ultra-wideband
 (UWB). In breve, si tratta di una tecnica per la trasmissione e la ricezione di segnali sviluppata in modo tale che vengano sfruttati impulsi di energia 
 a radiofrequenza aventi durata temporale molto ridotta (nanosecondi), con conseguente banda spettrale ampia.
+
 Nel sistema Pozyx si possono distinguere due entità, ciascuna con le proprie peculiarità: le ancore e le tag.
 La configurazione base prevede l'utilizzo 4 ancore, che fungono da dispositivi fissi, e una tag, che rappresenta il dispositivo mobile.
 Grazie all'utilizzo di un algoritmo di triangolazione, la tag si può localizzare rispetto alle ancore. Teoricamente, la localizzazione tramite tecnologia 
@@ -320,51 +319,49 @@ ultra-wideband permette di ottenere un posizionamento con una accuratezza al cen
 in ambienti indoor e in presenza di ostacoli di natura non metallica, condizioni sfavorevoli per il sistema (che presenta 
 migliori performance in ambienti aperti ed ampi, privi di oggetti metallici e ostacoli sui quali possano verificarsi fenomeni di scatterning 
 del segnale inviato). 
-Sia all'interno delle tag che delle ancore è presente un microcontrollore, nel quale vengono eseguiti la maggior parte dei task richiesti,
-come gli algoritmi di triangolazione e autocalibrazione. A lui è demandata anche la gestione dell’interfaccia con dispositivi esterni
-(come Arduino).
-Solo nel caso delle tag, che per questo sono utilizzate come dispositivi mobili, sono presenti i seguenti sensori: un magnetometro, un giroscopio, un
-accelerometro e un sensore di pressione (altimetro). I dati dei sensori vengono utilizzati dal microcontrollore
-per la triangolazione e sono disponibili all’utente.
+
+Sia all'interno delle tag che delle ancore è presente un microcontrollore, nel quale vengono eseguiti la maggior parte dei task richiesti, come gli algoritmi di triangolazione e autocalibrazione. 
+A lui è demandata anche la gestione dell’interfaccia con dispositivi esterni (come Arduino).
+Solo nel caso delle tag, che per questo sono utilizzate come dispositivi mobili, sono presenti i seguenti sensori: un magnetometro, un giroscopio, un accelerometro e un sensore di pressione (altimetro). I dati dei sensori vengono utilizzati dal microcontrollore per la triangolazione e sono disponibili all’utente.
+
 Per quanto riguarda l'utilizzo di tale sistema di posizionamento, è necessario prima di tutto predisporre l'ambiente di lavoro.
-La prima cosa da fare è posizionare le ancore in modo tale che delimitino uno spazio entro il quale il sistema di localizzazione
-funzioni correttamente. Il miglior modo di disporle è quello di metterle in alto e sulla line-of-sight dell’utente: questo tipo di scelta
-aumenta la possibilità di ricevere un buon segnale, in quanto permette di limitare la presenza di possibili ostacoli. 
+La prima cosa da fare è posizionare le ancore in modo tale che delimitino uno spazio entro il quale il sistema di localizzazione funzioni correttamente. 
+Il miglior modo di disporle è quello di metterle in alto e sulla line-of-sight dell’utente: questo tipo di scelta aumenta la possibilità di ricevere un buon segnale, in quanto permette di limitare la presenza di possibili ostacoli. 
 Per un buon funzionamento e per ridurre il più possibile l'errore di posizionamento, è consigliato inoltre distribuire le ancore affinché tutte le 
 direzioni siano coperte.
-Nel caso, infatti, in cui gli ancoraggi si trovino su una linea retta, l'errore di posizionamento risultante sarebbe molto grande e potrebbero
-verificarsi ambiguità di posizione legate alla simmetria della configurazione.
+Nel caso, infatti, in cui gli ancoraggi si trovino su una linea retta, l'errore di posizionamento risultante sarebbe molto grande e potrebbero verificarsi ambiguità di posizione legate alla simmetria della configurazione.
 Per un buon funzionamento del sistema, è infine importante disporre le ancore verticalmente e con l’antenna UWB rivolta verso l’alto.
 
 Una volta predisposto l'ambiente di lavoro, si passa alla parte di comunicazione tra i vari agenti in gioco. Per tutte le operazioni che vengono richieste 
 tra le ancore e le tag, è necessario specificare tra quali dispositivi lavorare. 
 Con l'identificativo assegnato al campo \verb|remote_id|, si dichiara la tag o l'ancora sulla quale vogliamo usare le funzioni di registro. Nel caso (di default) 
-in cui questo sia settato al valore \verb|None|, verrà usata la tag locale, ovvero quella connessa al pc (su cui viene utilizzata la seriale).
-Presa ad esempio la funzione doRanging(destination, \verb|device_range|, \verb|remote_id=None|), essa effettua una misurazione della distanza tra i dispositivi
-i cui identificativi sono \verb|remote_id| e destination. Lasciando il valore di default per \verb|remote_id|, cioè \verb|None|, la distanza viene automaticamente
+in cui questo sia settato al valore \verb|None|, verrà usata la tag locale, ovvero quella connessa al pc (o meglio alla raspberry su cui viene utilizzata la seriale).
+Presa ad esempio la funzione \texttt{doRanging(destination, device\_range, remote\_id=None)}, essa effettua una misurazione della distanza tra i dispositivi
+i cui identificativi sono \verb|remote_id| e destination. 
+Lasciando il valore di default per \verb|remote_id|, cioè \verb|None|, la distanza viene automaticamente
 valutata tra il dispositivo connesso alla seriale del PC e il dispositivo il cui identificativo è destination. 
 Se si desidera, invece, che il ranging venga effettuato tra due diversi dispositivi della rete, basterà inserire l’opportuno valore di \verb|remote_id|.
 
 Nel nostro caso, questo aspetto risulta essere fondamentale nel momento in cui vengono prelevate le posizioni relative delle ancore nella configurazione corrente. 
 
-Con \verb|remote_id=None|, chiediamo di fatto alla tag connessa in seriale ad Arduino di fornirci le informazioni delle ancore, ovvero leggiamo sul suo chip i valori 
+Con \verb|remote_id=None|, chiediamo di fatto alla tag connessa in seriale alla Raspberry di fornirci le informazioni delle ancore, ovvero leggiamo sul suo chip i valori 
 relativi all'ancora richiesta (posizione, id...).
 Per questo motivo, ad ogni nuovo avvio del sistema è necessario salvare all'interno delle tag i valori di posizione più recenti delle ancore, ovvero gli ultimi 
 salvati all'interno delle ancore stesse al termine del processo di autocalibrazione.
 Affinché il sistema funzioni, è infatti necessario che ogni ancora abbia coscienza della propria posizione rispetto alle altre ancore: la procedura di 
 autocalibrazione è quella utilizzata a tale scopo.
-Per informazioni inerenti alla procedura adottata, vedere app.~\ref{sez:Autocalibrazione}. Per come è stati scritto l'algoritmo in questione, l'ancora 0 è quella 
+Per informazioni inerenti alla procedura adottata, vedere app.~\ref{sez:Autocalibrazione}. 
+Per come è stati scritto l'algoritmo in questione, l'ancora 0 è quella 
 la cui posizione fornisce l'origine del frame UWB che verrà costruito. 
-L'ancora 1 indica invece la direzione dell'asse y, ovvero le sue coordinate finali saranno \verb|(0, y1, 0)|, così come l'ancora 2 quella dell'asse x. La quarta 
-ancora, posizionata a una altezza diversa dalle altre 3 (che devono invece essece complanari), evidenzia infine la direzione dell'asse z.
+L'ancora 1 indica invece la direzione dell'asse y, ovvero le sue coordinate finali saranno \verb|(0, y1, 0)|, così come l'ancora 2 quella dell'asse x. 
+La quarta ancora, posizionata a una altezza diversa dalle altre 3 (che devono invece essere complanari), evidenzia infine la direzione dell'asse z.
 
-Infine, è importante verificare che siano assenti eventuali interferenze elettromagnetiche tra i dispositivi, le quali, specialmente se interposte tra le ancore, 
-possono rendere difficile la comunicazione tra i dispositivi della rete.
+Infine, è importante verificare che siano assenti eventuali interferenze elettromagnetiche tra i dispositivi, le quali, specialmente se interposte tra le ancore, possono rendere difficile la comunicazione tra i dispositivi della rete.
 
 Per quanto riguarda la componente software, sono stati utilizzati nodi custom basati sul modulo Python di PyPozyx, rispetto ai quali abbiamo apportato modifiche 
 per adattarli al nostro sistema. Per maggiori dettagli, vedere nella cartella:
 \begin{verbatim}
-	...\Workspace\src\charlie_pozyx\src\scripts\my_pozyx 
+	...\Workspace\src\charlie_pozyx\src
 \end{verbatim}
 dove all'interno di ciascun nodo è presente una breve descrizione del suo funzionamento e della sua utilità.
 
@@ -375,13 +372,12 @@ di malfunzionamenti nelle esecuzioni precedenti.
 \subsection{Modifiche al sistema Pozyx}
 \label{sez:Modifiche Pozyx}
 
-Partiamo per prima cosa parlando della risoluzione dell'errore in \verb|pos_pub_2_tag.py|. Questo nodo si occupa di pubblicare la posa delle due tag (posizione + quaternione) e sfrutta al suo interno 
-la funzione, sempre custom, \verb|doPos_pubtf|, all'interno della quale è fatto girare l'algoritmo \verb|doPositioning|. Tale algoritmo, a sua volta, ricava la posizione
-delle tag pozyx connesse in seriale. Come spiegato in \cite{ctesconistudio}, l'algoritmo \verb|doPositioning| viene eseguito utilizzando la modalità 
-\verb|POZYX_RANGE_PROTOCOL_PRECISION| e questa richiede l'utilizzo di molti sample. Per questo motivo, dato che il \verb|doPositioning| deve essere eseguito 
-in modo sequenziale prima sulla tag0, poi sulla tag1, poi nuovamente sulla tag0 e così via, si rende necessario l'inserimento di una pausa tra una esecuzione 
-e la successiva, per permettere all'algoritmo di terminare prima di essere lanciato nuovamente. In assenza di tali pause temporali, abbiamo infatti notato che 
-i risultati venivano corrotti: dopo l'aggiunta di tali intervalli, invece, le esecuzioni successive non si influenzano più a vicenda, come voluto.
+Partiamo per prima cosa parlando della risoluzione dell'errore in \verb|pos_pub_2_tag.py|. 
+Questo nodo si occupa di pubblicare la posa delle due tag (posizione + quaternione) e sfrutta al suo interno  la funzione, sempre custom, \verb|doPos_pubtf|, all'interno della quale è fatto girare l'algoritmo \verb|doPositioning|. 
+Tale algoritmo, a sua volta, ricava la posizione delle tag pozyx connesse in seriale. 
+Come spiegato in \cite{ctesconistudio}, l'algoritmo \verb|doPositioning| viene eseguito utilizzando la modalità \verb|POZYX_RANGE_PROTOCOL_PRECISION| e questa richiede l'utilizzo di molti sample. 
+Per questo motivo, dato che il \verb|doPositioning| deve essere eseguito  in modo sequenziale prima sulla tag0, poi sulla tag1, poi nuovamente sulla tag0 e così via, si rende necessario l'inserimento di una pausa tra una esecuzione e la successiva, per permettere all'algoritmo di terminare prima di essere lanciato nuovamente. 
+In assenza di tali pause temporali, abbiamo infatti notato che i risultati venivano corrotti: dopo l'aggiunta di tali intervalli, invece, le esecuzioni successive non si influenzano più a vicenda, come voluto.
 
 Durante il nostro lavoro, sono state poi riscontrate altre anomalie, corrette andando a modificare la gestione degli ID nell'esecuzione di alcune funzioni di \verb|positioning| del sistema Pozyx: qua è infatti necessario porre attenzione affinché chi è demandato di eseguirle, tra gli elementi del sistema, abbia al suo interno effettivamente tutte le informazioni corrette e aggiornate di cui necessita. 
 In parole pi\`u pratiche \`e necessario che il singolo tag abbia in memoria la posizione, in frame UWB, delle ancore da cui legge la distanza tra tag--ancora.
@@ -390,16 +386,13 @@ Per questo motivo, abbiamo agito in due modi: \textit{il primo} \`e l'aver aggiu
 \subsection{Autocalibrazione ancore Pozyx}
 \label{sez:Autocalibrazione}
 L'autocalibrazione si basa sullo script \texttt{python3} ``autocalibration\_ransac.py''. 
-Affinché possa funzionare, occorre per prima cosa avere quattro ancore correttamente alimentate ed un dispositivo Pozyx connesso, il quale servirà da comunicazione 
-seriale tra la rete Pozyx e l’utente. 
-Il dispositivo seriale può, a discrezione dell’utente, essere un’ancora o un tag. 
+Affinché possa funzionare, occorre per prima cosa avere quattro ancore correttamente alimentate ed un dispositivo (tag o ancora) Pozyx connesso, il quale servirà da comunicazione seriale tra la rete Pozyx e l’utente. 
 É possibile, se si desidera, effettuare una calibrazione manuale delle ancore, andando a settare la variabile \verb|autoCal| a \verb|True|. 
-In tal caso, si dovrà innanzitutto utilizzare un metro col quale misurare la distanza relativa tra le coppie di ancore della rete. Queste misure andranno poi 
-inserite manualmente  nelle opportune variabili \texttt{r01}, \texttt{r02}, \texttt{r03}, \texttt{r12}, \texttt{r13} ed \texttt{r23}, che rappresentano per l'appunto 
-le distanze tra le rispettive antenne.
-Per quanto riguarda invece la calibrazione automatica, lo script prevede una prima fase nella quale si ha l'acquisizione dei dati necessari, seguita dall'esecuzione 
-l’algoritmo ransac. Infine, viene utilizzato l’algoritmo algebrico per determinare le coordinate effettive delle ancore. 
-L’algoritmo ransac permette di rimuovere eventuali outliers dalle misurazioni delle distanze relative tra le antenne e fornisce, quindi, una stima della distanza 
+In tal caso, si dovrà innanzitutto utilizzare un metro col quale misurare la distanza relativa tra le coppie di ancore della rete. 
+Queste misure andranno poi inserite manualmente  nelle opportune variabili \texttt{r01}, \texttt{r02}, \texttt{r03}, \texttt{r12}, \texttt{r13} ed \texttt{r23}, che rappresentano per l'appunto le distanze tra le rispettive antenne.
+Per quanto riguarda invece la calibrazione automatica, lo script prevede una prima fase nella quale si ha l'acquisizione dei dati necessari, seguita dall'esecuzione dell’algoritmo ransac. 
+Infine, viene utilizzato l’algoritmo algebrico per determinare le coordinate effettive delle ancore. 
+L’algoritmo ransac permette di rimuovere eventuali outliers dalle misurazioni delle distanze relative tra le antenne e fornisce, quindi, una stima della distanza
 tra ciascuna coppia di ancore basata sui dati senza outliers.
 Nel corso della procedura di autocalibrazione vengono stampati sul terminale vari dati, tra cui i fondamentali sono:
 \begin{itemize}
@@ -414,11 +407,8 @@ Nel corso della procedura di autocalibrazione vengono stampati sul terminale var
 
 Una volta terminata la calibrazione, sia questa stata manuale o automatica, ciascuna ancora avrà
 salvato nella propria lista dei dispositivi le proprie coordinate, ossia potremmo dire che conoscerà le proprie coordinate. 
-Questi dati sono salvati permanentemente nella memoria flash.
-In una successiva fase di positioning è quindi buona norma che il dispositivo che si deve localiz-
-zare interroghi le ancore per conoscere la loro posizione e crei quindi, con queste informazioni, una propria lista interna dei
-dispositivi della rete.
-
+Questi dati sono salvati nella memoria flash, disponibili anche ad un nuovo avvio del sistema.
+In una successiva fase di positioning è quindi buona norma che il dispositivo che si deve localizzare interroghi le ancore per conoscere la loro posizione e crei quindi, con queste informazioni, una propria lista interna dei dispositivi della rete.
 
 Per maggiori approfondimenti, fare riferimento al dettagliato lavoro~\cite{ctesconistudio}.
 
@@ -428,15 +418,13 @@ Per maggiori approfondimenti, fare riferimento al dettagliato lavoro~\cite{ctesc
 
 Il sistema Vicon è un sistema molto accurato di motion capture. 
 In questo progetto è stato utilizzato per fornire un \textit{ground-truth} e un confronto all'algoritmo di navigazione, del quale possiamo così valutare la bontà. 
-In tal senso, quindi, abbiamo ritenuto opportuno sviluppare i nodi e i topic di dialogo con il sistema Vicon all'esterno del workspace della raspberry: infatti, 
-questi si trovano su pc nel pacchetto in \texttt{charlie\_remote}.
+In tal senso, quindi, abbiamo ritenuto opportuno sviluppare i nodi e i topic di dialogo con il sistema Vicon all'esterno del workspace della raspberry: questi si trovano su pc nel pacchetto in \texttt{charlie\_remote}.
 
 Per poter dialogare con il sistema Vicon, è sufficiente includere nel proprio \texttt{catkin\_ws} il pacchetto \texttt{vrpn\_client\_ros}, disponibile sulla 
 \href{https://wiki.ros.org/vrpn_client_ros}{wiki.ros} e scaricabile dalla \href{https://github.com/ros-drivers/vrpn_client_ros}{repo GitHub}.
-Questo pubblicherà la posa, il twist e l'accelerazione di ogni oggetto selezionato nel software di tracking (maggiori dettagli su quali oggetti selezionare 
-nelle sezioni \ref{sez:L'esperimento} e \ref{sez: Guida breve all'esperimento}).
+Questo pubblicherà la posa, il twist e l'accelerazione di ogni oggetto selezionato nel software di tracking (per maggiori dettagli vedere \ref{sez: lancio del sistema vicon}).
 
-\subsubsection*{Creazione oggetto}
+\subsubsection{Creazione oggetto}
 \label{sez:Sistema Vicon_oggetto}
 Nonostante siano già presenti gli oggetti necessari per il tracking di Charlie, riportiamo la procedura di creazione di un nuovo oggetto, la quale potrebbe essere
 utile in caso di modifiche ai marker o in altre circostanze. 
@@ -450,25 +438,12 @@ Sinteticamente è necessario procedere come segue:
 	
 	\item spostarsi nel tab Objects, assegnare un nome in basso e premere Create Object. L'applicazione assegna un sistema locale di default.
 	
-	\item Modificare il sistema locale premendo sugli assi o accedendo nelle proprietà dell'oggetto appena creato. Una volta soddisfatti, premere \texttt{Ctrl+S} 
-	per salvare l'oggetto.
+	\item Modificare il sistema locale premendo sugli assi o accedendo nelle proprietà dell'oggetto appena creato. Una volta soddisfatti, premere \texttt{Ctrl+S} per salvare l'oggetto.
 	
 	\item Premere di nuovo il pulsante di pausa e verificare che il tracciamento stia funzionando.
 \end{enumerate}
            
-\subsubsection*{Calibrazione}
-Per effettuare una calibrazione del sistema, necessaria di tanto in tanto affiché il motion capture non accumuli errori dovuti a cambiamenti delle condizioni 
-dell'ambiente o a piccoli spostamenti delle camere, è necessario utilizzare la wand. 
-La procedura richiesta si compone dei seguenti passi, riportati sempre in via sintetica. Per prima cosa, è necessario accedere all'applicazione 
-``Vicon Tracker 3.7.0 x64'' e collocarsi nella tab ``Calibrate''. 
-Premere poi su ``Start'' nella sezione ``CALIBRATE CAMERAS'', avviando così la procedura di autocalibrazione: spostare la wand con pattern circolari 
-all'interno della stanza assicurandosi di avere sempre più camere ``a vista''. 
-Il software interromperà da solo l'acquisizione dei dati una volta che questi risultino essere sufficienti.
-
-Adesso è necessario definire il sistema di riferimento. Per fare questo, andiamo a posizionare l'incrocio degli assi della wand nel punto in cui vogliamo 
-l'origine e gli assi stessi dell'oggetto in modo che siano allineati con gli assi-Vicon desiderati.
-Selezioniamo quindi il marker all'incrocio come origine e gli altri marker come asse x e asse y, completando così la calibrazione del sistema. 
-Nella stanza del volo del DII, il sistema di riferimento più usato è rappresentato in fig.~\ref{fig: stanza volo Vicon frame}.
+\subsubsection{Calibrazione}
 
 \begin{figure}[] 
 	\centering    
@@ -477,16 +452,29 @@ Nella stanza del volo del DII, il sistema di riferimento più usato è rappresen
 	\label{fig: stanza volo Vicon frame}
 \end{figure}
 
+Per effettuare una calibrazione del sistema, necessaria di tanto in tanto affinché il motion capture non accumuli errori dovuti a cambiamenti delle condizioni dell'ambiente o a piccoli spostamenti delle camere, è necessario utilizzare la wand. 
+La procedura richiesta si compone dei seguenti passi, riportati sempre in via sintetica. 
+Per prima cosa, è necessario accedere all'applicazione ``Vicon Tracker 3.7.0 x64'' e collocarsi nella tab ``Calibrate''. 
+Premere poi su ``Start'' nella sezione ``CALIBRATE CAMERAS'', avviando così la procedura di autocalibrazione: spostare la wand con pattern circolari all'interno della stanza assicurandosi di avere sempre più camere ``a vista''. 
+Il software interromperà da solo l'acquisizione dei dati una volta che questi risultino essere sufficienti.
+
+Adesso è necessario definire il sistema di riferimento. Per fare questo, andiamo a posizionare l'incrocio degli assi della wand nel punto in cui vogliamo l'origine e gli assi stessi dell'oggetto in modo che siano allineati con gli assi-Vicon desiderati.
+Selezioniamo quindi il marker all'incrocio come origine e gli altri marker come asse x e asse y, completando così la calibrazione del sistema. 
+Nella stanza del volo del DII, il sistema di riferimento più usato è rappresentato in fig.~\ref{fig: stanza volo Vicon frame}.
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \section{Ambiente ROS creato}
 \label{sez:Ambiente ROS creato}
-In questa sezione delineiamo l'ambiente ros realizzato. 
-Vista la naturale confusione che si era accumulata nei passaggi di testimone da gruppo a gruppo, abbiamo deciso di ricostruire l'ambiente ros da capo aggiornandolo da ros kinetic a ros melodic; questa scelta \`e venuta spontanea dall'aver cambiato di processore, da intel Joule con Ubuntu 16.04 a Raspberry Pi 4 con Ubuntu 18.04.
+In questa sezione delineiamo l'ambiente ROS realizzato. 
+Vista la naturale confusione che si era accumulata nei passaggi di testimone da gruppo a gruppo, abbiamo deciso di ricostruire l'ambiente ROS da capo aggiornandolo da ROS kinetic a ROS melodic; questa scelta \`e venuta spontanea dall'aver cambiato di processore, da intel Joule con Ubuntu 16.04 a Raspberry Pi 4 con Ubuntu 18.04.
 Facendo attenzione ai singoli pacchetti utilizzati e controllando ogni nodo utilizzato siamo stati in grado di individuare codice superflue e alcuni piccoli ma decisivi errori.
 
 \subsection{Pacchetti utilizzati}
+\label{sez:ambiente ROS, pacchetti}
 Passiamo adesso a descrivere i singoli packages utilizzati.
 ulteriori informazioni  sui pacchetti, sulle loro dipendenze e come installarli sono riportate in \verb|Info/Pacchetti.ods| e in \verb|readme_packages.txt|.
 \subsubsection*{Ambiente charlie\_ws}
@@ -516,7 +504,7 @@ I pacchetti utilizzati sono riportati in tab.~\ref{tab: pacchetti charlie}.
 \FloatBarrier
 	
 \subsubsection*{Ambiente charlie\_remote\_ws}
-Da PC, remoto insomma, abbiamo utilizzato gli strumenti grafici non necessari all'esperimento ma utili come ad esempio \verb|rviz|. I pacchetti utilizati sono riportati in tab.~\ref{tab: pacchetti remoto}
+Da PC, remoto insomma, abbiamo utilizzato gli strumenti grafici non necessari all'esperimento ma utili come ad esempio \verb|rviz|. I pacchetti utilizzati sono riportati in tab.~\ref{tab: pacchetti remoto}
 \begin{table}[h]
 	\centering
 	\begin{tabular}{lcp{0.5\linewidth}}
@@ -572,7 +560,7 @@ I dati scambiati sono riassunti nelle tabelle~\ref{tab: comunicazione_seriale2st
 
 \begin{table}[h]
 		\centering
-		\label{tab: comunicazione_seriale2stm}
+		
 		\begin{tabular}{lll}
 			Nome                 & Descrizione                                & Dimensione\\
 			\hline
@@ -599,6 +587,7 @@ I dati scambiati sono riassunti nelle tabelle~\ref{tab: comunicazione_seriale2st
 			\verb!robot_pose_z!  & posa stimata da AMCL - $\psi$ - frame map            & 4 Byte\\
 		\end{tabular}
 		\caption{Comunicazione seriale \texttt{ttyUSBserial} Raspberry $\rightarrow$ STM32}
+		\label{tab: comunicazione_seriale2stm}
 \end{table}
 
 
@@ -609,7 +598,7 @@ Il valore di $\psi$ è inviato dall'STM in un pacchetto come quello mostrato in 
 
 \begin{table}[h]
 	\centering
-	\label{tab: comunicazione_stm2seriale}
+
 	\begin{tabular}{lll}
 		\hline
 		Nome                     & Descrizione   & Dimensione\\
@@ -622,6 +611,7 @@ Il valore di $\psi$ è inviato dall'STM in un pacchetto come quello mostrato in 
 		\hline
 	\end{tabular}
 	\caption{Comunicazione STM32 $\rightarrow$ \texttt{ttyUSBserial} Raspberry}
+	\label{tab: comunicazione_stm2seriale}
 \end{table}
 
 \vspace{0.5mm}
@@ -687,12 +677,12 @@ Abbiamo ritenuto quindi pi\`u importante concentrare la nostra attenzione nell'u
 Questa parte di relazione si concentra proprio su queste prove. 
 
 \vspace{0.5cm}
-Dato che nei progetti precedenti il sistema Pozyx aveva avuto performance non convincenti, anche dovute ad alcune inesattezze nello sviluppo dei nodi ros, la prima prova \`e stata proprio quella di cercare di capire la bont\`a di questo sistema andandolo a comparare con il sistema Vicon.
+Dato che nei progetti precedenti il sistema Pozyx aveva avuto performance non convincenti, anche dovute ad alcune inesattezze nello sviluppo dei nodi ROS, la prima prova \`e stata proprio quella di cercare di capire la bont\`a di questo sistema andandolo a comparare con il sistema Vicon.
 Tale confronto è stato fatto sia in termini di posizioni statiche delle ancore, andando così a valutare la bontà della procedura di autocalibrazione, sia riguardo la posa dinamica (posizione e assetto) assunta da Charlie quando si muove nello spazio e viene localizzato dal sistema UWB (quindi senza navigazione).
 
-Successivamente, sfruttando la presenza del Vicon nella stanza del volo, abbiamo deciso di effettuare un esperimento classico, vedere sez.~\ref{sez: Guida breve all'esperimento}, in modo tale \textbf{??????? MANCA UN PEZZO}
+Successivamente, sfruttando la presenza del Vicon nella stanza del volo, abbiamo deciso di effettuare un esperimento classico, vedere sez.~\ref{sez: Guida breve all'esperimento}, in modo tale da avere un ground--truth sulla effettiva posa di Charlie.
 
-Infine viste anche le modifiche effettuate sul sistema UWB, abbiamo predisposto un esperimento all'esterno per valutare eventuali migliorie di funzionamento.
+Infine, viste anche le modifiche effettuate sul sistema UWB, abbiamo predisposto un esperimento all'esterno per valutare eventuali migliorie di funzionamento.
 Tali prove sono state svolte nel cortile interno al polo A di Ingegneria, dove la presenza di strutture metalliche (tra cui le scale di emergenza) possono aver influenzato il funzionamento del sistema Pozyx. 
 Nonostante questo riteniamo questa impostazione di esperimento un buon casestudy in quanto pi\`u verosimile ad una applicazione reale rispetto ad una stanza circoscritta. 
 Infatti, essendo l'estensione del cortile maggiore rispetto a quella della stanza del volo, ciò ci consentirà anche di valutare il raggio di azione di questo sistema e, di controparte, la difficoltà che può riscontrare il lidar quando si trova in assenza di riferimenti fissi abbastanza vicini, come pareti.
@@ -739,7 +729,7 @@ Infatti, nel caso in cui l'ancora 3 (la numerazione usata va da 0 a 3) venga all
 
 Come descritto in \ref{sez: Guida breve all'esperimento}, per questo primo test andremo a:
 \begin{itemize}
-	\item Avviare i dialoghi tra ros e il sistema Vicon, eseguendo da pc il file di lancio \verb|vicon_charlie.launch|.
+	\item Avviare i dialoghi tra ROS e il sistema Vicon, eseguendo da pc il file di lancio \verb|vicon_charlie.launch|.
 	
 	\item Salvare la trasformazione tra Vicon e UWB eseguendo il file \verb|vicon2uwb_tf.py|. In questa fase, sarà richiesto di posizionare sequenzialmente la Wand in corrispondenza dell'ancora 0, poi dell'ancora 1 e così via. 
 	Per ciascun posizionamento, premendo \verb|Enter| da tastiera si andrà a salvare la posizione, in frame Vicon, della Wand in quell'istante, coincidente con quella dell'ancora sulla quale è posizionata. In questo modo, sono salvate le coordinate delle 4 ancore in frame \verb|Vicon frame|.
@@ -793,9 +783,9 @@ Nell'ambiente ROS vengono avviati solo quei nodi che si interfacciano direttamen
 	roslaunch charlie_launch start_serial.launch	# avvia seriale con stm
 \end{lstlisting}
 e da pc gli stessi comandi della sez.~\ref{sez: lancio del sistema vicon}.
-Infine si avvia la registrazione della rosbag con i topic di interesse.
+Infine, si avvia la registrazione della rosbag con i topic di interesse.
 
-Avviati tutti i nodi ros necessari, si può procedere semplicemente spostando il veicolo nella stanza, raccogliendo così le medesime informazioni di posizione e orientazione in due modi distinti: 
+Avviati tutti i nodi ROS necessari, si può procedere semplicemente spostando il veicolo nella stanza, raccogliendo così le medesime informazioni di posizione e orientazione in due modi distinti: 
 \begin{itemize}
 	\item con il sistema Vicon, considerato corretto e privo di errori
 	\item con il sistema Pozyx (UWB), affetto da errori che vogliamo individuare
@@ -808,7 +798,7 @@ Il codice relativo si trova nel file:
 \end{verbatim}  
 
 Per prima cosa, si confrontano i dati grezzi delle posizioni \verb|x| e \verb|y| delle due tag (tag0 e tag1) misurate dal Vicon con quelle derivanti dal sistema UWB, di quest'ultimo riportandone sia la misura ``raw'' sia quella filtrata con un filtro a media mobile, come vediamo in fig.~\ref{fig: confronto uwbvicon tag tempo}.
-Si pu\`o osservare infatti che i segnali filtrati a media mobile siano costantemente in ritardo, ma molto pi\`u interessante \`e l'offset quasi costante che si ha in alcuni intervalli temporali. 
+Si pu\`o osservare infatti che i segnali filtrati a media mobile sono costantemente in ritardo, ma molto pi\`u interessante \`e l'offset quasi costante che si ha in alcuni intervalli temporali. 
 
 \begin{figure}[h]
 	\centering
@@ -832,13 +822,13 @@ L'errore sui tag ($ pos_{vicon} - pos_{tag}$)  \`e in seguito mostrato in fig.~\
 	{\includegraphics[width=0.45\linewidth]{figs/grafici_uwbvicon/uwbvicon_err_time_tag0.pdf}}
 	\subfloat[][tag1]
 	{\includegraphics[width=0.45\linewidth]{figs/grafici_uwbvicon/uwbvicon_err_time_tag1.pdf}}\\
-	\label{fig: confronto uwbvicon tag errore tempo}
 	\caption{Errore nel tempo sui due tag.}
+	\label{fig: confronto uwbvicon tag errore tempo}
 \end{figure}
 
 
 In ottica di studio dell'errore per le due tag, distintamente, abbiamo deciso di proiettare il vettore errore normalizzato (ovvero il suo versore istante per istante) lungo la circonferenza unitaria centrata nell'origine, così da poter evidenziare un'eventuale direzionalità di questo errore o se, contrariamente, esso assume orientazioni casuali distribuendosi uniformemente sulla circonferenza di riferimento.
-Possiamo subito notare nelle fig.~ che, per entrambe le tag, l'errore si distribuisce molto di più nei quadranti 2 e 3 (asse x negativo).
+Possiamo subito notare nelle fig.~\ref{fig: confronto uwbvicon tag errore normed} che, per entrambe le tag, l'errore si distribuisce molto di più nei quadranti 2 e 3 (asse x negativo).
 
 \begin{figure}[h]
 	\centering
@@ -846,8 +836,8 @@ Possiamo subito notare nelle fig.~ che, per entrambe le tag, l'errore si distrib
 	{\includegraphics[width=0.45\linewidth]{figs/grafici_uwbvicon/uwbvicon_err_map_normed_tag0.pdf}}
 	\subfloat[][tag1]
 	{\includegraphics[width=0.45\linewidth]{figs/grafici_uwbvicon/uwbvicon_err_map_normed_tag1.pdf}}\\
-	\label{fig: confronto uwbvicon tag errore normed}
 	\caption{Errore sui due tag normato per controllare la direzionalit\`a.}
+	\label{fig: confronto uwbvicon tag errore normed}
 \end{figure}
 
 Per quanto riguarda invece la quantificazione della quantit\`a di questo errore, da fig.~\ref{fig: confronto uwbvicon tag errore sigma} \`e possibile osservare che l'errore \`e intorno ai \SI{20}{\centi \meter} per entrambi i tag. 
@@ -875,8 +865,8 @@ Le caratteristiche degli errori sono riportati in tab.~\ref{tab: Caratteristiche
 	{\includegraphics[width=0.45\linewidth]{figs/grafici_uwbvicon/uwbvicon_err_map_sigma_tag0.pdf}}
 	\subfloat[][tag1]
 	{\includegraphics[width=0.45\linewidth]{figs/grafici_uwbvicon/uwbvicon_err_map_sigma_tag1.pdf}}\\
-	\label{fig: confronto uwbvicon tag errore sigma}
 	\caption{Errore sui due tag per controllare l'intensit\`a.}
+	\label{fig: confronto uwbvicon tag errore sigma}
 \end{figure}
 
 
@@ -890,8 +880,8 @@ In altre parole, siamo interessati a controllare se il tag, passando pi\`u volte
 	\label{fig: uwbvicon_quiver_err}
 \end{figure}
 
-Come si pu\`o vedere in fig.~\ref{fig: uwbvicon_quiver_err} \`e proprio questo il caso in quanto i vettori disegnati tendono tutti verso la direzione positiva dell'asse x.
-Questo porta a pensare che la colpevole sia la procedura di autocalibrazione includendo dentro di s\`e errori del sistema Pozyx.
+Come si pu\`o vedere in fig.~\ref{fig: uwbvicon_quiver_err} \`e proprio questo il caso, in quanto i vettori disegnati tendono tutti verso la direzione positiva dell'asse x.
+Questo porta a pensare che la colpevole sia la procedura di autocalibrazione, includendo dentro di s\`e errori del sistema Pozyx.
 
 \vspace{0.5cm}
 
@@ -904,7 +894,7 @@ Questo porta a pensare che la colpevole sia la procedura di autocalibrazione inc
 
 Similmente, considerando che dalla posizione delle due tag su Charlie è possibile ricavare l'heading del veicolo, abbiamo deciso di confrontare questo angolo calcolato come \verb|atan2| tra le posizioni ricavate con UWB, con quello fornitoci direttamente dal Vicon e con quello in uscita dall'STM (che è di fatto una versione filtrata di quello calcolato da noi con le posizioni delle tag). 
 
-Anche qua si evidenzia un errore sistematico nell'angolo, sicuramente legato anche al fatto che, come si evidenzia in fig.\ref{fig: uwbvicon_heading}, il suo valore \`e inizializzato con con un offset significativo. 
+Anche qua si presenta un errore sistematico nell'angolo, sicuramente legato anche al fatto che, come si evidenzia in fig.\ref{fig: uwbvicon_heading}, il suo valore \`e inizializzato con con un offset significativo. 
 
 A differenza di quanto possiamo aspettarci, nei tratti in cui il veicolo si muove il gap tra i due valori di heading diminuisce, e di conseguenza diminuisce anche l'errore nell'orientazione data da UWB, mentre nei momenti in cui l'assetto pare essere costante, torna a vedersi in modo chiaro l'offset iniziale, che non viene mai recuperato.
 
@@ -956,65 +946,21 @@ dove a causa di un offset iniziale pare esserci una maggiore differenza quando l
 \FloatBarrier
 \subsection{Navigazione Charlie con AMCL e Vicon come ground truth}
 
-L'esperimento che andiamo a descrivere di seguito rientra tra gli esperimento standard (riferirsi alla sez.~\ref{sez: Guida breve all'esperimento}), dove in parallelo alla navigazione gestita attraverso l'algoritmo AMCL, viene attivato anche il ``motion capture''
-di Charlie attraverso il sistema Vicon. Questo permette di avere un ground--truth sulla posizione e l'orientazione del veicolo durante la navigazione compiuta
-nell'ambiente sfruttando l'algoritmo di AMCL. In questo modo, siamo in grado di fornire un riferimento di quello che effettivamente è l'errore di navigazione compiuto dal sistema e, nel caso appaiano errori sistematici, di individuarli e poterne indagare la causa.
-Dato che la nostra preoccupazione non è stata quella di verificare il funzionamento del fix di posa dell'algoritmo di navigazione, bensì quello di valutare l'errore che viene fatto con AMCL e con le sole UWB rispetto ad un ground--truth affidabile, non sono state salvate nella bag le informazioni pubblicate nel topic \verb|\initialpose|, così come non abbiamo riportato le pose delle singole tag, bensì direttamente quella associata al centro del sistema di riferimento solidale al veicolo.
-Nello specifico, i topic salvati per questo esperimento sono:
-\begin{verbatim}
-	%	rosbag info 'Confronto_stanzavolo_Vicon.bag'
-	
-	/amcl_pose			% posa di Charlie data da AMCL e espressa in map frame 
-	/charlie_vicon_map	% posa di Charlie registrata da vicon e riportata in map frame
-	/map
-	/orientation
-	/particlecloud
-	/robot_pose			% posa di Charlie data ZOH su quella derivante da AMCL (map frame)
-	/rosout
-	/rosout_agg
-	/scan   
-	/tag_center			% posa di Charlie misurata dal sistema UWB e riportata in map frame
-	/tf     
-	
-\end{verbatim}
-
-Con questi dati, abbiamo deciso di formulare la seguente analisi.
-Come prima cosa, abbiamo verificato il tracciato registrato con 3 diversi metodi: Vicon, navigazione con AMCL e registrazione delle posizioni dal sistema Pozyx, come riportato in fig.~\ref{fig: traiettorie_vicon_charlie}.
-Qua possiamo fare diverse considerazioni: prima di tutto, vediamo che, ovviamente, la traiettoria ricostruita dai dati del sistema Pozyx, non essendo questi filtrati né elaborati in alcun modo, è più rumorosa rispetto al risultato con il sistema Vicon, dove per le performance del sistema gli errori sono estremamente piccoli e i segnali in uscita molto puliti e stabili. Stesso vale confrontando i dati ``grezzi'' provenienti dalle ancore rispetto alla traiettoria derivante dalla navigazione con l'algoritmo AMCL, che utilizza dati filtrati e a sua volta restituisce valori filtrati in modo da ridurre il rumore presente. 
-In secondo luogo, vediamo che la traiettoria vera, corrispondente a quanto registrato dal sistema Vicon che noi assumiamo esente da errori, viene ricreata abbastanza fedelmente dal sistema di navigazione custom, a meno di un offset costante che vede la stima di posizione data dall'algoritmo AMCL spostata lungo l'asse y in fig.~\ref{fig: traiettorie_vicon_charlie} di circa \SI{20}{\centi \metre}. Questo errore sistematico si osserva anche nel tracciato fornito dalle ancore UWB, anche se l'offset appare leggermente inferiore.
-Importante sottolineare che la bontà di questo risultato, dove a meno di un offset non si verificano altre anomalie nel tracciamento del veicolo, è strettamente influenzato dalla velocità alla quale Charlie viene fatto muovere: nello scenario mostrato, tutti gli spostamenti sono a velocità molto contenute, i quali permettono all'algoritmo di navigazione di convergere al risultato corretto, soprattutto nel momento in cui (eventualmente) si trovi a dover fare un fix di posa. A velocità più sostenute, mai trattate nei precedenti lavori e tralasciate anche nel nostro caso, il sistema non funziona così bene: a causa della lentezza dell'algoritmo AMCL e delle varie operazioni di stima e computazione delle pose, velocità troppo elevate portano ad accumulare errori nella stima in uscita e, alla lunga, a una totale discordanza tra posa del veicolo (registrata in modo corretto da UWB, tralasciando i rumori di misura dell'ordine delle decine di \SI{}{\centi \metre}) e la stima che AMCL fa di tale posa, che può essere sbagliata di metri.
-
-Osservando infine i tracciati, vediamo che non sono presenti punti in cui la posa stimata con AMCL viene associata improvvisamente a un punto coincidente con la traiettoria registrata dal sistema Pozyx: grazie alla lentezza dei movimenti, si conclude allora che non sono presenti eventi di fix di posa, ovvero non viene mai reinizializzata la posizione di Charlie con i valori dell UWB.
-
-\vspace{0.5cm}
-Passiamo ad analizzare quali siano stati i valori effettivamente registrati lungo l'asse x e y del \verb|frame MAP| per quanto concerne i tre tracciati mostrati. Oltre a questi valori, è presente un quarto segnale, estratto da \verb|/robot_pose|, corrispondente alla versione filtrata della stima in uscita da AMCL: come specificato in sez.~\ref{sez:Ambiente ROS creato, nodi e topic}, il nodo \verb|/amcl2robot_pose_PY| si occupa di fornire la posa stimata ad una maggiore frequenza, pubblicata in \verb|/robot_pose|, rendendola cos\`i disponibile all'algoritmo di guida caricato sull'STM32.
-Nello specifico, in fig.~\ref{fig: asse_x_vicon_charlie} vediamo l'andamento dei tracciati nel tempo lungo l'asse x del \verb|frame map|, in fig.~\ref{fig: asse_y_vicon_charlie} quello lungo l'asse  y e in fig.~\ref{fig: assixy_vicon_charlie} l'insieme dei due. Lungo l'asse x osserviamo che la misura ottenuta dalle ancore si avvicina maggiormente a quella del Vicon in un primo tratto, dove spesso è molto simile alla stima di AMCL, mentre nella sezione centrale del tracciato tende ad allontanarsi dai valori reali, cosa che AMCL non fa, per riavvicinarsi nella parte finale. Da ciò, si deduce che AMCL segua meglio la posizione vera. Inoltre, notiamo che gli ``errori'' di misura rispetto al ground--truth si trovano spesso in verso opposto nei due casi: UWB sembra tendere a dare una misura leggermente più grande, mentre la stima di AMCL sottostima leggermente il valore lungo l'asse x. La stessa cosa non accade nel tracciato lungo l'asse y: qua entrambe le uscite in analisi sovrastimano la misura effettiva fornita dal Vicon. In fig.~\ref{fig: asse_y_vicon_charlie} è, infatti, evidente la presenza dell'offset sistematico sopra citato, che possiamo affermare con più sicurezza aggirarsi attorno ai \SI{20}{\centi \metre} in condizioni statiche e a traiettoria lineare, mentre aumenta nei momenti in cui le velocità sono più sostenute e/o il percorso più complesso, come accade nel tratto compreso tra \SI{50}{\second} e \SI{100}{\second} e tra \SI{125}{\second} e \SI{160}{\second}. Per di più, non è più vera l'affermazione che la stima si avvicina maggiormente al valore reale: in un primo tratto, fino a \SI{130}{\second}, è UWB ad essere chiaramente più vicino al valore del Vicon. Si ha poi una inversione nella seconda parte, dove pare che la stima data dall'algoritmo di navigazione riesca a seguire meglio quelle che sono le misure reali, coerentemente a quanto accade anche lungo l'asse x.
-
-\vspace{0.5cm}
-Per quanto riguarda l'heading, quindi l'orientazione del veicolo, come mostrato in fig.~\ref{fig: heading_vicon_charlie}, `e evidente che il sistema Pozyx ha performance ridotte rispetto a quelle della stima con AMCL: vediamo infatti che quest'ultimo segue molto bene l'angolo fornito dal Vicon, a meno di un piccolo errore, mentre il valore derivante dalle UWB, che è ottenuto come \verb|atan_2| tra le posizioni relative delle due tag e per questo piuttosto soggetto a errori, presenta un offset di misura maggiore lungo tutto il tracciato, il che si riflette inevitabilmente in un errore di egual misura sull'orientazione fornita all'STM per l'algoritmo di guida, calcolata con la stessa procedura di quella effettuata da noi coi valori grezzi delle posizioni delle due tag, ma utilizzando di questi ultimi le versioni filtrate. Nonostante un maggiore errore, notiamo comunque una coerenza nell'andamento dell'heading, segno che tale offset è più legato ai limiti fisici del sistema Pozyx, anche in correlazione all'ambiente indoor e ai disturbi presenti in esso, che non alle scelte fatte su come ricavare l'heading.
-
-\vspace{0.5cm}
-Per maggiore chiarezza, riportiamo anche i grafici relativi agli errori lungo gli assi e alla norma dell'errore per tutta la durata del percorso. In fig.~\ref{fig: uwbvic_err_vicon_charlie} abbiamo l'errore tra UWB e il ground--truth, in fig.~\ref{fig: amclvic_err_vicon_charlie} quello tra la stima di navigazione e il Vicon (ground--truth) e infine in fig.~\ref{fig: amcluwb_err_vicon_charlie}è mostrato l'errore tra i due sistemi a confronto: UWB e AMCL. Da questi grafici è possibile osservare gli stessi fenomeni messi in luce nelle analisi precedenti. Interessante osservare, infatti, la presenza di un offset costante lungo l'asse y, che è presente nella prima metà anche per il confronto tra le misure delle ancore e la stima di navigazione, e che va poi ad attenuarsi successivamente. L'errore tra le posizioni date da UWB e da AMCL non mostra una direzionalità precisa. Lungo l'asse y si trovano inizialmente valori prettamente negativi, che successivamente diventano positivi: probabilmente questa inversione è legata ad un cambio di direzione di moto del veicolo lungo l'asse y, come si può verificare studiando il percorso seguito, che si rispecchia nell'inversione del segno dell'errore. Per l'asse x si ha invece una maggiore oscillazione attorno allo 0 lungo tutto il grafico.
-
-\vspace{0.5cm}
-Passando agli errori rispetto al ground--truth fornito dal sistema Vicon, si trova nuovamente l'offset di misura, soprattutto per quanto riguarda l'asse y del \verb|map frame|. Vediamo, inoltre, che la norma dell'errore oscilla tra \SI{0.2}{\metre} e \SI{0.4}{\metre} nel caso della stima con l'algoritmo di navigazione (AMCL), mentre raggiunge valori di picco di oltre \SI{0.7}{\metre } nella parte finale della traiettoria quando i dati sono registrati con il sistema di antenne.
-Alleghiamo in fig.~\ref{fig: err_amclvic_sphere_vicon_charlie} e fig.~\ref{fig: err_uwbvic_sphere_vicon_charlie}, anche la loro rappresentazione come punti nel piano x-y, per visualizzarne meglio la distribuzione. Di nuovo, è possibile vedere l'offset del valore dell'errore, in quanto la circonferenza rappresentante i \verb|3 \sigma| della distribuzione non è centrata nell'origine e i punti non sono equamente distribuiti al suo interno. Da notare che nel caso dell'errore legato alle uscite da AMCL, le braccia che presenta la distribuzione (\ref{fig: err_amclvic_sphere_vicon_charlie}) sono semplicemente dovute al fatto che si va in su e giù nel frame map su asse x e asse y.
-
-\begin{figure}[] 
+\begin{figure}[h] 
 	\centering    
 	\includegraphics[height=.4\textheight]{grafici_stanzavolo_vicon/figure1.pdf}
 	\caption{Traiettorie registrate con Vicon, UWB e navigazione con AMCL}
 	\label{fig: traiettorie_vicon_charlie}
 \end{figure}
 
-\begin{figure}[] 
+\begin{figure}[h] 
 	\centering    
 	\includegraphics[height=.3\textheight]{grafici_stanzavolo_vicon/figure5.pdf}
 	\caption{Coordinate lungo l'asse x in map frame registrate con Vicon, UWB e navigazione con AMCL}
 	\label{fig: asse_x_vicon_charlie}
 \end{figure}
 
-\begin{figure}[] 
+\begin{figure}[h] 
 	\centering    
 	\includegraphics[height=.3\textheight]{grafici_stanzavolo_vicon/figure6.pdf}
 	\caption{Coordinate lungo l'asse y in map frame registrate con Vicon, UWB e navigazione con AMCL}
@@ -1105,55 +1051,340 @@ Alleghiamo in fig.~\ref{fig: err_amclvic_sphere_vicon_charlie} e fig.~\ref{fig: 
 	\label{fig: quiver_err_uwbvic_vicon_charlie}
 \end{figure}
 
-\textbf{metti i quiver zoom}
+
+L'esperimento che andiamo a descrivere di seguito \`e di fatto un esperimento standard (riferirsi alla sez.~\ref{sez: Guida breve all'esperimento}), dove in parallelo alla navigazione gestita attraverso l'algoritmo AMCL, viene attivato anche il ``motion capture'' di Charlie attraverso il sistema Vicon.
+Questo permette di avere un ground--truth sulla posa del veicolo durante la navigazione compiuta nell'ambiente sfruttando l'algoritmo di AMCL. 
+In questo modo, siamo in grado di fornire un riferimento di quello che effettivamente è l'errore di navigazione compiuto dal sistema e, nel caso appaiano errori sistematici, di individuarli e poterne indagare la causa.
+Dato che la nostra preoccupazione non è stata quella di verificare il funzionamento del fix di posa dell'algoritmo di navigazione, bensì quello di valutare l'errore che viene fatto con AMCL e con le sole UWB rispetto ad un ground--truth affidabile, non sono state salvate nella bag le informazioni pubblicate nel topic \verb|\initialpose|, così come non abbiamo riportato le pose delle singole tag, bensì direttamente quella associata al centro del sistema di riferimento solidale al veicolo.
+Nello specifico, i topic salvati per questo esperimento sono:
+\begin{verbatim}
+	%	rosbag info 'Confronto_stanzavolo_Vicon.bag'
+	
+	/amcl_pose			% posa data da AMCL e espressa in map frame 
+	/charlie_vicon_map	% posa registrata da vicon e riportata in map frame
+	/map
+	/orientation
+	/particlecloud
+	/robot_pose			% posa data ZOH su quella derivante da AMCL (map frame)
+	/rosout
+	/rosout_agg
+	/scan   
+	/tag_center			% posa misurata dal sistema UWB e riportata in map frame
+	/tf     
+\end{verbatim}
+
+Con questi dati, abbiamo deciso di formulare la seguente analisi.
+Come prima cosa, abbiamo verificato il tracciato registrato con 3 diversi metodi: Vicon, navigazione con AMCL e registrazione delle posizioni dal sistema Pozyx, come riportato in fig.~\ref{fig: traiettorie_vicon_charlie}.
+Qua possiamo fare diverse considerazioni: prima di tutto, vediamo che, ovviamente, la traiettoria ricostruita dai dati del sistema Pozyx, non essendo questi filtrati né elaborati in alcun modo, è più rumorosa rispetto al risultato con il sistema Vicon, dove per le performance del sistema gli errori sono estremamente piccoli e i segnali in uscita molto puliti e stabili. 
+Stesso vale confrontando i dati ``grezzi'' provenienti dalle ancore rispetto alla traiettoria derivante dalla navigazione con l'algoritmo AMCL, che utilizza dati filtrati e a sua volta restituisce valori filtrati in modo da ridurre il rumore presente. 
+
+In secondo luogo, vediamo che la traiettoria vera, corrispondente a quanto registrato dal sistema Vicon che noi assumiamo esente da errori, viene ricreata abbastanza fedelmente dal sistema di navigazione custom, a meno di un offset costante che vede la stima di posizione data dall'algoritmo AMCL spostata lungo l'asse y in fig.~\ref{fig: traiettorie_vicon_charlie} di circa \SI{20}{\centi \metre}.
+Questo errore sistematico si osserva anche nel tracciato fornito dalle ancore UWB, anche se l'offset appare leggermente inferiore.
+
+Importante sottolineare che la bontà di questo risultato, dove a meno di un offset non si verificano altre anomalie nel tracciamento del veicolo, è strettamente influenzato dalla velocità alla quale Charlie viene fatto muovere: nello scenario mostrato, tutti gli spostamenti sono a velocità molto contenute, i quali permettono all'algoritmo di navigazione di convergere al risultato corretto, soprattutto nel momento in cui (eventualmente) si trovi a dover fare un fix di posa. 
+A velocità più sostenute, non trattate nei precedenti lavori, il sistema non funziona così bene: a causa della lentezza dell'algoritmo AMCL e delle varie operazioni di stima e computazione delle pose, velocità troppo elevate portano ad accumulare errori nella stima in uscita e, alla lunga, a una totale discordanza tra posa del veicolo (registrata in modo corretto da UWB, tralasciando i rumori di misura dell'ordine delle decine di \SI{}{\centi \metre}) e la stima che AMCL fa di tale posa, che può essere sbagliata di metri.
+
+Osservando infine i tracciati, vediamo che non sono presenti punti in cui la posa stimata con AMCL viene associata improvvisamente a un punto coincidente con la traiettoria registrata dal sistema Pozyx: grazie alla lentezza dei movimenti, si conclude allora che non sono presenti eventi di fix di posa, ovvero non viene mai reinizializzata la posizione di Charlie con i valori dell UWB.
 
 \vspace{0.5cm}
-Inserendo dei grafici relativi all'errore proiettato su una circonferenza unitaria, possiamo isolare l'informazione relativa alla direzione 
-preferenziale lungo la quale questo errore si presenta. Alleghiamo questa nuova tipologia di analisi in fig.~\ref{fig: err_norm_amclvic_sphere_vicon_charlie}, dove l'errore è quello tra le posizioni date da AMCL e quelle del Vicon, e in fig.~\ref{fig: err_norm_uwbvic_sphere_vicon_charlie}, tra UWB e Vicon. 
+Passiamo ad analizzare quali siano stati i valori effettivamente registrati lungo l'asse x e y del \verb|frame MAP| per quanto concerne i tre tracciati mostrati. 
+Oltre a questi valori, è presente un quarto segnale, estratto da \verb|/robot_pose|, corrispondente alla versione filtrata della stima in uscita da AMCL: come specificato in sez.~\ref{sez:Ambiente ROS creato, nodi e topic}, il nodo \verb|/amcl2robot_pose_PY| si occupa di fornire la posa stimata ad una maggiore frequenza, pubblicata in \verb|/robot_pose|, rendendola cos\`i disponibile all'algoritmo di guida caricato sull'STM32.
+
+Nello specifico, in fig.~\ref{fig: asse_x_vicon_charlie} vediamo l'andamento dei tracciati nel tempo lungo l'asse x del \verb|frame map|, in fig.~\ref{fig: asse_y_vicon_charlie} quello lungo l'asse  y e in fig.~\ref{fig: assixy_vicon_charlie} l'insieme dei due. Lungo l'asse x osserviamo che la misura ottenuta dalle ancore si avvicina maggiormente a quella del Vicon in un primo tratto, dove spesso è molto simile alla stima di AMCL, mentre nella sezione centrale del tracciato tende ad allontanarsi dai valori reali, cosa che AMCL non fa, per riavvicinarsi nella parte finale. 
+Da ciò, si deduce che AMCL segua meglio la posizione vera. Inoltre, notiamo che gli ``errori'' di misura rispetto al ground--truth si trovano spesso in verso opposto nei due casi: UWB sembra tendere a dare una misura leggermente più grande, mentre la stima di AMCL sottostima leggermente il valore lungo l'asse x. 
+La stessa cosa non accade nel tracciato lungo l'asse y: qua entrambe le uscite in analisi sovrastimano la misura effettiva fornita dal Vicon. 
+
+In fig.~\ref{fig: asse_y_vicon_charlie} è, infatti, evidente la presenza dell'offset sistematico sopra citato, che possiamo affermare con più sicurezza aggirarsi attorno ai \SI{20}{\centi \metre} in condizioni statiche e a traiettoria lineare, mentre aumenta nei momenti in cui le velocità sono più sostenute e/o il percorso più complesso, come accade nel tratto compreso tra \SI{50}{\second} e \SI{100}{\second} e tra \SI{125}{\second} e \SI{160}{\second}. 
+Per di più, non è più vera l'affermazione che la stima si avvicina maggiormente al valore reale: in un primo tratto, fino a \SI{130}{\second}, è UWB ad essere chiaramente più vicino al valore del Vicon. 
+Si ha poi una inversione nella seconda parte, dove pare che la stima data dall'algoritmo di navigazione riesca a seguire meglio quelle che sono le misure reali, coerentemente a quanto accade anche lungo l'asse x.
 
 \vspace{0.5cm}
-Dopo tutte queste considerazioni, si conclude la presenza di un errore sistematico, sia per quanto riguarda le misure delle ancore sia per l'algoritmo di navigazione con AMCL. Avendo però perso l'informazione relativa all'istante in cui si ha un determinato errore, non siamo in grado basandoci solo su questi grafici di trarre altre conclusioni esaustive sul fenomeno. Per questo motivo, abbiamo successivamente analizzato qual è l'errore, come vettore di errore, tra la posizione di AMCL o UWB rispetto a quella del nostro ground--truth, vale a dire il sistema Vicon: questo è stato mostrato lungo tutta la traiettoria compiuta, in modo da poter indagare l'esistenza di errori sistematici che si verificano ogni volta che Charlie ripassa nello stesso punto della mappa ad istanti diversi. 
+Per quanto riguarda l'heading, quindi l'orientazione del veicolo, come mostrato in fig.~\ref{fig: heading_vicon_charlie}, \`e evidente che il sistema Pozyx ha performance ridotte rispetto a quelle della stima con AMCL: vediamo infatti che quest'ultimo segue molto bene l'angolo fornito dal Vicon, a meno di un piccolo errore, mentre il valore derivante dalle UWB, che è ottenuto come \verb|atan_2| tra le posizioni relative delle due tag e per questo piuttosto soggetto a errori, presenta un offset di misura maggiore lungo tutto il tracciato, il che si riflette inevitabilmente in un errore di egual misura sull'orientazione fornita all'STM per l'algoritmo di guida, calcolata con la stessa procedura di quella effettuata da noi coi valori grezzi delle posizioni delle due tag, ma utilizzando di questi ultimi le versioni filtrate. 
+Nonostante un maggiore errore, notiamo comunque una coerenza nell'andamento dell'heading, segno che tale offset è più legato ai limiti fisici del sistema Pozyx, anche in correlazione all'ambiente indoor e ai disturbi presenti in esso, che non alle scelte fatte su come ricavare l'heading.
+
+\vspace{0.5cm}
+Per maggiore chiarezza, riportiamo anche i grafici relativi agli errori lungo gli assi e alla norma dell'errore per tutta la durata del percorso. 
+In fig.~\ref{fig: uwbvic_err_vicon_charlie} abbiamo l'errore tra UWB e il ground--truth, in fig.~\ref{fig: amclvic_err_vicon_charlie} quello tra la stima di navigazione e il Vicon (ground--truth) e infine in fig.~\ref{fig: amcluwb_err_vicon_charlie} è mostrato l'errore tra i due sistemi a confronto: UWB e AMCL. 
+Da questi grafici è possibile osservare gli stessi fenomeni messi in luce nelle analisi precedenti. 
+
+Interessante osservare, infatti, la presenza di un offset costante lungo l'asse y, che è presente nella prima metà anche per il confronto tra le misure delle ancore e la stima di navigazione, e che va poi ad attenuarsi successivamente.
+L'errore tra le posizioni date da UWB e da AMCL non mostra una direzionalità precisa. 
+Lungo l'asse y si trovano inizialmente valori prettamente negativi, che successivamente diventano positivi: probabilmente questa inversione è legata ad un cambio di direzione di moto del veicolo lungo l'asse y, come si può verificare studiando il percorso seguito, che si rispecchia nell'inversione del segno dell'errore. 
+Per l'asse x si ha invece una maggiore oscillazione attorno allo 0 lungo tutto il grafico.
+
+\vspace{0.5cm}
+Passando agli errori rispetto al ground--truth fornito dal sistema Vicon, si trova nuovamente l'offset di misura, soprattutto per quanto riguarda l'asse y del \verb|map frame|. Vediamo, inoltre, che la norma dell'errore oscilla tra \SI{0.2}{\metre} e \SI{0.4}{\metre} nel caso della stima con l'algoritmo di navigazione (AMCL), mentre raggiunge valori di picco di oltre \SI{0.7}{\metre } nella parte finale della traiettoria quando i dati sono registrati con il sistema di antenne.
+Alleghiamo in fig.~\ref{fig: err_amclvic_sphere_vicon_charlie} e fig.~\ref{fig: err_uwbvic_sphere_vicon_charlie}, anche la loro rappresentazione come punti nel piano x-y, per visualizzarne meglio la distribuzione. Di nuovo, è possibile vedere l'offset del valore dell'errore, in quanto la circonferenza rappresentante i \verb|3 \sigma| della distribuzione non è centrata nell'origine e i punti non sono equamente distribuiti al suo interno. 
+Da notare che nel caso dell'errore legato alle uscite da AMCL, le braccia che presenta la distribuzione (\ref{fig: err_amclvic_sphere_vicon_charlie}) sono semplicemente dovute al fatto che si va in su e giù nel frame map su asse x e asse y.
+
+\vspace{0.5cm}
+Inserendo dei grafici relativi all'errore proiettato su una circonferenza unitaria, possiamo isolare l'informazione relativa alla direzione preferenziale lungo la quale questo errore si presenta.
+Alleghiamo questa nuova tipologia di analisi in fig.~\ref{fig: err_norm_amclvic_sphere_vicon_charlie}, dove l'errore è quello tra le posizioni date da AMCL e quelle del Vicon, e in fig.~\ref{fig: err_norm_uwbvic_sphere_vicon_charlie}, tra UWB e Vicon. 
+
+\vspace{0.5cm}
+Dopo tutte queste considerazioni, si conclude la presenza di un errore sistematico, sia per quanto riguarda le misure delle ancore sia per l'algoritmo di navigazione con AMCL. 
+Avendo però perso l'informazione relativa all'istante in cui si ha un determinato errore, non siamo in grado basandoci solo su questi grafici di trarre altre conclusioni esaustive sul fenomeno. 
+Per questo motivo, abbiamo successivamente analizzato qual è l'errore, come vettore di errore, tra la posizione di AMCL o UWB rispetto a quella del nostro ground--truth, vale a dire il sistema Vicon: questo è stato mostrato lungo tutta la traiettoria compiuta, in modo da poter indagare l'esistenza di errori sistematici che si verificano ogni volta che Charlie ripassa nello stesso punto della mappa ad istanti diversi. 
 In fig.~\ref{fig: quiver_err_amclvic_vicon_charlie} e in fig.~\ref{fig: quiver_err_uwbvic_vicon_charlie}, possiamo osservare questi vettori errore distribuiti lungo l'intera traiettoria. 
-Con la nuova analisi emergono chiaramente due fenomeni: il primo è la conferma che il vettore errore tra Vicon e UWB, così come quello tra Vicon e AMCL, risulta avere una direzione preferenziale lungo la quale è molto più presente. In secondo luogo, possiamo osservare che, nelle sezioni di traiettoria in cui il veicolo passa più volte dallo stesso punto, i vettori di errore sono tra loro paragonabili, nonostante quello stesso tratto sia percorso col veicolo in moto in verso opposto o con orientazione invertita di \verb|\pi|. Ciò è evidente nella sezione compresa tra \SI{0.5}{\metre} e \SI{1}{\metre}, dove è evidente che, sia nel caso del confronto tra Vicon e AMCL (fig.~\ref{fig: quiver_err_amclvic_vicon_charlie}) che in quello tra Vicon e UWB (fig.~\ref{fig: quiver_err_uwbvic_vicon_charlie})i vettori hanno direzione preferenziale a prescindere dal verso di Charlie.
+
+Con la nuova analisi emergono chiaramente due fenomeni: il primo è la conferma che il vettore errore tra Vicon e UWB, così come quello tra Vicon e AMCL, risulta avere una direzione preferenziale lungo la quale è molto più presente. 
+In secondo luogo, possiamo osservare che, nelle sezioni di traiettoria in cui il veicolo passa più volte dallo stesso punto, i vettori di errore sono tra loro paragonabili, nonostante quello stesso tratto sia percorso col veicolo in moto in verso opposto o con orientazione invertita di \verb|\pi|. 
+Ciò è evidente nella sezione compresa tra \SI{0.5}{\metre} e \SI{1}{\metre}, dove è evidente che, sia nel caso del confronto tra Vicon e AMCL (fig.~\ref{fig: quiver_err_amclvic_vicon_charlie}) che in quello tra Vicon e UWB (fig.~\ref{fig: quiver_err_uwbvic_vicon_charlie}) i vettori hanno direzione preferenziale a prescindere dal verso di Charlie.
 Questo fenomeno è sicuramente meritevole di future indagini, in quanto potrebbe essere indice di errori plausibilmente correggibili, soprattutto per quanto riguarda la scrittura dell'algoritmo di navigazione.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+\FloatBarrier
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Navigazione con AMCL nel cortile}
-Per l'esperimento nel cortile interno, torniamo a riferirci a \ref{sez: Guida breve all'esperimento}, dove troviamo passo passo tutti i comandi dati per 
-l'esecuzione di una prova standard come questa.
-La particolarità di questo esperimento, nonché il suo obiettivo, è quello di testare il sistema in ambiente outdoor, per di più caratterizzato da molti disturbi 
-alla presenza nell'ambiente di grandi strutture metalliche e finestre. Non trascurabile, inoltre, una salita ampia, dove il lidar può trovarsi in difficoltà.
-
-Prima di procedere con l'esperimento, è stata svolta una valutazione su come posizionare le ancore in base all'ambiente stesso: per aumentare la distanza tra di 
-esse, abbiamo deciso di porre due ancore nella zona in salita, assicurandoci però di equilibrare i sostegni affinché non fossero anch'essi inclinati con l'utilizzo 
-di un rialzo in uno dei piedini del sostegno stesso. Le prime tre ancore sono state quindi regolate affinché le tre schede (le ancore propriamente dette) si 
-trovassero allo stesso livello in linea d'aria (alla stessa quota). Per la quarta ancora, è stata posta vicino all'origine, come nelle configurazioni precedenti, 
-perché in seguito a molte prove abbiamo riscontrato essere la configurazione che restituisce migliori autocalibrazioni. In merito a ciò, una volta scelte le 
-posizioni definitive delle ancore, abbiamo proceduto proprio con l'effettuare l'autocalibrazione. Anche le misure con il metro a nastro sono state effettuate, 
-affinché avessimo un termine di confronto attendibile, anche se soggetto a errori. Da qua l'esperimento procede standard, come in \ref{sez: Guida breve all'esperimento}. 
-Dopo la costruzione della nuova mappa, si lancia il file \verb|localization.launch| e si registra il tutto in una bag.
-
-\textbf{FAI ANALISI QUA, bozza sotto}
+Per l'esperimento nel cortile interno, dove non è più presente il sistema Vicon, sono riportati nella sezione \ref{sez: Guida breve all'esperimento} tutti i comandi da eseguire passo passo per fare una raccolta dati standard.
+La particolarità di questo esperimento, nonché il suo obiettivo, è quello di testare il sistema in un ambiente outdoor, contrassegnato dalla presenza di molti disturbi causati da una grande struttura metallica (le scale di emergenza) e da diverse finestre. 
+Non trascurabile, inoltre, una salita ampia dove il lidar può trovarsi in difficoltà e ``scambiarla'' per una parete.
 
 
-prima prova: inizio stai praticamente fermo, si vede che a un certo punto abbiamo un offset tra valore di UWB e valore di AMCL. Offset rimane durante il moto successivo, che 
-è lento qua. Vediamo diversi fix di posa, legati al fatto che il filtro AMCL rimane indietro rispetto all'esecuzione real time. 
+\begin{figure}
+    \centering
+    \includegraphics[height=0.3\textheight]{figs/cortile_con_uwb.pdf}
+    \caption{Cortile con posizione delle ancore.}
+    \label{fig: cortile con uwb}
+\end{figure}
 
-seconda prova: andiamo più veloci. vediamo che AMCL si perde completamente perché non ha assolutamente tempo di eseguire l'algoritmo in tempo entro il nuovo aggiornamento di 
-posa, quindi rimane costantemente indietro e passa da un fix di posa al successivo. Il fix di posa stesso è molto lento, infatti nel mentre non c'è modo di capire
-che sta eseguendo un fix di posa e l'utente, continuando a muoversi con Charlie accumula errore grande in termini di differenza tra l'ultima posizione nota a AMCL e UWB attuale.
-Anche l'orientazione rimane indietro, sia con AMCL sia con UWB. Con UWB, ciò succede perché viene utilizzata l'informazione di \verb|orientation|, dove si calcola l'orientazione come \verb|atan_2| tra le posizioni delle due tag: il tutto viene filtrato con una media mobile, che introduce un ritardo.
+\vspace{0.5cm}
+Prima di procedere con l'esperimento, è stato necessario effettuare una attenta valutazione su come posizionare le ancore in relazione alle condizioni dell'ambiente di lavoro: per aumentare la distanza tra di esse, abbiamo deciso di porre due ancore nella zona in salita, assicurandoci però di equilibrare i sostegni con l'utilizzo di un rialzo posto sotto uno dei piedini del sostegno stesso, affinché non fossero anch'esse inclinate come la salita. 
+Le prime tre ancore (rispettivamente la \verb|0|, la \verb|1| e la \verb|2|) sono state quindi regolate in modo tale che le tre pcb (ovvero le ancore propriamente dette) si trovassero allo stesso livello in linea d'aria (alla stessa quota). 
+La quarta ancora è stata posta vicino all'origine, come nelle raccolte dati precedenti, dato che in seguito alle varie prove abbiamo riscontrato essere la configurazione che restituisce migliori autocalibrazioni; questa è riportata in fig.~\ref{fig: cortile con uwb}. 
 
-terza prova: come la seconda ma andando più lenti, si vede comunque un ritardo da parte di AMCL nonostante si vada molto piano.
+Una volta scelte le posizioni definitive delle ancore, il passo successivo è stato quello di lanciare la procedura di autocalibrazione. 
+Date le distanze maggiori (difficile valutare ad occhio se una misura ha senso su lunghezze considerevoli) e l'assenza del sistema Vicon come ground--truth, abbiamo misurato a mano, con un metro a nastro, le distanze relative tra tutte le coppie di ancore. 
+Questo è necessario per avere un termine di confronto attendibile, seppur soggetto a errori umani di misura, da usare come verifica di una corretta calibrazione. 
+Tali misure sono riportate in tab.~\ref{tab: Distanze tra le ancore}.
 
-queste analisi ci portano a concludere che sarebbe opportuno cambiare algo di navigazione in quanto i fix di posa e l'esecuzione di AMCL prendono troppo tempo e non permettono una applicazione fluida online anche a velocità irrisorie: esisterà sempre una velocità per la quale si accumula un ritardo di AMCL che porta a un fix di posa. Ad ogni modo, anche settando in modo diverso la distanza entro cui lanciare il fix di posa, si avrebbe lo stesso problema.
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|c|c|}
+\hline
+id  & Manuale [m] & UWB [m] \\ \hline
+r01 & 6.48  & 6.244       \\ \hline
+r02 & 15.2  & 15.01       \\ \hline
+r03 & 5.52  & 5.53        \\ \hline
+r12 & 16.52 & 16.35       \\ \hline
+r13 & 5.63  & 5.43        \\ \hline
+r23 & 11.5  & 11.31       \\ \hline
+\end{tabular}
+\caption{Distanze tra le ancore}
+\label{tab: Distanze tra le ancore}
+\end{table}
+
+
+\vspace{0.5cm}
+Una volta ottenuto un risultato soddisfacente, l'esperimento procede standard, come descritto in \ref{sez: Guida breve all'esperimento}. Fondamentale, in questo caso,
+lavorare in ssh con il proprio PC connesso alla Raspberry, facendo sì che entrambi siano connessi alla stessa rete WiFi.
+Nella prima fase, quindi nella costruzione della nuova mappa, i comandi di spostamento del veicolo sono stati dati utilizzando una guida manuale tramite il joystick.
+Importante, in questa fase, muoversi con estrema cautela e lentezza nell'ambiente da ricostruire. La procedura di raccolta dati attraverso il lidar e costruzione di una mappa (effettuata lanciando i file di lancio \verb|save_map_origin| e \verb|new_map|, come si riporta in \ref{sez:ambiente ROS, pacchetti}),
+richiede infatti un tempo di elaborazione non trascurabile, che porta a disallineamenti e alla perdita di coerenza dei risultati non appena il veicolo si sposta troppo o troppo
+velocemente, causando il disorientamento e la perdita del lidar. Questo fenomeno è evidente subito a livello grafico, in quanto vediamo una mappa traslata e/o ruotata sovrapporsi a quella fino a quel momento ricostruita: nel caso in cui si presenti una situazione del genere, il nostro consiglio è quello di ripartire dal principio con la costruzione dell'ambiente. Lavorando con \verb|rviz| aperto, è possibile vedere subito come si comporta la procedura, permettendoci di decidere di fermare il veicolo quando vediamo che l'aggiornamento è in ritardo, dato che proseguire col moto porterebbe ad un rischio di disallineamento con conseguente corruzione dell'intero risultato.
+
+\vspace{0.5cm}
+Una volta ottenuta una mappa soddisfacente, si procede con il suo salvataggio, tramite il nodo ROS \verb|map_saver| del package \verb|map_server|.
+Siamo pronti a questo punto ad avviare l'esperimento, che vede il veicolo, sul quale è eseguito l'algoritmo di navigazione basato su AMCL, muoversi in un ambiente esterno.
+
+Abbiamo deciso di procedere nel seguente ordine: prima viene avviata la registrazione dei dati attraverso una rosbag, come descritto in sez.~\ref{Guida breve all'esperimento: Rosbag}, e solo successivamente viene lanciato l'algoritmo di navigazione, che in questo caso sarà \verb|localization_bag.launch|. La scelta è fatta nell'ottica di avere tutti i dati a disposizione fin dall'istante stesso di avviamento, in modo da poter osservare cosa succede nell'inizializzazione dell'algoritmo di localizzazione del veicolo, quindi poter conoscere le condizioni iniziali. Facendo così, però, osserviamo che nella prima parte della bag registrata mancano alcune informazioni, come ad esempio il segnale in uscita da AMCL, in quanto sono dati pubblicati sui topic da nodi e istanze non ancora lanciati: questi si avvieranno successivamente al lancio di \verb|localization_bag.launch|, dopo il quale inizieremo a registrare i dati pubblicati sull'intera lista di topic desiderati.
+In questo esperimento, i topic che vengono registrati sono:
+\begin{itemize}
+	\item \verb|/amcl_pose           geometry_msgs/PoseWithCovarianceStamped|
+	\item \verb|/initialpose         geometry_msgs/PoseWithCovarianceStamped|
+	\item \verb|/map                 nav_msgs/OccupancyGrid|                 
+	\item \verb|/orientation         geometry_msgs/Point|                    
+	\item \verb|/particlecloud       geometry_msgs/PoseArray|                
+	\item \verb|/robot_pose          geometry_msgs/Point|                    
+	\item \verb|/scan                sensor_msgs/LaserScan|                  
+	\item \verb|/tag_center          geometry_msgs/PoseStamped|              
+	\item \verb|/tf                  tf2_msgs/TFMessage|                    
+	\item \verb|/waypoint_publisher  geometry_msgs/Point|
+\end{itemize}
+
+\vspace{0.5cm}
+Ad inizio di ciascuna raccolta dati, abbiamo aspettato a muoverci per dare tempo al sistema AMCL di convergere. Durante il moto, però, non si ha modo di verificare se la stima data da AMCL sia aggiornata o sia ancora in fase di computazione, così come non è possibile capire se sia in corso un fix di posa. Questo fatto porta a forti malfunzionamenti del sistema di navigazione basato sulla stima con AMCL. Infatti, sappiamo che nel momento in cui la misura di posizione fornita dal sistema UWB differisce di più di \SI{1.5}{\metre} da quella stimata con AMCL, parte automaticamente una procedura di reinizializzazione della posa attuale del veicolo, alla quale viene assegnata l'ultima posizione registrata dalle UWB fino a quel momento.
+\\
+Questa accortezza è stata inserita per ovviare al caso in cui il lidar si perda o smetta di funzionare, per permettere comunque una navigazione ed evitare la totale perdita del veicolo. Purtroppo, però, essendo l'algoritmo di stima di posa troppo lento rispetto alla velocità di spostamento, seppur mantenuta bassa, in assenza di fasi in cui Charlie stia fermo l'algoritmo AMCL rimane indietro rispetto alla posizione reale: conseguentemente a ciò, vengono lanciate procedure di fix di posa anche nel mezzo ad una semplice traslazione effettuata con il lidar perfettamente in funzione.
+\\
+Inoltre, quando si ha un fix di posa, sarebbe necessario fermarsi per non accumulare ulteriore errore e aspettare così che la posizione venga aggiornata, operazione che richiede decine di secondi. Senza coscienza di essere nel mezzo ad un fix di posa, impossibile da verificare i una esecuzione real--time mentre è in corso la navigazione, purtroppo è inevitabile trovare sezioni in cui continuiamo a muoverci nonostante dovessimo fermarci. Ciò si è verificato, nelle nostre prove, soprattutto nella seconda, dove la velocità era più sostenuta e il percorso scelto tortuoso (con vari tratti ad ellisse).
+
+%% prova1
+
+\begin{figure}[] 
+	\centering    
+	\includegraphics[width=.8\textwidth]{figs/grafici_cortile/prova1/figure4.pdf}
+	\caption{prima prova cortile esterno: tracciato.}
+	\label{fig. percorso prima prova esterno}
+\end{figure}
+
+\begin{figure}[] 
+	\centering    
+	\includegraphics[width=.8\textwidth]{figs/grafici_cortile/prova1/figure3.pdf}
+	\caption{prima prova cortile esterno: asse x.}
+	\label{fig. x prima prova esterno}
+\end{figure}
+
+\begin{figure}[] 
+	\centering    
+	\includegraphics[width=.8\textwidth]{figs/grafici_cortile/prova1/figure2.pdf}
+	\caption{prima prova cortile esterno: asse y.}
+	\label{fig. y prima prova esterno}
+\end{figure}
+
+\begin{figure}[] 
+	\centering    
+	\includegraphics[width=.8\textwidth]{figs/grafici_cortile/prova1/figure1.pdf}
+	\caption{prima prova cortile esterno: heading.}
+	\label{fig. or prima prova esterno}
+\end{figure}
+
+%% prova2
+\begin{figure}[] 
+	\centering    
+	\includegraphics[width=.8\textwidth]{figs/grafici_cortile/prova2/figure1.pdf}
+	\caption{seconda prova cortile esterno: tracciato.}
+	\label{fig. percorso seconda prova esterno}
+\end{figure}
+
+\begin{figure}[] 
+	\centering    
+	\includegraphics[width=.8\textwidth]{figs/grafici_cortile/prova2/figure2.pdf}
+	\caption{seconda prova cortile esterno: asse x.}
+	\label{fig. x seconda prova esterno}
+\end{figure}
+
+\begin{figure}[] 
+	\centering    
+	\includegraphics[width=.8\textwidth]{figs/grafici_cortile/prova2/figure3.pdf}
+	\caption{seconda prova cortile esterno: asse y.}
+	\label{fig. y seconda prova esterno}
+\end{figure}
+
+\begin{figure}[] 
+	\centering    
+	\includegraphics[width=.8\textwidth]{figs/grafici_cortile/prova2/figure4.pdf}
+	\caption{seconda prova cortile esterno: heading.}
+	\label{fig. or seconda prova esterno}
+\end{figure}
+
+%% prova3
+\begin{figure}[] 
+	\centering    
+	\includegraphics[width=.8\textwidth]{figs/grafici_cortile/prova3/figure1.pdf}
+	\caption{terza prova cortile esterno: tracciato.}
+	\label{fig. percorso terza prova esterno}
+\end{figure}
+
+\begin{figure}[] 
+	\centering    
+	\includegraphics[width=.8\textwidth]{figs/grafici_cortile/prova3/figure2.pdf}
+	\caption{terza prova cortile esterno: asse x.}
+	\label{fig. x terza prova esterno}
+\end{figure}
+
+\begin{figure}[] 
+	\centering    
+	\includegraphics[width=.8\textwidth]{figs/grafici_cortile/prova3/figure3.pdf}
+	\caption{terza prova cortile esterno: asse y.}
+	\label{fig. y terza prova esterno}
+\end{figure}
+
+\begin{figure}[] 
+	\centering    
+	\includegraphics[width=.8\textwidth]{figs/grafici_cortile/prova3/figure4.pdf}
+	\caption{terza prova cortile esterno: heading.}
+	\label{fig. or terza prova esterno}
+\end{figure}
+
+
+\vspace{0.5cm}
+Le raccolte dati effettuate nell'ambiente esterno sono state in totale 3.
+\begin{enumerate}
+    \item Nella \textit{prima prova}, durante la fase iniziale rimaniamo praticamente fermi con il veicolo, come si può vedere dall'animazione allegata in \verb|animate_charlie_cortile.m|, eseguibile decommentando la riga opportuna in \verb|Analisi_cortile.m| e selezionando al suo interno la bag relativa alla prima prova. Ad un certo punto, vedere fig.~\ref{fig. percorso prima prova esterno}, osserviamo che appare un offset tra il valore di misura delle UWB e la stima della medesima posizione fatta con AMCL. Questo offset permane durante l'intero moto successivo, come possiamo osservare anche in fig.~\ref{fig. x prima prova esterno} e fig.~\ref{fig. y prima prova esterno}, in cui sono riportate le misure e le stime fatte rispettivamente lungo l'asse x e l'asse y del \verb|map frame|. Nonostante il movimento sia stato eseguito a velocità molto ridotta, riscontriamo comunque diversi fix di posa (asterischi neri nei vari grafici), legati al fatto che il filtro AMCL è disallineato rispetto all'esecuzione real--time ed è soggetto a vari errori legati alle condizioni dell'ambiente.  
+    
+    \item Nella \textit{seconda prova}, abbiamo voluto osservare l'errore che viene effettivamente accumulato dal sistema nel momento in cui le velocità iniziano ad essere più sostenute e il percorso più complesso, durante il quale si tende a non fare pause per permettere alla stima di convergere. Questa scelta è fatta in ottica applicativa, per comprendere se e con quali limiti il sistema allo stato attuale sia utile per applicazioni pratiche reali. Purtroppo, come possiamo notare sia dal percorso, fig.~\ref{fig. percorso seconda prova esterno}, sia dall'errore di posizione, fig.~\ref{fig. x seconda prova esterno} e fig.~\ref{fig. y seconda prova esterno}, l'algoritmo di stima della posa con AMCL si perde completamente, in quanto non ha abbastanza tempo per eseguire i vari passaggi richiesti alla stima entro il nuovo aggiornamento di posa. Ciò comporta che la stima di posizione rimanga costantemente indietro rispetto alla posizione attuale (misurata dalle ancore, anche se in modo non preciso, almeno in real time), facendo registrare continuamente errori di posizione superiori alla soglia di \SI{1.5}{\metre}: il sistema di navigazione passa così da un fix di posa al successivo.
+    
+    La procedura di fix di posa è a sua volta molto lenta (decine di secondi), tempo deleterio per le buone performance di navigazione. Infatti, dato che non c'è modo da parte dell'utente di capire che il sistema si trova in mezzo all'esecuzione di un fix di posa, continuando a far muovere il veicolo esso fa sì che si accumuli un errore grande in termini di differenza tra l'ultima posizione nota ad AMCL e quella misurata dalle UWB in real--time.
+    
+    Anche l'orientazione rimane indietro, come si vede in fig.~\ref{fig. or seconda prova esterno}, in questo caso sia con AMCL sia con UWB (si nota dall'animazione, in cui vediamo il veicolo allinearsi lungo la direzione di avanzamento dell'opportuno angolo di heading solo dopo un certo tempo di ritardo, quindi nella prima fase pare erroneamente avanzare in posizione trasversale, impossibile per la struttura del veicolo). 
+    Se la causa degli errori della stima di orientazione con l'algoritmo di navigazione è imputabile alle stesse problematiche della stima di posizione, riportate sopra, per quanto riguarda la misura con il sistema Pozyx, una plausibile spiegazione risiede nel fatto che non si tratta di una misura diretta, bensì di un valore ottenuto tramite alcuni passi computazionali. Viene infatti utilizzata l'informazione di \verb|orientation|, dove l'orientazione è calcolata come \verb|atan_2| tra le posizioni delle due tag, e in seguito il tutto viene filtrato con un filtro a media mobile, maggiore responsabile dell'introduzione del ritardo.
+    
+    
+    \item Nella \textit{terza prova}, dati i risultati ottenuti con la seconda, abbiamo deciso di mantenere un ampio raggio di movimento, riducendo però le velocità a cui il veicolo si sposta nell'ambiente. Nonostante ciò, si vede comunque un ritardo da parte di AMCL, che non siamo in grado di compensare in alcun modo se non aspettando periodicamente che esso converga fermandoci nella posa corrente. Vediamo il percorso in fig.~\ref{fig. percorso terza prova esterno}, mentre le misure di posizione e orientazione sono riportati rispettivamente in fig.~\ref{fig. x terza prova esterno}, fig.~\ref{fig. y terza prova esterno} e fig.~\ref{fig. or terza prova esterno}.
+    
+\end{enumerate}
+
+Osservando i grafici, sono evidenti non solo i ritardi di AMCL rispetto alle misure delle UWB, ma anche e soprattutto gli svariati asterischi neri dove convogliano entrambi i segnali: questi sono proprio i punti dove viene effettuato il fix di posa del veicolo, ovvero quando viene reinizializzato il filtro di navigazione con i valori correnti (al momento del lancio della procedura di fix di posa) della posa nota dal sistema UWB. 
+Soprattutto per quanto riguarda la seconda prova, vediamo che la stima passa da un fix di posa al successivo, quindi di fatto la navigazione è basata sulla conoscenza della posa dalle UWB con una bassa frequenza di aggiornamento (ovvero quella di aggiornamento del filtro a termine del fix di posa). Questo comportamento è totalmente indesiderato e deleterio, in quanto degrada a tal punto i risultati da portare a una totale perdita del veicolo nella mappa (quando questo si basa sulla stima con AMCL), come visto in fig.~\ref{fig. percorso seconda prova esterno}.
+
+\vspace{0.5cm}
+Un altro problema che abbiamo riscontrato, soprattutto in questa applicazione, è stato la difficoltà che trova il lidar nel restituire valori di posizione corretti quando soggetto a rollio rispetto alla superficie. Qua abbiamo due principali cause imputabili: la prima è legata alla struttura di sostegno e rialzo del lidar dal corpo del veicolo. 
+Sebbene sia inserita per alzare il sensore, rendendo quindi avvantaggiata la sua visibilità dell'ambiente, essendo molto rudimentale è soggetta a vibrazioni macroscopiche e questo inserisce disturbi non trascurabili che degradano sicuramente le performance del sensore. 
+
+Altro aspetto risiede nella presenza di un terreno sconnesso o inclinato. 
+Se nelle prime prove non ci eravamo imbattuti in questo problema, in quanto la stanza del volo ha un pavimento liscio e orizzontale, lo stesso non è stato non appena ci siamo spostati in uno scenario reale: il cortile interno, come già accennato, presenta una salita lieve che si estende per tutto un lato lungo del suo perimetro e per circa \SI{1}{\metre} di ampiezza, creando di fatto un rialzo laterale del cortile.
+Nonostante il restante spazio in cui ci siamo spostati col veicolo (la parte non rialzata, che copre la quasi totalità del cortile), non presentasse zone dissestate o sconnesse, la presenza della parte inclinata ha creato non pochi disturbi. 
+Già prima di salire attivamente su di essa col veicolo, abbiamo dovuto fare i conti col fatto che il laser emesso dal lidar venisse scatterato dalla salita, sulla quale ``rimbalzava'' restituendo indietro una informazione fallace, in quanto veniva registrata come una barriera non ben definita (lo scatter avviene in diversi punti della salita a seconda della distanza di Charlie dalla superficie inclinata, ciò porta a registrare una serie di muri fittizi paralleli tra loro). 
+Questo è un problema sia a livello di costruzione della mappa, dove appunto vengono registrati tutta una serie di ostacoli paralleli che in realtà non esistono, sia nel momento di fare navigazione: le informazioni del lidar vengono infatti comparate con la mappa, in cui sono presenti quelle ``pareti'', ma a sua volta è possibile che anche in fase di navigazione il sensore registri tali ostacoli e li veda in modo diverso da come sono nella mappa, in quanto posto in una posizione relativa diversa e quindi soggetto a un diverso scatter del laser.
+Tutto ciò comporta un match non preciso e, anzi, plausibilmente scorretto tra le informazioni del sensore e quelle della mappa, causando errori nella fase di auto--localizzazione del veicolo all'interno dell'ambiente.
+
+Le cose peggiorano ulteriormente nel momento in cui proviamo a salire con il veicolo sul tratto in salita: qua il lidar è soggetto ad un rollio non trascurabile e si trova a variare la sua inclinazione rispetto alla superficie, senza che possa aver coscienza dell'aver subito questo rollio (la posizione lungo l'asse z è fissata a zero, il ché non permette di ricavare in alcun modo dati che indichino che non siamo più sul piano bensì stiamo percorrendo una salita o una discesa). 
+A seguito di ciò, il laser emesso dal lidar non si troverà più ad essere nella stessa direzione che aveva quando eravamo sul tratto piano, quindi si verifica un disallineamento tra la mappa e le misure che portano il lidar a non riuscire a capire dove si trovi nell'ambiente. 
+
+\vspace{0.5cm}
+Oltre a notare subito forti limitazioni nella scelta dell'ambiente in cui poter eseguire tali esperimenti, queste analisi ci portano a concludere che sarebbe opportuno rivedere l'algoritmo di navigazione. 
+I fix di posa e l'esecuzione di AMCL richiedono troppo tempo e non permettono una navigazione fluida con aggiornamenti in real time anche a velocità irrisorie: esisterà sempre una velocità per la quale si accumula un ritardo nella computazione dell'algoritmo AMCL tale da portare ad un fix di posa. 
+Questo comportamento è indesiderato, in quanto i fix di posa sono pensati per ovviare a situazioni in cui il lidar non funziona o funziona male (vedere l'esperimento di rapimento del lidar di \cite{ptvlocalizzazione}), mentre qua entra in azione anche quando il lidar è in condizioni ottimali di lavoro, a causa della lentezza nell'aggiornare la posa corrente stimata con AMCL (rispetto ai tempi necessari per ottenere la posa dal sistema Pozyx, che riesce a rimanere real time). 
+Non riteniamo sia una buona soluzione nemmeno quella di aumentare la distanza di soglia oltre la quale far partire la procedura di fix di posa, in quanto senza l'accorgimento di far andare piano il veicolo ed aspettare la convergenza di AMCL avremo sempre che, prima o poi, l'errore accumulato sarà tale da far scattare un fix anche con il lidar perfettamente funzionante.
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+
+\section{Conclusioni}
+``A differenza del robot di partenza, il robot funziona'', come detto anche dal progetto precedente \cite{ptvlocalizzazione}.\\
+Ricostruendo l'ambiente ROS da capo in modo progressivo, siamo stati in grado di individuare e correggere diversi errori nel codice che rendevano inefficace sia il sistema Pozyx sia alcune delle comunicazioni tra nodi ROS.
+
+\vspace{0.5cm}
+Il veicolo allo stato attuale \`e in grado di determinare la sua posizione all’interno della mappa, anche senza essere inizializzato, ma la convergenza dell'algoritmo AMCL \`e cos\`i lenta da obbligare il veicolo a tenersi sotto velocit\`a decisamente troppo basse per qualsiasi utilizzo pratico. 
+\`E importante sottolineare, per\`o, tale inefficienza non è da imputare completamente all'algoritmo di navigazione di per sé: la procedura di reinizializzazione online di AMCL non \`e infatti sufficientemente robusta nella nostra applicazione, dato anche che non stiamo utilizzando il software nel modo previsto.
+Infatti, nel suo utilizzo standard, AMCL presuppone che il robot abbia sempre una fonte stabile e buona di odometria e che il lidar non sia mai offline; inoltre, richiede uno spostamento non nullo, dell’ordine dei cm, per portare a convergenza la stima. Questi motivi si aggiungono alla lentezza della convergenza della stima legata alla struttura dell'algoritmo, creando delle condizioni estremamente poco ottimizzate per un buon funzionamento della navigazione online.
+
+\vspace{0.5cm}
+Per quanto riguarda l'acquisizione della mappa, affidata ad Hector Slam, questa risulta problematica qualora si voglia procedere velocemente: per la mappa del cortile interno \`e stata necessaria pi\`u di un'ora di raccolta dati, durante la quale abbiamo regolato diverse volte il sistema di acquisizione, scartando le mappe registrate erroneamente. Infine, siamo riusciti ad ottenere una mappa soddisfacente, dovendo però aumentare la distanza dal lidar entro la quale vengono salvati nella mappa gli oggetti visti e solo spostando molto lentamente il robot all'interno dell'area di lavoro.
+
+\vspace{0.5cm}
+Il sistema Pozyx, purch\`e rumoroso e affetto da offset di circa \SI{20}{\centi \meter} dovuti al sistema stesso, risulta essere un sistema piuttosto affidabile per avere una misura temporalmente aggiornata della posizione del veicolo.
+Infatti, nelle fasi di un qualsiasi movimento degno di nota, questo sistema risulta l'unico (tralasciando il Vicon ovviamente) in grado di localizzare, seppur con errori, il veicolo, aggiornando praticamente in real--time i vari spostamenti compiuti. 
+Ciò permette di valutare il ritardo con cui l'algoritmo AMCL segue il moto reale, che avrà come lower--bound sicuramente il ritardo con cui segue l'aggiornamento del moto stesso da parte del sistema Pozyx. 
+Anche quest'ultimo sarà affetto da un ritardo, ma molto inferiore e, per questo, considerabile online nella nostra applicazione, dove le velocità sono molto limitate e ritardi di frazioni di secondo trascurabili. 
+
+\subsection{Sviluppi futuri}
+Consigliamo adesso alcuni possibili sviluppi futuri, che potrebbero risolvere alcune inefficienze ancora presenti o aggiungere feature e potenziale al sistema stesso:
+\begin{itemize}
+    \item Implementare una GUI semplice in ROS, in modo da rendere l’utilizzo del software sviluppato più user-friendly anche attraverso \textbf{NOME SOFTWARE INDAGA};
+    
+    \item Sostituire, o migliorare, la reinizializzazione tramite fix di posa;
+    
+    \item Valutare metodi alternativi per la fusione dei dati in arrivo dai sensori a disposizione;
+    
+    \item Riprogettare o sostituire la piattaforma meccanica che \`e soggetta a forti oscillazioni sull'angolo di rollio, non ideali per il lidar;
+    
+    \item Progettare algoritmi di guida pi\`u avanzati, aggiungendo per esempio la possibilit\`a di fare retromarcia e obstacle avoidance;
+    
+    \item Aggiungere una IMU per avere una fonte di odometria costante, utilissima nel momento di compiere la mappatura (mapping) dell'ambiente incognito.
+\end{itemize}
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newpage
 \section{Guida breve all'esperimento}
 \label{sez: Guida breve all'esperimento}
-In questa sezione è riportata, sommariamente, la procedura da eseguire per lanciare un esperimento completo. Per una guida dettagliata, riferirsi a 
-sez.~\ref{sez:L'esperimento}. 
+In questa sezione è riportata, sommariamente, la procedura da eseguire per lanciare un esperimento completo.
 
 Prima di tutto, è necessario disporre le ancore come descritto in sez.~\ref{sez:Sistema Pozyx}, come si può vedere in fig.~\ref{fig: disposizione ancore}. 
 Assicurarsi di aver impostato correttamente le impostazioni WiFi (sez.~\ref{sez: primo collegamento a raspberry}) e di avere il PC e la Raspberry connessi 
@@ -1247,7 +1478,7 @@ raspberry e pc. In seguito, modificare nel file di lancio \texttt{charlie\_remot
 	<arg name="server" default="IP_SERVER"/>
 \end{lstlisting}
 
-Per avviare i dialoghi tra ros e il sistema Vicon, eseguire da pc il file di lancio \verb|vicon_charlie.launch|con il comando:
+Per avviare i dialoghi tra ROS e il sistema Vicon, eseguire da pc il file di lancio \verb|vicon_charlie.launch|con il comando:
 \begin{lstlisting}[style=bashPC]
 	roslaunch charlie_remote vicon_charlie.launch
 \end{lstlisting}
@@ -1264,6 +1495,7 @@ e, infine, lanciare il nodo che pubblica la posizione di Charlie in frame map:
 
 
 \subsection{Rosbag}
+\label{Guida breve all'esperimento: Rosbag}
 Per registrare i dati attraverso una rosbag suggeriamo di non sottoscriversi a tutti i topic, in quanto verrebbero salvati molti elementi non necessari 
 al nostro esperimento. Si consiglia quindi di lanciare il seguente comando da pc (dopo essersi spostati nella cartella desiderata nella quale salvare i 
 file \verb|.bag|), contenente la selezione da noi fatta in merito ai topic ai quali sottoscriversi per ottenere tutti e soli i dati di nostro interesse:
